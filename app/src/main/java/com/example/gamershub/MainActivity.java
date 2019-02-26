@@ -37,9 +37,11 @@ public class MainActivity extends AppCompatActivity implements HomeScreen.OnFrag
                     transaction.addToBackStack(null);
                     transaction.commit();
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_pinned:
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_gameTrade:
+                    return true;
+                case R.id.navigation_settings:
                     return true;
             }
             return false;
@@ -50,20 +52,26 @@ public class MainActivity extends AppCompatActivity implements HomeScreen.OnFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //get the supportfragmentManager for the class
         fm = getSupportFragmentManager();
         //create a new APIcommand class so we can acess our custom methods throughout the application
         APICOMMAND apicommand = new APICOMMAND();
-        //create a new androidnetworking class so we can have access to the networking class to carry out the calls
-
-        //initialize
+        //initialize the AndroidNetworking API so we can have access to the POST & GET methods
         AndroidNetworking.initialize(getApplicationContext());
 
-
-        mTextMessage = (TextView) findViewById(R.id.message);
+        //initilize the bottom view navigation
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        //set the onclick listiener for the navigationitemselected
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //call the search command
+        //create a way to make the default screen thats loaded is the home screen
+        FragmentTransaction transaction = fm.beginTransaction();
+        //replace the current screen
+        transaction.replace(R.id.content, new HomeScreen());
+        //DO NOT add to back stack null so that users cannot go backwards to an empty screen
+        //Commit the transaction and make the change to the screen
+        transaction.commit();
+
     }
 
     @Override

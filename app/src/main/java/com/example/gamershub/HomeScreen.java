@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.androidnetworking.AndroidNetworking;
 import com.example.gamershub.igdbAPI.APICOMMAND;
@@ -75,11 +76,13 @@ public class HomeScreen extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
 
         final Button searchBtn = view.findViewById(R.id.searchBtn);
+        final EditText searchBar = view.findViewById(R.id.searchBar);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apicommand.Search("Call of duty");
+                //use the basic search command utilizing the text input from the search bar
+                apicommand.Search(searchBar.getText().toString());
             }
         });
 

@@ -15,28 +15,30 @@ import java.util.ArrayList;
 public class APICOMMAND {
 
 
-    public void Search(AndroidNetworking androidNetworking){
-        AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
-                .addHeaders("Accept","application/json").addStringBody("fields name,popularity,rating; sort popularity desc;")
-                .setPriority(Priority.MEDIUM).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                System.out.println(response);
-            }
+    /**
+     * @author Jonathan stevanka
+     * @description This class 'APICOMMAND' is a custom class that utilizes more custom search methods
+     * depending on what the user would be looking for
+     */
 
-            @Override
-            public void onError(ANError anError) {
 
-            }
-        });
-    }
-
+    /**
+     * THE METHODS BELOW ARE FOR SEARCHING "GAMES" on the API
+     */
     public ArrayList<JSONObject> Search(String search){
-        //create an arraylist of jsonobjects so we an splice the response we get back later on from JSON
+        //create an arraylist of jsonobjects so we an split the response we get back later on from JSON
         final ArrayList<JSONObject> contents = new ArrayList<JSONObject>();
 
+        //check to see if the search is empty
+        //MAKE THIS A TOAST MESSAGE BEFORE RELEASE
+        if(search.isEmpty()==true){
+            System.out.println("The search field is empty!");
+            return contents;
+        }
+        //set up the POST request for this current search
         AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
-                .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded").addStringBody("search \""+search+"\"; fields name,popularity,rating;")
+                .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                .addStringBody("search \""+search+"\"; fields name,popularity,rating;")
                 .setPriority(Priority.HIGH).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
@@ -59,6 +61,29 @@ public class APICOMMAND {
 
         return contents;
     }
+
+    /**
+     * THE METHODS BELOW ARE FOR SEARCHING "COMPANIES" on the API
+     */
+
+
+
+    /**
+     * THE METHODS BELOW ARE FOR SEARCHING "CHARACTERS" on the API
+     */
+
+
+
+    /**
+     * THE METHODS BELOW ARE FOR SEARCHING "GAME_ENGINES" on the API
+     */
+
+
+
+    /**
+     * THE METHODS BELOW ARE FOR SEARCHING "SPECIFIC GENERE" on the API
+     */
+
 
     public void dumpInfo(){
 
