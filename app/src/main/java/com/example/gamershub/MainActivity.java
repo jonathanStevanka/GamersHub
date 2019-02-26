@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements HomeScreen.OnFrag
                     transaction.addToBackStack(null);
                     transaction.commit();
                     return true;
+                case R.id.navigation_trending:
+                    return true;
                 case R.id.navigation_pinned:
                     return true;
                 case R.id.navigation_gameTrade:

@@ -12,6 +12,11 @@
         android:title="@string/title_pinned" />
 
     <item
+        android:id="@+id/navigation_trending"
+        android:icon="@drawable/ic_trending_up_black_24dp"
+        android:title="@string/title_trending" />
+
+    <item
         android:id="@+id/navigation_gameTrade"
         android:icon="@drawable/ic_games_black_24dp"
         android:title="@string/title_gameTrade" />

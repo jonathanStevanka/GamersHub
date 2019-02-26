@@ -81,8 +81,8 @@ public class HomeScreen extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //use the basic search command utilizing the text input from the search bar
-                apicommand.Search(searchBar.getText().toString());
+                //use the basic searchGame command utilizing the text input from the search bar
+                apicommand.SearchCompanies(searchBar.getText().toString());
             }
         });
 
