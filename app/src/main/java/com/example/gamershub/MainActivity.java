@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         androidNetworking.initialize(getApplicationContext());
         //call the search command
-        apicommand.Search(androidNetworking);
+        apicommand.Search(androidNetworking,"Call of Duty");
     }
 
 }
