@@ -95,14 +95,40 @@ public class HomeScreen extends Fragment {
             }
         });
 
-        //connect the recyclerview
-        RecyclerView list = view.findViewById(R.id.homeRecyclerView);
-        //populate the list of games
+        //connect the trending recyclerview
+        RecyclerView trending = view.findViewById(R.id.homeRecyclerView);
+        //connect the upcoming recyclerview
+        RecyclerView upcoming = view.findViewById(R.id.upcomingGamesRecyclerView);
+        //connect the trendingPs4 recyclerview
+        RecyclerView trendingPs4 = view.findViewById(R.id.trendingOnPs4);
+
+        //populate the list of trending games
         ArrayList<gameHome> trendingGames = apicommand.InitialLoad();
-        System.out.println(trendingGames.size());
-        CustomHomeAdapterClass customAdapterClass = new CustomHomeAdapterClass(trendingGames,getContext());
-        list.setAdapter(customAdapterClass);
-        list.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        //populate the list of upcoming games
+        ArrayList<gameHome> upcomingGames = apicommand.InitialLoad();
+        //populate the list of trending games on ps4
+        ArrayList<gameHome> trendingGamesPs4 = apicommand.InitialLoad();
+
+        //create and connect our custom adapterclass to our trendingGames recyclerview
+        CustomHomeAdapterClass customAdapterClassTrending = new CustomHomeAdapterClass(trendingGames,getContext());
+        //create and connect our custom adapterclass to our trendingGames upcomingGames
+        CustomHomeAdapterClass customAdapterClassUpcoming = new CustomHomeAdapterClass(upcomingGames,getContext());
+
+        //create and connect our custom adapterclass to our trendingGames trendingGamesPs4
+        CustomHomeAdapterClass customAdapterClassTrendingPs4 = new CustomHomeAdapterClass(trendingGamesPs4,getContext());
+
+
+
+        trending.setAdapter(customAdapterClassTrending);
+        trending.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+
+        upcoming.setAdapter(customAdapterClassUpcoming);
+        upcoming.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+
+        trendingPs4.setAdapter(customAdapterClassTrendingPs4);
+        trendingPs4.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+
+
         //list.setLayoutManager(new GridLayoutManager(getContext(),2));
         return view;
     }
