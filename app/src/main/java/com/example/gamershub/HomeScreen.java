@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,11 @@ import android.widget.EditText;
 
 import com.androidnetworking.AndroidNetworking;
 import com.example.gamershub.igdbAPI.APICOMMAND;
+import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
+import com.example.gamershub.objectPackage.gameHome;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 
 /**
@@ -78,14 +85,24 @@ public class HomeScreen extends Fragment {
         final Button searchBtn = view.findViewById(R.id.searchBtn);
         final EditText searchBar = view.findViewById(R.id.searchBar);
 
+
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //use the basic searchGame command utilizing the text input from the search bar
-                apicommand.SearchCompanies(searchBar.getText().toString());
+                apicommand.SearchGames(searchBar.getText().toString());
             }
         });
 
+        //connect the recyclerview
+        //RecyclerView list = view.findViewById(R.id.homeRecyclerView);
+        //populate the list of games
+        //ArrayList<gameHome> trendingGames = new ArrayList<gameHome>();
+        //trendingGames.addAll(apicommand.dumpGameInfo(apicommand.SearchGames("Red dead")));
+
+        //CustomHomeAdapterClass customAdapterClass = new CustomHomeAdapterClass(trendingGames,getContext());
+        //list.setAdapter(customAdapterClass);
+        //list.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
     }
 
