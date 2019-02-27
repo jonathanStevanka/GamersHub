@@ -9,9 +9,8 @@
     <EditText
         android:id="@+id/searchBar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="Search.."
         android:inputType="text"
@@ -22,25 +21,36 @@
     <Button
         android:id="@+id/searchBtn"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="2dp"
         android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/homeRecyclerView"
-        app:layout_constraintEnd_toEndOf="@+id/homeRecyclerView"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+
+    <TextView
+        android:id="@+id/row1Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Trending Games"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBtn" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/homeRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="52dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+        app:layout_constraintTop_toBottomOf="@+id/row1Title"
+        tools:listitem="@layout/homeitemlayout" />
 </android.support.constraint.ConstraintLayout>

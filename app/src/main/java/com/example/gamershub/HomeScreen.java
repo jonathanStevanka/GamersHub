@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -101,7 +102,8 @@ public class HomeScreen extends Fragment {
         System.out.println(trendingGames.size());
         CustomHomeAdapterClass customAdapterClass = new CustomHomeAdapterClass(trendingGames,getContext());
         list.setAdapter(customAdapterClass);
-        list.setLayoutManager(new LinearLayoutManager(getContext()));
+        list.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        //list.setLayoutManager(new GridLayoutManager(getContext(),2));
         return view;
     }
 
