@@ -12,6 +12,10 @@ public class gameHome {
 
     }
 
+    public gameHome(String name) {
+        this.name = name;
+    }
+
     public gameHome(int id, String name, Double rating) {
         this.id = id;
         this.name = name;

@@ -95,14 +95,13 @@ public class HomeScreen extends Fragment {
         });
 
         //connect the recyclerview
-        //RecyclerView list = view.findViewById(R.id.homeRecyclerView);
+        RecyclerView list = view.findViewById(R.id.homeRecyclerView);
         //populate the list of games
-        //ArrayList<gameHome> trendingGames = new ArrayList<gameHome>();
-        //trendingGames.addAll(apicommand.dumpGameInfo(apicommand.SearchGames("Red dead")));
-
-        //CustomHomeAdapterClass customAdapterClass = new CustomHomeAdapterClass(trendingGames,getContext());
-        //list.setAdapter(customAdapterClass);
-        //list.setLayoutManager(new LinearLayoutManager(getContext()));
+        ArrayList<gameHome> trendingGames = apicommand.InitialLoad();
+        System.out.println(trendingGames.size());
+        CustomHomeAdapterClass customAdapterClass = new CustomHomeAdapterClass(trendingGames,getContext());
+        list.setAdapter(customAdapterClass);
+        list.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
     }
 
