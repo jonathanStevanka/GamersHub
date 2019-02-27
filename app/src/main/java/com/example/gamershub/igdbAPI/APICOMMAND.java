@@ -29,34 +29,18 @@ public class APICOMMAND {
      */
 
 
-    public ArrayList<JSONObject> InitialLoad(){
+    public ArrayList<gameHome> InitialLoad(){
         //create an arraylist of jsonobjects so we an split the response we get back later on from JSON
-        final ArrayList<JSONObject> contents = new ArrayList<JSONObject>();
+        final ArrayList<gameHome> contents = new ArrayList<gameHome>();
 
 
-        //set up the POST request for this current search
-        AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
-                .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                .addStringBody("fields name,popularity,rating,screenshots.*; where rating > 75; limit 30;")
-                .setPriority(Priority.HIGH).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                //use the string search method to retreive whatever the user was searching for.
-                //this allows for easy modification, and we seperate it into arraylists for easy implementation into card views
-                for(int i=0; i < response.length(); i++){
-                    //add the contents to our local arraylist
-                    contents.add(response.optJSONObject(i));
-                    //TESTING-print to the console1
-                    //System.out.println(contents.get(i));
-                }
-                //System.out.println(contents.size());
-            }
+        contents.add(new gameHome("Red dead redemption"));
+        contents.add(new gameHome("Call of duty"));
+        contents.add(new gameHome("Zelda"));
+        contents.add(new gameHome("Resident Evil"));
+        contents.add(new gameHome("Kill bill"));
 
-            @Override
-            public void onError(ANError anError) {
-                System.out.println(anError.getErrorBody());
-            }
-        });
+
         return contents;
     }
 

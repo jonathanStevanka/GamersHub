@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gamershub.R;
@@ -41,7 +42,7 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
     public void onBindViewHolder(@NonNull customAdap viewHolder, int i) {
         gameHome game = games.get(i);
         viewHolder.name.setText(game.getName());
-        Picasso.get().load(game.getImageViewUrl()).into(viewHolder.url);
+        //Picasso.get().load(game.getImageViewUrl()).into(viewHolder.url);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
 
     class customAdap extends RecyclerView.ViewHolder{
         protected TextView name;
-        protected ImageButton url;
+        protected ImageView url;
 
         public customAdap(View view){
             super(view);
