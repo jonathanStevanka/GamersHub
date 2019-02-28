@@ -1,5 +1,7 @@
 package com.example.gamershub;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,10 +16,17 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.example.gamershub.igdbAPI.APICOMMAND;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.gameHome;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -41,9 +50,24 @@ public class HomeScreen extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    //----------------------------------------------------
+    //Create a new instance of our APICOMMAND class
     APICOMMAND apicommand = new APICOMMAND();
 
+    //Connect our recyclerviews so we can access them throughout the class
+    private RecyclerView trending;
+    private RecyclerView upcoming;
+    private RecyclerView trendingPs4;
+
+    //Create our arraylist's so we can access them throughout the class
+    private ArrayList<gameHome> trendingGames;
+    private ArrayList<gameHome> upcomingGames;
+    private ArrayList<gameHome> trendingGamesPs4;
+
+    //Create an instance of our 'CustomHomeAdapterClass'
+    private CustomHomeAdapterClass customAdapterClass;
+
+    //----------------------------------------------------
     public HomeScreen() {
         // Required empty public constructor
     }
@@ -83,53 +107,72 @@ public class HomeScreen extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
 
+        //Create a connection between the 'searchBtn' and the 'searchBar'
         final Button searchBtn = view.findViewById(R.id.searchBtn);
         final EditText searchBar = view.findViewById(R.id.searchBar);
 
-
+        //create an ArrayList of 'gameHome' objects
+        final ArrayList<gameHome> gameObjects = new ArrayList<gameHome>();
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //use the basic searchGame command utilizing the text input from the search bar
-                apicommand.SearchGames(searchBar.getText().toString());
+                //gameObjects.addAll(apicommand.dumpGameInfo(apicommand.SearchGames(searchBar.getText().toString())));
+                //apicommand.SearchGames(searchBar.getText().toString());
+                //System.out.println(jsonObjects.size());
             }
         });
 
         //connect the trending recyclerview
-        RecyclerView trending = view.findViewById(R.id.homeRecyclerView);
+        trending = view.findViewById(R.id.homeRecyclerView);
         //connect the upcoming recyclerview
-        RecyclerView upcoming = view.findViewById(R.id.upcomingGamesRecyclerView);
+        upcoming = view.findViewById(R.id.upcomingGamesRecyclerView);
         //connect the trendingPs4 recyclerview
-        RecyclerView trendingPs4 = view.findViewById(R.id.trendingOnPs4);
+        trendingPs4 = view.findViewById(R.id.trendingOnPs4);
 
-        //populate the list of trending games
-        ArrayList<gameHome> trendingGames = apicommand.InitialLoad();
-        //populate the list of upcoming games
-        ArrayList<gameHome> upcomingGames = apicommand.InitialLoad();
-        //populate the list of trending games on ps4
-        ArrayList<gameHome> trendingGamesPs4 = apicommand.InitialLoad();
+        //instantiate new ArrayList's
+        trendingGames = new ArrayList<>();
+        upcomingGames = new ArrayList<>();
+        trendingGamesPs4 = new ArrayList<>();
 
-        //create and connect our custom adapterclass to our trendingGames recyclerview
-        CustomHomeAdapterClass customAdapterClassTrending = new CustomHomeAdapterClass(trendingGames,getContext());
-        //create and connect our custom adapterclass to our trendingGames upcomingGames
-        CustomHomeAdapterClass customAdapterClassUpcoming = new CustomHomeAdapterClass(upcomingGames,getContext());
+        //connect the custom adapter class to the desired arraylists
+        customAdapterClass = new CustomHomeAdapterClass(trendingGames,getContext());
+        //set the adapter on desired recyclerView
+        trending.setAdapter(customAdapterClass);
 
-        //create and connect our custom adapterclass to our trendingGames trendingGamesPs4
-        CustomHomeAdapterClass customAdapterClassTrendingPs4 = new CustomHomeAdapterClass(trendingGamesPs4,getContext());
+        //connect the custom adapter class to the desired arraylists
+        customAdapterClass = new CustomHomeAdapterClass(trendingGamesPs4,getContext());
+        //set the adapter on desired recyclerView
+        trendingPs4.setAdapter(customAdapterClass);
 
+        //connect the custom adapter class to the desired arraylists
+        customAdapterClass = new CustomHomeAdapterClass(upcomingGames,getContext());
+        //set the adapter on desired recyclerView
+        upcoming.setAdapter(customAdapterClass);
 
+        /**
+         * This is where the action happens, in order to update the recyclerviews with data we need to populate them.
+         * Please check the params on the 'getData()' function
+         */
+        apicommand.getData(getContext(),trendingGames,customAdapterClass,"fields name,popularity; sort popularity desc;","games");
+        apicommand.getData(getContext(),upcomingGames,customAdapterClass,"fields name,popularity; sort popularity desc;","games");
+        apicommand.getData(getContext(),trendingGamesPs4,customAdapterClass,"fields name,popularity; sort popularity desc;","games");
 
-        trending.setAdapter(customAdapterClassTrending);
+        //grab the json data for the current upcomingGames for all platforms
+        //apicommand.getData(getContext(),upcomingGames,customAdapterClass,"fields *; where date > 1551925328; sort date asc;","release_dates");
+        //grab the json data for the current trending games on PS4
+        //apicommand.getData(getContext(),trendingGamesPs4,customAdapterClass,"fields name,popularity; where platform = 48; sort popularity desc;","games");
+
+        //trending.setAdapter(new CustomHomeAdapterClass(trendingGames,getContext()));
         trending.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
-        upcoming.setAdapter(customAdapterClassUpcoming);
+        //upcoming.setAdapter(new CustomHomeAdapterClass(upcomingGames,getContext()));
         upcoming.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
-        trendingPs4.setAdapter(customAdapterClassTrendingPs4);
+        //trendingPs4.setAdapter(new CustomHomeAdapterClass(trendingGamesPs4,getContext()));
         trendingPs4.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
-
-        //list.setLayoutManager(new GridLayoutManager(getContext(),2));
+        //return the view
         return view;
     }
 
@@ -171,4 +214,6 @@ public class HomeScreen extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

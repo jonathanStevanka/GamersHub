@@ -8,7 +8,7 @@ public class gameHome {
     private String imageViewUrl;
     private Double rating;
 
-    gameHome(){
+    public gameHome(){
 
     }
 
