@@ -8,4 +8,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+
+
+
+    <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
+    <string name="search_trendingGames">fields name,popularity; sort popularity desc;</string>
+
 </resources>
