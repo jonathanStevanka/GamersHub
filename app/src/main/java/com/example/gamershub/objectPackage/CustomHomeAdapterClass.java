@@ -27,6 +27,7 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
     }
 
 
+
     @NonNull
     @Override
     public customAdap onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
