@@ -8,6 +8,11 @@ public class gameHome {
     private String imageViewUrl;
     private Double rating;
 
+    private int gameCover;
+    private int platform;
+    private String releaseDate;
+
+
     public gameHome(){
 
     }
@@ -91,5 +96,29 @@ public class gameHome {
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public int getGameCover() {
+        return gameCover;
+    }
+
+    public void setGameCover(int gameCover) {
+        this.gameCover = gameCover;
+    }
+
+    public int getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(int platform) {
+        this.platform = platform;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }
