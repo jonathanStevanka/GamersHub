@@ -9,6 +9,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.example.gamershub.BuildConfig;
+import com.example.gamershub.R;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.gameHome;
 
@@ -45,6 +46,7 @@ public class APICOMMAND {
                 for (int i = 0; i<response.length(); i++){
                     contents.add(response.optJSONObject(i));
                 }
+                dumpGameInfo(contents);
             }
             @Override
             public void onError(ANError anError) {
@@ -52,13 +54,63 @@ public class APICOMMAND {
                 System.out.println(anError.getErrorBody());
                 System.out.println(anError.getErrorDetail());
                 System.out.println(anError.getResponse());
-
             }
         });
 
     return contents;
     }
 
+    //test function
+    public String SearchGameID(int ID){
+
+
+        final gameHome game = new gameHome();
+
+        AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
+                .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                .addStringBody("fields name,summary; where id ="+ID+"; limit 1;")
+                .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+
+                JSONObject jsonObject = null;
+
+
+                for (int i = 0; i<response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+
+                        int gameId = jsonObject.getInt("id");
+                        String gameName = jsonObject.getString("name");
+                        System.out.println("-----------------------------");
+
+                        System.out.println("SearchGameWithID: "+gameId);
+                        System.out.println("SearchGameWithID: "+gameName);
+
+                        System.out.println("-----------------------------");
+
+                        game.setId(gameId);
+
+                        if (gameName != null){
+                            game.setName(gameName);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(ANError anError) {
+
+            }
+
+        });
+
+        return game.getName();
+    }
 
     /**
      * THE METHODS BELOW ARE FOR SEARCHING "COMPANIES" on the API
@@ -100,6 +152,8 @@ public class APICOMMAND {
 
         return contents;
     }
+
+
 
     /**
      * THE METHODS BELOW ARE FOR SEARCHING "CHARACTERS" on the API
@@ -185,7 +239,6 @@ public class APICOMMAND {
     }
 
 
-
     /**
      * THIS IS THE DEFAULT CONSTRUCTER TO START POPULATING GAMES IN THE HOMESCREEN ***OFFLINE***
      */
@@ -209,11 +262,14 @@ public class APICOMMAND {
      * THE METHOD BELOW IS FOR THE INITIAL LAUNCH OF THE DEVICE, IT WILL PULL FROM MANY DIFFERENT CATEGORIES AND FILL RESPECTIVELY
      */
 
-    public void getData(Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search,String url){
+
+
+    public ArrayList<gameHome> getData(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading Game data...");
         progressDialog.show();
+
 
 
         AndroidNetworking.post("https://api-v3.igdb.com/"+url+"/").addHeaders("user-key",BuildConfig.IGDBKey)
@@ -228,6 +284,16 @@ public class APICOMMAND {
                 //Instantiate a new 'gameHome' Object so we can add data to the arraylist
                 gameHome game = null;
 
+
+                int gameId = 0;
+                String gameName = null;
+                int gameCover = 0;
+                Double gameRating = 0.0;
+                String gameSummary = null;
+                String gameWebsiteURL = null;
+                String gameReleaseDate = null;
+                int platform = 0;
+
                 //create a for loop to programmatically go through the response.
                 for (int i = 0; i<response.length(); i++){
                     try {
@@ -236,30 +302,95 @@ public class APICOMMAND {
                         //create
                         game = new gameHome();
 
-                        //grab the ID field from the object
-                        int gameId = jsonObject.getInt("id");
-                        //grab the Game name field from the object
-                        String gameName = jsonObject.getString("name");
-                        //grab the Game Popularity field from the object
-                        Double gamePop = jsonObject.getDouble("popularity");
-                        //Double gameRating = jsonObject.getDouble("rating");
-                        //String gameScreenCapUrl = jsonObject.getString("screenshots");
 
-                        //set the ID of the JSONObject to the 'game' object
-                        game.setId(gameId);
+                        if (url=="games"){
+                            //grab the ID field from the object
+                            gameId = jsonObject.getInt("id");
+                            //grab the Game name field from the object
+                            gameName = jsonObject.getString("name");
+                            gameCover = jsonObject.getInt("cover");
+                            if (jsonObject.has("rating")){
+                                gameRating = jsonObject.getDouble("rating");
+                            }
+                            gameSummary = jsonObject.getString("summary");
+                            gameWebsiteURL = jsonObject.getString("url");
 
-                        //check to see if the game name is empty
-                        if (gameName != null){
-                            //if not set the 'game' object's name to the JSONObjects 'name'
+//                                System.out.println("-----------------------");
+//                                System.out.println(gameId);
+//                                System.out.println(gameName);
+//                                System.out.println(gameCover);
+//                                System.out.println(gameSummary);
+//                                System.out.println(gameWebsiteURL);
+//                                System.out.println("-----------------------");
+
+                            game.setId(gameId);
                             game.setName(gameName);
+                            game.setGameCover(gameCover);
+                            game.setDescription(gameSummary);
+                            game.setRating(gameRating);
+                            game.setWebsiteUrl(gameWebsiteURL);
+
+                            arrayList.add(game);
                         }
 
-                        //game.setRating(gameRating);
 
-                        //game.setImageViewUrl("https://images.igdb.com/igdb/image/upload/t_thumb/d4iizhkgl3vmc2btyhpw.jpg");
+                        if (url=="release_dates"){
 
-                        //add the new 'game' to the arraylist
-                        arrayList.add(game);
+                            //y; where platform = 48; sort popularity desc;
+                            final gameHome release_game = new gameHome();
+
+
+                            gameId = jsonObject.getInt("game");
+                            //grab the Game name field from the object
+                            final int gameObjectID = gameId;
+
+                            if (jsonObject.has("game")) {
+
+                                AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
+                                        .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                                        .addStringBody("fields name,popularity,cover,rating,summary,url; where id ="+gameId+"; limit 1;")
+                                        .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+
+                                    @Override
+                                    public void onResponse(JSONArray response) {
+                                        JSONObject json = new JSONObject();
+                                        int gameMatchID = 0;
+                                        try {
+                                            //set the JSONObject to the response
+                                            for (int r=0; r<response.length();r++){
+
+                                                json = response.getJSONObject(r);
+
+                                                if (json.has("id")){
+                                                    gameMatchID = json.getInt("id");
+                                                    if (gameMatchID == gameObjectID){
+                                                        release_game.setId(gameMatchID);
+                                                        release_game.setName(json.getString("name"));
+                                                        release_game.setDescription(json.getString("summary"));
+                                                        arrayList.add(release_game);
+                                                    }
+                                                }
+
+                                            }
+
+                                        }catch (JSONException e){
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+
+                                    }
+
+                                });
+
+                            }
+                            //gameReleaseDate = jsonObject.getString("human");
+                            //platform = jsonObject.getInt("platform");
+                        }
+
+                        //System.out.println("TrendingPs4: "+arrayList.size());
 
                     } catch (JSONException e) {
                         //print the stack trace of the error
@@ -282,5 +413,85 @@ public class APICOMMAND {
                 System.out.println(anError.getResponse());            }
         });
 
+
+
+        return arrayList;
     }
-}
+
+    public void getDataFromGameURL(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass , final String url){
+
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Mowing the Lawn...");
+        progressDialog.show();
+
+        gameHome test = null;
+
+
+            AndroidNetworking.post("https://api-v3.igdb.com/"+url+"/").addHeaders("user-key",BuildConfig.IGDBKey)
+                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                    .addStringBody("fields name,popularity,cover,rating,summary,url; where id ="+test.getId()+"; limit 1;")
+                    .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+                @Override
+                public void onResponse(JSONArray response) {
+
+                    //create a new 'localArrayList'
+                    //this will be used to grab information from the Game url to then be added to our upcoming games arraylist
+                    ArrayList<gameHome> arrayListLocal = new ArrayList<gameHome>();
+
+                    //Instantiate a new JSONObject for the response information
+                    JSONObject jsonObject = null;
+                    //Instantiate a new 'gameHome' Object so we can add data to the arraylist
+                    gameHome game = null;
+
+                    int gameId = 0;
+                    String gameName = null;
+                    Double gameCover = null;
+                    Double gameRating = null;
+                    String gameSummary = null;
+                    String gameWebsiteURL = null;
+                    String gameReleaseDate = null;
+                    Double platform = null;
+
+                    for (int i=0; i<response.length();i++){
+                        try{
+                            //grab the ID field from the object
+                            gameId = jsonObject.getInt("id");
+                            //grab the Game name field from the object
+                            gameName = jsonObject.getString("name");
+                            gameCover = jsonObject.getDouble("cover");
+                            gameRating = jsonObject.getDouble("rating");
+                            gameSummary = jsonObject.getString("summary");
+                            gameWebsiteURL = jsonObject.getString("url");
+
+                                System.out.println("-----------------------");
+                                System.out.println(gameId);
+                                System.out.println(gameName);
+                                System.out.println(gameCover);
+                                System.out.println(gameSummary);
+                                System.out.println(gameWebsiteURL);
+                                System.out.println("-----------------------");
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                            progressDialog.dismiss();
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    //create a for loop to programmatically go through the response.
+                    //programatically add the data to the already preexisting arraylist of information.
+                    customHomeAdapterClass.notifyDataSetChanged();
+                    //dismiss the dialog
+                    progressDialog.dismiss();
+                }
+                @Override
+                public void onError(ANError anError) {
+                    System.out.println(anError.getErrorCode());
+                    System.out.println(anError.getErrorBody());
+                    System.out.println(anError.getErrorDetail());
+                    System.out.println(anError.getResponse());
+                }
+
+            });
+
+        }
+    }

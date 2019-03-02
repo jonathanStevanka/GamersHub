@@ -14,6 +14,8 @@
 
 
     <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
-    <string name="search_trendingGames">fields name,popularity; sort popularity desc;</string>
+    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url; sort popularity desc;</string>
+    <string name="search_upcomingGames">fields id,game,human,platform,y; where platform = 48; sort popularity desc;</string>
+
 
 </resources>
