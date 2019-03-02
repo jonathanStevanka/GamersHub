@@ -98,6 +98,8 @@ public class HomeScreen extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        //instantiate new ArrayList's
+
 
     }
 
@@ -113,12 +115,13 @@ public class HomeScreen extends Fragment {
 
         //create an ArrayList of 'gameHome' objects
         final ArrayList<gameHome> gameObjects = new ArrayList<gameHome>();
+        //create the onclickListener for the searchBtn
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //use the basic searchGame command utilizing the text input from the search bar
                 //gameObjects.addAll(apicommand.dumpGameInfo(apicommand.SearchGames(searchBar.getText().toString())));
-                //apicommand.SearchGames(searchBar.getText().toString());
+                apicommand.SearchGames(searchBar.getText().toString());
                 //System.out.println(jsonObjects.size());
             }
         });
@@ -130,7 +133,9 @@ public class HomeScreen extends Fragment {
         //connect the trendingPs4 recyclerview
         trendingPs4 = view.findViewById(R.id.trendingOnPs4);
 
-        //instantiate new ArrayList's
+        //apicommand.SearchGameID(7445);
+
+
         trendingGames = new ArrayList<>();
         upcomingGames = new ArrayList<>();
         trendingGamesPs4 = new ArrayList<>();
@@ -154,12 +159,28 @@ public class HomeScreen extends Fragment {
          * This is where the action happens, in order to update the recyclerviews with data we need to populate them.
          * Please check the params on the 'getData()' function
          */
-        apicommand.getData(getContext(),trendingGames,customAdapterClass,"fields name,popularity; sort popularity desc;","games");
-        apicommand.getData(getContext(),upcomingGames,customAdapterClass,"fields name,popularity; sort popularity desc;","games");
-        apicommand.getData(getContext(),trendingGamesPs4,customAdapterClass,"fields name,popularity; sort popularity desc;","games");
+
+        apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games");
+
+        //create a way to grab the 'game' class from the 'release_dates' search
+
+        /**
+         * instead of adding "upcomingGames directly to the customAdapterClass itself it needs to be parted out.
+         * -create another 'getData' function without use of the 'customAdapterClass'
+         * -then after we run the 'first' round of searching we will then use a forloop to iterate through the 'upcoming games arraylist
+         * -and also at the same time, setting the information from searching the 'game' URL"
+         */
+        //apicommand.getDataFromGameURL(getContext(),upcomingGames,customAdapterClass,"games");
+
+
+        //upcomingGames = apicommand.GrabTrendingGames(getContext());
+
+        apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates");
+
+
+
 
         //grab the json data for the current upcomingGames for all platforms
-        //apicommand.getData(getContext(),upcomingGames,customAdapterClass,"fields *; where date > 1551925328; sort date asc;","release_dates");
         //grab the json data for the current trending games on PS4
         //apicommand.getData(getContext(),trendingGamesPs4,customAdapterClass,"fields name,popularity; where platform = 48; sort popularity desc;","games");
 
