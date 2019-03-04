@@ -106,18 +106,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/popularXBOX" />
 
-                    <TextView
-                        android:id="@+id/row1Title6"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="sans-serif-black"
-                        android:text="Popular on NSWITCH"
-                        android:textAlignment="center"
-                        android:textSize="20sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/popularPC" />
 
                     <android.support.v7.widget.RecyclerView
                             android:id="@+id/trendingGamesALL"
@@ -171,15 +159,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/row1Title5"
                         tools:listitem="@layout/homeitemlayout" />
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/popularSWITCH"
-                        android:layout_width="0dp"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/row1Title6"
-                        tools:listitem="@layout/homeitemlayout" />
+
                 </android.support.constraint.ConstraintLayout>
 
         </ScrollView>

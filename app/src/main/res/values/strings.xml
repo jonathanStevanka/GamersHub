@@ -17,21 +17,20 @@
     <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
 
     <!-- working-->
-    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url; where rating &gt; 85 &amp; popularity &gt; 85;</string>
+    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url; where rating &gt; 75 &amp; popularity &gt; 75; limit 50;</string>
     <string name="search_upcomingGames">fields id,game,human,m,platform; where date &gt; 1551648064; sort date asc;</string>
 
-
     <!-- testing-->
-    <string name="search_upcomingGamesPS4">fields id,game,human,m,platform; where platform = 48 &amp; date &gt; 1551648064;</string>
+
 
     <!-- needs looking at-->
     <string name="search_recentlyReleasedPS4games">fields id,game,human,m,platform; where date &lt; 1551648064; sort date desc; limit 50;</string>
 
     <!-- not tested-->
-    <!--<string name="search_trendingGamesPS4"></string>-->
-    <!--<string name="search_trendingGamesXBOX"></string>-->
-    <!--<string name="search_trendingGamesPC"></string>-->
-    <!--<string name="search_trendingGamesNSWITCH"></string>-->
+
+    <string name="search_upcomingGamesPS4">fields id,game,human,m,platform; where platform = 48 &amp; date &gt; 1551648064;</string>
+    <string name="search_upcomingGamesPC">fields id,game,human,m,platform; where platform = 49 &amp; date &gt; 1551648064;</string>
+    <string name="search_upcomingGamesXBOX">fields id,game,human,m,platform; where platform = 6 &amp; date &gt; 1551648064;</string>
 
 
 </resources>
