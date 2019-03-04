@@ -256,14 +256,9 @@ public class APICOMMAND {
 
         return contents;
     }
-
-
     /**
      * THE METHOD BELOW IS FOR THE INITIAL LAUNCH OF THE DEVICE, IT WILL PULL FROM MANY DIFFERENT CATEGORIES AND FILL RESPECTIVELY
      */
-
-
-
     public ArrayList<gameHome> getData(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
@@ -294,6 +289,14 @@ public class APICOMMAND {
                 String gameReleaseDate = null;
                 int platform = 0;
 
+
+                /**
+                 * values below are to be used as finals in the fields below
+                 */
+
+                final double MINPop = 85;
+                final double MAXRating = 85;
+
                 //create a for loop to programmatically go through the response.
                 for (int i = 0; i<response.length(); i++){
                     try {
@@ -315,14 +318,7 @@ public class APICOMMAND {
                             gameSummary = jsonObject.getString("summary");
                             gameWebsiteURL = jsonObject.getString("url");
 
-//                                System.out.println("-----------------------");
-//                                System.out.println(gameId);
-//                                System.out.println(gameName);
-//                                System.out.println(gameCover);
-//                                System.out.println(gameSummary);
-//                                System.out.println(gameWebsiteURL);
-//                                System.out.println("-----------------------");
-
+                            //set the values to the game object
                             game.setId(gameId);
                             game.setName(gameName);
                             game.setGameCover(gameCover);
@@ -355,6 +351,9 @@ public class APICOMMAND {
                                     public void onResponse(JSONArray response) {
                                         JSONObject json = new JSONObject();
                                         int gameMatchID = 0;
+                                        double gameRating = 0;
+                                        double gamePop = 0;
+
                                         try {
                                             //set the JSONObject to the response
                                             for (int r=0; r<response.length();r++){
@@ -363,10 +362,32 @@ public class APICOMMAND {
 
                                                 if (json.has("id")){
                                                     gameMatchID = json.getInt("id");
+
                                                     if (gameMatchID == gameObjectID){
+
+                                                        if (json.has("rating")){
+                                                            gameRating = json.getDouble("rating");
+                                                        }
+
+                                                        if (json.has("popularity")){
+                                                            gamePop = json.getDouble("popularity");
+                                                        }
+
                                                         release_game.setId(gameMatchID);
                                                         release_game.setName(json.getString("name"));
                                                         release_game.setDescription(json.getString("summary"));
+
+
+//                                                        System.out.println("-------------------------------");
+//
+//                                                        System.out.println("gameID: "+ release_game.getId());
+//                                                        System.out.println("gameName: "+ release_game.getName());
+//                                                        System.out.println("gameDesc: "+ release_game.getDescription());
+//                                                        System.out.println("gamePop: "+ gamePop);
+//                                                        System.out.println("gameRating: "+ gameRating);
+//
+//                                                        System.out.println("-------------------------------");
+
                                                         arrayList.add(release_game);
                                                     }
                                                 }
@@ -378,20 +399,18 @@ public class APICOMMAND {
                                         }
                                     }
 
+
                                     @Override
                                     public void onError(ANError anError) {
-
+                                        System.out.println(anError.getErrorCode());
+                                        System.out.println(anError.getErrorBody());
+                                        System.out.println(anError.getErrorDetail());
+                                        System.out.println(anError.getResponse());
                                     }
 
                                 });
-
                             }
-                            //gameReleaseDate = jsonObject.getString("human");
-                            //platform = jsonObject.getInt("platform");
                         }
-
-                        //System.out.println("TrendingPs4: "+arrayList.size());
-
                     } catch (JSONException e) {
                         //print the stack trace of the error
                         e.printStackTrace();
@@ -410,7 +429,8 @@ public class APICOMMAND {
                 System.out.println(anError.getErrorCode());
                 System.out.println(anError.getErrorBody());
                 System.out.println(anError.getErrorDetail());
-                System.out.println(anError.getResponse());            }
+                System.out.println(anError.getResponse());
+            }
         });
 
 
@@ -418,80 +438,5 @@ public class APICOMMAND {
         return arrayList;
     }
 
-    public void getDataFromGameURL(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass , final String url){
 
-        final ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Mowing the Lawn...");
-        progressDialog.show();
-
-        gameHome test = null;
-
-
-            AndroidNetworking.post("https://api-v3.igdb.com/"+url+"/").addHeaders("user-key",BuildConfig.IGDBKey)
-                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                    .addStringBody("fields name,popularity,cover,rating,summary,url; where id ="+test.getId()+"; limit 1;")
-                    .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
-                @Override
-                public void onResponse(JSONArray response) {
-
-                    //create a new 'localArrayList'
-                    //this will be used to grab information from the Game url to then be added to our upcoming games arraylist
-                    ArrayList<gameHome> arrayListLocal = new ArrayList<gameHome>();
-
-                    //Instantiate a new JSONObject for the response information
-                    JSONObject jsonObject = null;
-                    //Instantiate a new 'gameHome' Object so we can add data to the arraylist
-                    gameHome game = null;
-
-                    int gameId = 0;
-                    String gameName = null;
-                    Double gameCover = null;
-                    Double gameRating = null;
-                    String gameSummary = null;
-                    String gameWebsiteURL = null;
-                    String gameReleaseDate = null;
-                    Double platform = null;
-
-                    for (int i=0; i<response.length();i++){
-                        try{
-                            //grab the ID field from the object
-                            gameId = jsonObject.getInt("id");
-                            //grab the Game name field from the object
-                            gameName = jsonObject.getString("name");
-                            gameCover = jsonObject.getDouble("cover");
-                            gameRating = jsonObject.getDouble("rating");
-                            gameSummary = jsonObject.getString("summary");
-                            gameWebsiteURL = jsonObject.getString("url");
-
-                                System.out.println("-----------------------");
-                                System.out.println(gameId);
-                                System.out.println(gameName);
-                                System.out.println(gameCover);
-                                System.out.println(gameSummary);
-                                System.out.println(gameWebsiteURL);
-                                System.out.println("-----------------------");
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                            progressDialog.dismiss();
-                        }
-                        progressDialog.dismiss();
-                    }
-
-                    //create a for loop to programmatically go through the response.
-                    //programatically add the data to the already preexisting arraylist of information.
-                    customHomeAdapterClass.notifyDataSetChanged();
-                    //dismiss the dialog
-                    progressDialog.dismiss();
-                }
-                @Override
-                public void onError(ANError anError) {
-                    System.out.println(anError.getErrorCode());
-                    System.out.println(anError.getErrorBody());
-                    System.out.println(anError.getErrorDetail());
-                    System.out.println(anError.getResponse());
-                }
-
-            });
-
-        }
-    }
+}
