@@ -18,7 +18,8 @@ import com.example.gamershub.igdbAPI.APICOMMAND;
 
 import org.json.JSONArray;
 
-public class MainActivity extends AppCompatActivity implements HomeScreen.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements HomeScreen.OnFragmentInteractionListener,
+home_screenitemCLICK.OnFragmentInteractionListener{
 
     private TextView mTextMessage;
 

@@ -1,6 +1,8 @@
 package com.example.gamershub.objectPackage;
 
-public class gameHome {
+import java.io.Serializable;
+
+public class gameHome implements Serializable {
     private int id;
     private String name;
     private String description;
@@ -121,4 +123,6 @@ public class gameHome {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+
 }
