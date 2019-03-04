@@ -180,17 +180,15 @@ public class HomeScreen extends Fragment {
          */
 
         //working
-        //filler data
-        apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_trendingGames),"games");
-        apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_trendingGames),"games");
-        apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games");
-        apicommand.getData(getContext(),popularGamesSWITCH,customAdapterClass,getString(R.string.search_trendingGames),"games");
-
-        //------------
         //not filler data
         apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games");
         apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates");
         apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_upcomingGamesPS4),"release_dates");
+        //filler data
+        apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_trendingGames),"games");
+        apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_trendingGames),"games");
+        apicommand.getData(getContext(),popularGamesSWITCH,customAdapterClass,getString(R.string.search_trendingGames),"games");
+        //------------
 
         //needs testing
 
