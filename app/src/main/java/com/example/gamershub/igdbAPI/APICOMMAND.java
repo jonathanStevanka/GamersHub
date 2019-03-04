@@ -332,16 +332,6 @@ public class APICOMMAND {
                                                     game.setPlatform(json.getInt("platform"));
                                                     game.setReleaseDate(json.getString("human"));
 
-//                                                    System.out.println("-------------------------------");
-//                                                    System.out.println("gameID: "+ game.getId());
-//                                                    System.out.println("gameName: "+ game.getName());
-//                                                    System.out.println("gameCover: "+ game.getGameCover());
-//                                                    System.out.println("gameRelease: "+ game.getReleaseDate());
-//                                                    System.out.println("gamePlatform: "+ game.getPlatform());
-//                                                    System.out.println("gameDesc: "+ game.getDescription());
-//                                                    System.out.println("gameRating: "+ game.getRating());
-//                                                    System.out.println("gameWebURL: "+ game.getWebsiteUrl());
-//                                                    System.out.println("-------------------------------");
 
 
                                                     if (desiredPlatform==null){
@@ -398,7 +388,7 @@ public class APICOMMAND {
 
                                 AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
                                         .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                        .addStringBody("fields name,popularity,cover,rating,summary,url; where id ="+gameId+"; limit 1;")
+                                        .addStringBody("fields id,name,popularity,cover,rating,summary,url; where id ="+gameId+"; limit 1;")
                                         .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                     @Override
@@ -430,18 +420,11 @@ public class APICOMMAND {
                                                         release_game.setId(gameMatchID);
                                                         release_game.setName(json.getString("name"));
                                                         release_game.setDescription(json.getString("summary"));
-
-
-//                                                        System.out.println("-------------------------------");
-//
-//                                                        System.out.println("gameID: "+ release_game.getId());
-//                                                        System.out.println("gameName: "+ release_game.getName());
-//                                                        System.out.println("gameDesc: "+ release_game.getDescription());
-//                                                        System.out.println("gamePop: "+ gamePop);
-//                                                        System.out.println("gameRating: "+ gameRating);
-//
-//                                                        System.out.println("-------------------------------");
-
+                                                        release_game.setWebsiteUrl(json.getString("url"));
+                                                        release_game.setGameCover(json.getInt("cover"));
+                                                        if (json.has("rating")){
+                                                            release_game.setRating(json.getDouble("rating"));
+                                                        }
                                                         arrayList.add(release_game);
                                                     }
                                                 }
@@ -450,7 +433,8 @@ public class APICOMMAND {
                                             customHomeAdapterClass.notifyDataSetChanged();
                                             progressDialog.dismiss();
                                         }catch (JSONException e){
-
+                                            e.printStackTrace();
+                                            e.getCause();
                                         }
                                     }
 

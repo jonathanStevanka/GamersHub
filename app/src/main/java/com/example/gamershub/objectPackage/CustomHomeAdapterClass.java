@@ -40,10 +40,44 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull customAdap viewHolder, int i) {
-        gameHome game = games.get(i);
+    public void onBindViewHolder(@NonNull customAdap viewHolder, final int i) {
+        final gameHome game = games.get(i);
         viewHolder.name.setText(game.getName());
         //Picasso.get().load(game.getImageViewUrl()).into(viewHolder.url);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = games.get(i).getId();
+                String name = games.get(i).getName();
+                String description = games.get(i).getDescription();
+                String websiteUrl = games.get(i).getWebsiteUrl();
+                String imageViewUrl = games.get(i).getImageViewUrl();
+                Double rating = games.get(i).getRating();
+                int gameCover = games.get(i).getGameCover();
+                int platform = games.get(i).getPlatform();
+                String releaseDate = games.get(i).getReleaseDate();
+
+
+                System.out.println("-----------------------------");
+                System.out.println("id: "+id);
+                System.out.println("name: "+name);
+                System.out.println("description: "+description);
+                System.out.println("websiteURL: "+websiteUrl);
+                System.out.println("imageURL: "+imageViewUrl);
+                System.out.println("rating: "+rating);
+                System.out.println("gameCover: "+gameCover);
+                System.out.println("platform: "+platform);
+                System.out.println("releaseDate: "+releaseDate);
+                System.out.println("-----------------------------");
+                /**
+                 * add the top params to an object.
+                 * this will then be passed to our 'homeLargeItemClickCardView'
+                 */
+
+            }
+        });
+
     }
 
     @Override
