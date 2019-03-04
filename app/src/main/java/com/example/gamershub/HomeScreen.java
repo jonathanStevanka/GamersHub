@@ -48,7 +48,6 @@ public class HomeScreen extends Fragment {
     private RecyclerView popularOnPs4;
     private RecyclerView popularOnXBOX;
     private RecyclerView popularOnPC;
-    private RecyclerView popularOnSWITCH;
 
     //Create our arraylist's so we can access them throughout the class
     private ArrayList<gameHome> trendingGames;
@@ -56,7 +55,6 @@ public class HomeScreen extends Fragment {
     private ArrayList<gameHome> popularGamesPs4;
     private ArrayList<gameHome> popularGamesXBOX;
     private ArrayList<gameHome> popularGamesPC;
-    private ArrayList<gameHome> popularGamesSWITCH;
 
     //Create an instance of our 'CustomHomeAdapterClass'
     private CustomHomeAdapterClass customAdapterClass;
@@ -127,8 +125,6 @@ public class HomeScreen extends Fragment {
         popularOnXBOX = view.findViewById(R.id.popularXBOX);
         //connect the popularOnPC recyclerview
         popularOnPC = view.findViewById(R.id.popularPC);
-        //connect the popularOnSWITCH recyclerview
-        popularOnSWITCH = view.findViewById(R.id.popularSWITCH);
 
         //instantiate new arraylists
         trendingGames = new ArrayList<>();
@@ -136,7 +132,6 @@ public class HomeScreen extends Fragment {
         popularGamesPs4 = new ArrayList<>();
         popularGamesXBOX = new ArrayList<>();
         popularGamesPC = new ArrayList<>();
-        popularGamesSWITCH = new ArrayList<>();
 
         /**
          * Connect the customadapterclass we made to each recyclerview that we have
@@ -169,35 +164,27 @@ public class HomeScreen extends Fragment {
         //set the adapter on desired recyclerView
         popularOnPC.setAdapter(customAdapterClass);
 
-        //connect the custom adapter class to the desired arraylists
-        customAdapterClass = new CustomHomeAdapterClass(popularGamesSWITCH,getContext());
-        //set the adapter on desired recyclerView
-        popularOnSWITCH.setAdapter(customAdapterClass);
-
         /**
          * This is where the action happens, in order to update the recyclerviews with data we need to populate them.
          * Please check the params on the 'getData()' function
          */
 
         //working
-        //not filler data
-        apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games");
-        apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates");
-        apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_upcomingGamesPS4),"release_dates");
-        //filler data
-        apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_trendingGames),"games");
-        apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_trendingGames),"games");
-        apicommand.getData(getContext(),popularGamesSWITCH,customAdapterClass,getString(R.string.search_trendingGames),"games");
-        //------------
+        apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
+        apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null);
+        apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_trendingGames),"games","PS4");
+        apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_trendingGames),"games","XBOX");
+        apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_trendingGames),"games","PC");
 
-        //needs testing
 
+
+
+        //set the layoutManager on all recyclerViews and set them to horizontal
         trending.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         upcoming.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         popularOnPs4.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         popularOnXBOX.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         popularOnPC.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-        popularOnSWITCH.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
         //return the view
         return view;
