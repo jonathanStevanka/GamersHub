@@ -46,7 +46,7 @@
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
                             android:fontFamily="sans-serif-black"
-                            android:text="Trending Games"
+                            android:text="Trending games"
                             android:textAlignment="center"
                             android:textSize="20sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -60,12 +60,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:fontFamily="sans-serif-black"
-                            android:text="Upcoming Games"
+                            android:text="Popular games coming soon"
                             android:textAlignment="center"
                             android:textSize="20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/homeRecyclerView" />
+                            app:layout_constraintTop_toBottomOf="@+id/trendingGamesALL" />
 
                         <TextView
                             android:id="@+id/row1Title3"
@@ -73,15 +73,42 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:fontFamily="sans-serif-black"
-                            android:text="Trending Games on PS4"
+                            android:text="Popular on PS4"
                             android:textAlignment="center"
                             android:textSize="20sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/upcomingGamesRecyclerView" />
+                            app:layout_constraintTop_toBottomOf="@+id/upcomingGamesALL" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/homeRecyclerView"
+                        <TextView
+                            android:id="@+id/row1Title4"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-black"
+                            android:text="Popular on XBOX"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/popularPS4" />
+
+                    <TextView
+                        android:id="@+id/row1Title5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-black"
+                        android:text="Popular on PC"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/popularXBOX" />
+
+
+                    <android.support.v7.widget.RecyclerView
+                            android:id="@+id/trendingGamesALL"
                             android:layout_width="0dp"
                             android:layout_height="200dp"
                             android:layout_marginTop="8dp"
@@ -91,7 +118,7 @@
                             tools:listitem="@layout/homeitemlayout" />
 
                         <android.support.v7.widget.RecyclerView
-                            android:id="@+id/upcomingGamesRecyclerView"
+                            android:id="@+id/upcomingGamesALL"
                             android:layout_width="0dp"
                             android:layout_height="200dp"
                             android:layout_marginTop="8dp"
@@ -102,7 +129,7 @@
                             tools:listitem="@layout/homeitemlayout" />
 
                         <android.support.v7.widget.RecyclerView
-                            android:id="@+id/trendingOnPs4"
+                            android:id="@+id/popularPS4"
                             android:layout_width="0dp"
                             android:layout_height="200dp"
                             android:layout_marginTop="8dp"
@@ -111,6 +138,26 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/row1Title3"
                             tools:listitem="@layout/homeitemlayout" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/popularXBOX"
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/row1Title4"
+                        tools:listitem="@layout/homeitemlayout" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/popularPC"
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/row1Title5"
+                        tools:listitem="@layout/homeitemlayout" />
 
 
                 </android.support.constraint.ConstraintLayout>
