@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">GamersHub</string>
     <string name="title_home">Home</string>
     <string name="title_pinned">Pinned Games</string>
@@ -14,8 +15,23 @@
 
 
     <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
-    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url; sort popularity desc;</string>
-    <string name="search_upcomingGames">fields id,game,human,platform,y; where platform = 48; sort popularity desc;</string>
+
+    <!-- working-->
+    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url; where rating &gt; 85 &amp; popularity &gt; 85;</string>
+    <string name="search_upcomingGames">fields id,game,human,m,platform; where date &gt; 1551648064; sort date asc;</string>
+
+
+    <!-- testing-->
+    <string name="search_upcomingGamesPS4">fields id,game,human,m,platform; where platform = 48 &amp; date &gt; 1551648064;</string>
+
+    <!-- needs looking at-->
+    <string name="search_recentlyReleasedPS4games">fields id,game,human,m,platform; where date &lt; 1551648064; sort date desc; limit 50;</string>
+
+    <!-- not tested-->
+    <!--<string name="search_trendingGamesPS4"></string>-->
+    <!--<string name="search_trendingGamesXBOX"></string>-->
+    <!--<string name="search_trendingGamesPC"></string>-->
+    <!--<string name="search_trendingGamesNSWITCH"></string>-->
 
 
 </resources>
