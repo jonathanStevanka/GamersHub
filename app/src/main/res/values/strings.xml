@@ -3,7 +3,7 @@
     <string name="app_name">GamersHub</string>
     <string name="title_home">Home</string>
     <string name="title_pinned">Pinned Games</string>
-    <string name="title_trending">Trending</string>
+    <string name="title_search">Search</string>
     <string name="title_gameTrade">Game Trader</string>
     <string name="title_settings">Settings</string>
 
