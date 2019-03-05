@@ -19,7 +19,9 @@ import com.example.gamershub.igdbAPI.APICOMMAND;
 import org.json.JSONArray;
 
 public class MainActivity extends AppCompatActivity implements HomeScreen.OnFragmentInteractionListener,
-home_screenitemCLICK.OnFragmentInteractionListener{
+home_screenitemCLICK.OnFragmentInteractionListener,
+pinnedgames_screen.OnFragmentInteractionListener,
+search_screen.OnFragmentInteractionListener{
 
     private TextView mTextMessage;
 
@@ -38,13 +40,25 @@ home_screenitemCLICK.OnFragmentInteractionListener{
                     transaction.addToBackStack(null);
                     transaction.commit();
                     return true;
-                case R.id.navigation_trending:
+
+                case R.id.navigation_search:
+                    transaction.replace(R.id.content, new search_screen());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                     return true;
+
                 case R.id.navigation_pinned:
+                    transaction.replace(R.id.content, new pinnedgames_screen());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                     return true;
+
                 case R.id.navigation_gameTrade:
+
                     return true;
+
                 case R.id.navigation_settings:
+
                     return true;
             }
             return false;

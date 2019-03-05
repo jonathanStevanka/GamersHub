@@ -312,7 +312,6 @@ public class APICOMMAND {
 
                 int platform = 0;
 
-
                 /**
                  * values below are to be used as finals in the fields below
                  */
