@@ -65,12 +65,14 @@ home_screenitemCLICK.OnFragmentInteractionListener{
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
-        //create a way to make the default screen thats loaded is the home screen
-        FragmentTransaction transaction = fm.beginTransaction();//replace the current screen
-        transaction.replace(R.id.content, new HomeScreen());
-        //DO NOT add to back stack null so that users cannot go backwards to an empty screen
-        //Commit the transaction and make the change to the screen
-        transaction.commit();
+        if(savedInstanceState == null){
+            //create a way to make the default screen thats loaded is the home screen
+            FragmentTransaction transaction = fm.beginTransaction();//replace the current screen
+            transaction.replace(R.id.content, new HomeScreen());
+            //DO NOT add to back stack null so that users cannot go backwards to an empty screen
+            //Commit the transaction and make the change to the screen
+            transaction.commit();
+        }
 
     }
 

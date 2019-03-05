@@ -3,6 +3,7 @@ package com.example.gamershub.igdbAPI;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v7.widget.RecyclerView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -242,27 +243,57 @@ public class APICOMMAND {
     /**
      * THIS IS THE DEFAULT CONSTRUCTER TO START POPULATING GAMES IN THE HOMESCREEN ***OFFLINE***
      */
-    public ArrayList<gameHome> InitialLoad(){
+    public ArrayList<gameHome> InitialLoad(final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass){
         //create an arraylist of jsonobjects so we an split the response we get back later on from JSON
-        final ArrayList<gameHome> contents = new ArrayList<gameHome>();
 
+        //int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, int gameCover, int platform, String releaseDate
         //Add multiple 'gameHome' objects to the 'contents' ArrayList
-        contents.add(new gameHome("Red dead redemption"));
-        contents.add(new gameHome("Call of duty"));
-        contents.add(new gameHome("Zelda"));
-        contents.add(new gameHome("Resident Evil"));
-        contents.add(new gameHome("Kill bill"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+        84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        arrayList.add(new gameHome(2981,"Call of duty","BADBIADWIADWIIUNWDNADWNUIAWDUNAWN","https://www.google.com", "https://www.google.com/image",
+                84.86904,2006,48,"2019 March 5th"));
+        customHomeAdapterClass.notifyDataSetChanged();
 
+        return arrayList;
+    }
 
-        return contents;
+    public ArrayList<gameHome> OnRotationChanged(ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass){
+
+        arrayList.add(new gameHome("Test"));
+        arrayList.add(new gameHome("Test"));
+
+        customHomeAdapterClass.notifyDataSetChanged();
+        return arrayList;
     }
     /**
      * THE METHOD BELOW IS FOR THE INITIAL LAUNCH OF THE DEVICE, IT WILL PULL FROM MANY DIFFERENT CATEGORIES AND FILL RESPECTIVELY
      */
-    public void getData(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url, final String desiredPlatform){
+    public void getData(final Context context,final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url, final String desiredPlatform){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Loading Game data...");
+        progressDialog.setMessage("Loading Game data...please wait");
         progressDialog.show();
 
 
@@ -307,6 +338,8 @@ public class APICOMMAND {
                             final double gameRating = jsonObject.getDouble("rating");
                             final String gameSummary = jsonObject.getString("summary");
                             final String gameWebsiteURL = jsonObject.getString("url");
+
+
 
                             if (jsonObject.has("id")){
 
@@ -419,9 +452,13 @@ public class APICOMMAND {
 
                                                         release_game.setId(gameMatchID);
                                                         release_game.setName(json.getString("name"));
-                                                        release_game.setDescription(json.getString("summary"));
+                                                        if (json.has("summary")){
+                                                            release_game.setDescription(json.getString("summary"));
+                                                        }
                                                         release_game.setWebsiteUrl(json.getString("url"));
-                                                        release_game.setGameCover(json.getInt("cover"));
+                                                        if (json.has("cover")){
+                                                            release_game.setGameCover(json.getInt("cover"));
+                                                        }
                                                         if (json.has("rating")){
                                                             release_game.setRating(json.getDouble("rating"));
                                                         }

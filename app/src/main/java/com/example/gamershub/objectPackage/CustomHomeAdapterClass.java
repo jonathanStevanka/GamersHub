@@ -94,22 +94,6 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
                 transaction.commit();
 
 
-
-
-
-
-
-//                System.out.println("-----------------------------");
-//                System.out.println("id: "+id);
-//                System.out.println("name: "+name);
-//                System.out.println("description: "+description);
-//                System.out.println("websiteURL: "+websiteUrl);
-//                System.out.println("imageURL: "+imageViewUrl);
-//                System.out.println("rating: "+rating);
-//                System.out.println("gameCover: "+gameCover);
-//                System.out.println("platform: "+platform);
-//                System.out.println("releaseDate: "+releaseDate);
-//                System.out.println("-----------------------------");
                 /**
                  * add the top params to an object.
                  * this will then be passed to our 'homeLargeItemClickCardView'
