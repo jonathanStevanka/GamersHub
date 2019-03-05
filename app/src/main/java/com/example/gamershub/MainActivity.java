@@ -18,7 +18,10 @@ import com.example.gamershub.igdbAPI.APICOMMAND;
 
 import org.json.JSONArray;
 
-public class MainActivity extends AppCompatActivity implements HomeScreen.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements HomeScreen.OnFragmentInteractionListener,
+home_screenitemCLICK.OnFragmentInteractionListener,
+pinnedgames_screen.OnFragmentInteractionListener,
+search_screen.OnFragmentInteractionListener{
 
     private TextView mTextMessage;
 
@@ -37,13 +40,25 @@ public class MainActivity extends AppCompatActivity implements HomeScreen.OnFrag
                     transaction.addToBackStack(null);
                     transaction.commit();
                     return true;
-                case R.id.navigation_trending:
+
+                case R.id.navigation_search:
+                    transaction.replace(R.id.content, new search_screen());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                     return true;
+
                 case R.id.navigation_pinned:
+                    transaction.replace(R.id.content, new pinnedgames_screen());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                     return true;
+
                 case R.id.navigation_gameTrade:
+
                     return true;
+
                 case R.id.navigation_settings:
+
                     return true;
             }
             return false;
@@ -64,12 +79,14 @@ public class MainActivity extends AppCompatActivity implements HomeScreen.OnFrag
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
-        //create a way to make the default screen thats loaded is the home screen
-        FragmentTransaction transaction = fm.beginTransaction();//replace the current screen
-        transaction.replace(R.id.content, new HomeScreen());
-        //DO NOT add to back stack null so that users cannot go backwards to an empty screen
-        //Commit the transaction and make the change to the screen
-        transaction.commit();
+        if(savedInstanceState == null){
+            //create a way to make the default screen thats loaded is the home screen
+            FragmentTransaction transaction = fm.beginTransaction();//replace the current screen
+            transaction.replace(R.id.content, new HomeScreen());
+            //DO NOT add to back stack null so that users cannot go backwards to an empty screen
+            //Commit the transaction and make the change to the screen
+            transaction.commit();
+        }
 
     }
 

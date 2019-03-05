@@ -1,6 +1,11 @@
 package com.example.gamershub.objectPackage;
 
-public class gameHome {
+//import the java Serializable Java class so that we can serialize this class later on in the application
+import java.io.Serializable;
+
+//make sure this class implements 'Serializable'
+public class gameHome implements Serializable {
+
     private int id;
     private String name;
     private String description;
@@ -12,22 +17,41 @@ public class gameHome {
     private int platform;
     private String releaseDate;
 
-
+    /**
+     * Create a empty public constructer for the GameHome class
+     */
     public gameHome(){
 
     }
 
+
+    /**
+     *
+     * @param name
+     */
     public gameHome(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @param id
+     * @param name
+     * @param rating
+     */
     public gameHome(int id, String name, Double rating) {
         this.id = id;
         this.name = name;
         this.rating = rating;
     }
 
-
+    /**
+     *
+     * @param id
+     * @param name
+     * @param rating
+     * @param imageViewUrl
+     */
     public gameHome(int id, String name, Double rating ,String imageViewUrl) {
         this.id = id;
         this.name = name;
@@ -35,6 +59,13 @@ public class gameHome {
         this.imageViewUrl = imageViewUrl;
     }
 
+    /**
+     *
+     * @param id
+     * @param name
+     * @param websiteUrl
+     * @param imageViewUrl
+     */
     public gameHome(int id, String name, String websiteUrl, String imageViewUrl) {
         this.id = id;
         this.name = name;
@@ -42,6 +73,15 @@ public class gameHome {
         this.imageViewUrl = imageViewUrl;
     }
 
+
+    /**
+     *
+     * @param id
+     * @param name
+     * @param description
+     * @param websiteUrl
+     * @param imageViewUrl
+     */
     public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl) {
         this.id = id;
         this.name = name;
@@ -49,6 +89,37 @@ public class gameHome {
         this.websiteUrl = websiteUrl;
         this.imageViewUrl = imageViewUrl;
     }
+
+
+    /**
+     *
+     * @param id
+     * @param name
+     * @param description
+     * @param websiteUrl
+     * @param imageViewUrl
+     * @param rating
+     * @param gameCover
+     * @param platform
+     * @param releaseDate
+     */
+    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, int gameCover, int platform, String releaseDate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.websiteUrl = websiteUrl;
+        this.imageViewUrl = imageViewUrl;
+        this.rating = rating;
+        this.gameCover = gameCover;
+        this.platform = platform;
+        this.releaseDate = releaseDate;
+    }
+
+
+    /**
+     * CREATE GETTER AND SETTER METHODS BELOW
+     */
+
 
     public int getId() {
         return id;
@@ -121,4 +192,6 @@ public class gameHome {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+
 }
