@@ -54,15 +54,7 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = games.get(i).getId();
-                String name = games.get(i).getName();
-                String description = games.get(i).getDescription();
-                String websiteUrl = games.get(i).getWebsiteUrl();
-                String imageViewUrl = games.get(i).getImageViewUrl();
-                Double rating = games.get(i).getRating();
-                int gameCover = games.get(i).getGameCover();
-                int platform = games.get(i).getPlatform();
-                String releaseDate = games.get(i).getReleaseDate();
+
 
 
                 //create a fragmentTransaction and pass the data to another fragment
