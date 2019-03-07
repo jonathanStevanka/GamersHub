@@ -14,7 +14,7 @@
     <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
 
     <!-- working-->
-    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url; where rating &gt; 75 &amp; popularity &gt; 75; limit 25;</string>
+    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url; where rating &gt; 75 &amp; popularity &gt; 75; limit 1;</string>
     <string name="search_upcomingGames">fields id,game,human,m,platform; where date &gt; 1551648064; sort date asc;</string>
 
     <!-- testing-->

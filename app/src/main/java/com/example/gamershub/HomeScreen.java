@@ -54,11 +54,11 @@ public class HomeScreen extends Fragment {
     private RecyclerView popularOnPC;
 
     //Create our arraylist's so we can access them throughout the class
-    private ArrayList<gameHome> trendingGames = new ArrayList<>();
-    private ArrayList<gameHome> upcomingGames = new ArrayList<>();
-    private ArrayList<gameHome> popularGamesPs4 = new ArrayList<>();
-    private ArrayList<gameHome> popularGamesXBOX = new ArrayList<>();
-    private ArrayList<gameHome> popularGamesPC = new ArrayList<>();
+    ArrayList<gameHome> trendingGames = new ArrayList<>();
+    ArrayList<gameHome> upcomingGames = new ArrayList<>();
+    ArrayList<gameHome> popularGamesPs4 = new ArrayList<>();
+    ArrayList<gameHome> popularGamesXBOX = new ArrayList<>();
+    ArrayList<gameHome> popularGamesPC = new ArrayList<>();
 
 
     //create a fragment transaction
@@ -98,6 +98,11 @@ public class HomeScreen extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
+        if (savedInstanceState != null){
+            trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
+        }
+
         fm = getActivity().getSupportFragmentManager();
 
     }
@@ -107,6 +112,7 @@ public class HomeScreen extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+
         if (trendingGames != null){
             outState.putSerializable("trending",trendingGames);
         }
@@ -124,9 +130,16 @@ public class HomeScreen extends Fragment {
         }
     }
 
+
+
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState !=null){
+            trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
+        }
+
+
     }
 
     @Override
@@ -135,31 +148,6 @@ public class HomeScreen extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
 
-
-        //setRetainInstance(true);
-
-        //Create a connection between the 'searchBtn' and the 'searchBar'
-        final Button searchBtn = view.findViewById(R.id.searchBtn);
-        final EditText searchBar = view.findViewById(R.id.searchBar);
-
-        //create an ArrayList of 'gameHome' objects
-        final ArrayList<gameHome> gameObjects = new ArrayList<gameHome>();
-        //create the onclickListener for the searchBtn
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //use the basic searchGame command utilizing the text input from the search bar
-                //gameObjects.addAll(apicommand.dumpGameInfo(apicommand.SearchGames(searchBar.getText().toString())));
-                //apicommand.SearchGames(searchBar.getText().toString());
-                System.out.println(trendingGames.size());
-                System.out.println(upcomingGames.size());
-                System.out.println(popularGamesPs4.size());
-                System.out.println(popularGamesPC.size());
-                System.out.println(popularGamesXBOX.size());
-
-                //System.out.println(jsonObjects.size());
-            }
-        });
 
         //connect the trending recyclerview
         trending = view.findViewById(R.id.trendingGamesALL);
@@ -171,6 +159,8 @@ public class HomeScreen extends Fragment {
         popularOnXBOX = view.findViewById(R.id.popularXBOX);
         //connect the popularOnPC recyclerview
         popularOnPC = view.findViewById(R.id.popularPC);
+
+
 
         /**
          * Connect the customadapterclass we made to each recyclerview that we have
@@ -203,18 +193,17 @@ public class HomeScreen extends Fragment {
         //set the adapter on desired recyclerView
         popularOnPC.setAdapter(customAdapterClass);
 
+
         if (savedInstanceState == null){
-
-
             /**
              * FOR TESTING PURPOSES ONLY
              */
 
-            apicommand.InitialLoad(trendingGames,customAdapterClass);
-            apicommand.InitialLoad(upcomingGames,customAdapterClass);
-            apicommand.InitialLoad(popularGamesPs4,customAdapterClass);
-            apicommand.InitialLoad(popularGamesXBOX,customAdapterClass);
-            apicommand.InitialLoad(popularGamesPC,customAdapterClass);
+            //apicommand.InitialLoad(trendingGames,customAdapterClass);
+            //apicommand.InitialLoad(upcomingGames,customAdapterClass);
+            //apicommand.InitialLoad(popularGamesPs4,customAdapterClass);
+            //apicommand.InitialLoad(popularGamesXBOX,customAdapterClass);
+            //apicommand.InitialLoad(popularGamesPC,customAdapterClass);
 
             /**
              * This is where the action happens
@@ -222,7 +211,9 @@ public class HomeScreen extends Fragment {
              * The getData() method will grab the data and programmatically add it to each recyclerview inside the application.
              */
 
-            //apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
+            if (trendingGames.isEmpty()){
+                apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
+            }
             //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null);
 
             //working
@@ -231,6 +222,7 @@ public class HomeScreen extends Fragment {
             //apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_trendingGames),"games","PC");
             //System.out.println("test1");
         }
+
 
 
         //set the layoutManager on all recyclerViews and set them to horizontal
