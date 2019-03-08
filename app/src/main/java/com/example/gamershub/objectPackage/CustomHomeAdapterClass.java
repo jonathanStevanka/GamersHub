@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.R;
 import com.example.gamershub.home_screenitemCLICK;
 import com.squareup.picasso.Picasso;
@@ -25,7 +26,6 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
     private Context context;
     //create a private fragment manager so we can utilize the fragmentransaction inside this class
     private FragmentManager fm;
-
     public CustomHomeAdapterClass(@NonNull ArrayList<gameHome> games, Context context, FragmentManager fm){
         this.games = games;
         this.context = context;
@@ -46,16 +46,49 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull customAdap viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final customAdap viewHolder, final int i) {
         final gameHome game = games.get(i);
         viewHolder.name.setText(game.getName());
-        //Picasso.get().load(game.getImageViewUrl()).into(viewHolder.url);
+        Picasso.get().load(game.getGameCoverURL()).into(viewHolder.gameCover);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
+                /**
+                 * FOR TESTING PURPOSES ONLY DELETE LATER
+                 */
+
+//                DatabaseHelper db = new DatabaseHelper(context);
+//                db.addGame(game);
+//                db.close();
+//
+//                ArrayList<gameHome> test123 = db.grabAllGames();
+//                gameHome testgame;
+//                for (int i = 0; i<test123.size();i++){
+//                    testgame = null;
+//                    testgame = test123.get(i);
+//
+//                    System.out.println("----------------------------------------");
+//
+//                    System.out.println("ID: "+testgame.getId());
+//                    System.out.println("NAME: "+testgame.getName());
+//                    System.out.println("DESCRIPTION: "+testgame.getDescription());
+//                    System.out.println("RATING: "+testgame.getRating());
+//                    System.out.println("IMAGEURL: "+testgame.getImageViewUrl());
+//                    System.out.println("PLATFORM: "+testgame.getPlatform());
+//                    System.out.println("WEBURL: "+testgame.getWebsiteUrl());
+//                    System.out.println("COVER: "+testgame.getGameCover());
+//                    System.out.println("RELEASEDATE: "+testgame.getReleaseDate());
+//
+//                    System.out.println("----------------------------------------");
+//
+//                }
+
+                /**
+                 * -------------------------------------------------------
+                 */
 
                 //create a fragmentTransaction and pass the data to another fragment
                 Bundle objectBundle = new Bundle();
@@ -103,12 +136,12 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
 
     class customAdap extends RecyclerView.ViewHolder{
         protected TextView name;
-        protected ImageView url;
+        protected ImageView gameCover;
 
         public customAdap(View view){
             super(view);
             this.name = view.findViewById(R.id.gameTitle);
-            this.url = view.findViewById(R.id.gameImage);
+            this.gameCover = view.findViewById(R.id.gameImage);
         }
     }
 

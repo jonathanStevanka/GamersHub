@@ -1,5 +1,7 @@
 package com.example.gamershub;
 
+import java.sql.Timestamp;
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +22,11 @@ import com.example.gamershub.igdbAPI.APICOMMAND;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.gameHome;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import static java.text.DateFormat.getDateInstance;
 
 
 /**
@@ -60,6 +66,7 @@ public class HomeScreen extends Fragment {
     ArrayList<gameHome> popularGamesXBOX = new ArrayList<>();
     ArrayList<gameHome> popularGamesPC = new ArrayList<>();
 
+    Timestamp time = null;
 
     //create a fragment transaction
     FragmentManager fm;
@@ -97,7 +104,7 @@ public class HomeScreen extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        //String test = getDateInstance().format(new Date());
 
         if (savedInstanceState != null){
             trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
@@ -161,7 +168,6 @@ public class HomeScreen extends Fragment {
         popularOnPC = view.findViewById(R.id.popularPC);
 
 
-
         /**
          * Connect the customadapterclass we made to each recyclerview that we have
          */
@@ -214,7 +220,7 @@ public class HomeScreen extends Fragment {
             if (trendingGames.isEmpty()){
                 apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
             }
-            //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null);
+            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
 
             //working
             //apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_trendingGames),"games","PS4");
