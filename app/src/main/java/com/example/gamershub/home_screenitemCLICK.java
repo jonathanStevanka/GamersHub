@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.gamershub.objectPackage.gameHome;
 
@@ -32,6 +34,18 @@ public class home_screenitemCLICK extends Fragment {
     gameHome gameHome = null;
 
     private OnFragmentInteractionListener mListener;
+
+
+    //define the onscreenObjects
+    private TextView videoGameTitle;
+    private TextView videoGameDescription;
+    private TextView videoGameRating;
+    private TextView videoGameImageUrl;
+    private TextView videoGamePlatform;
+    private TextView videoGameWebUrl;
+    private TextView videoGameCover;
+    private TextView videoGameInitialRelease;
+
 
     public home_screenitemCLICK() {
         // Required empty public constructor
@@ -75,6 +89,26 @@ public class home_screenitemCLICK extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screenitem_click, container, false);
 
+        //set the items to the ID of the object so we can have access
+        videoGameTitle = view.findViewById(R.id.videoGameName);
+        videoGameDescription = view.findViewById(R.id.videoGameDescription);
+        videoGameRating = view.findViewById(R.id.videoGameRating);
+        videoGameCover = view.findViewById(R.id.videoGameCover);
+        videoGameImageUrl = view.findViewById(R.id.videoGameImageURL);
+        videoGameInitialRelease = view.findViewById(R.id.videoGameInitialReleaseDate);
+        videoGamePlatform = view.findViewById(R.id.videoGamePlatform);
+        videoGameWebUrl = view.findViewById(R.id.videoGameWebURL);
+
+
+        videoGameTitle.setText(String.valueOf(gameHome.getName()));
+        videoGameDescription.setText(String.valueOf(gameHome.getDescription()));
+        videoGameRating.setText(String.valueOf(String.valueOf(gameHome.getRating())));
+        videoGameCover.setText(String.valueOf(String.valueOf(gameHome.getGameCover())));
+        videoGameImageUrl.setText(String.valueOf(gameHome.getImageViewUrl()));
+        videoGameInitialRelease.setText(String.valueOf(gameHome.getReleaseDate()));
+        videoGamePlatform.setText(String.valueOf(gameHome.getPlatform()));
+        videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
+
 
         //and volla
         System.out.println("ID: "+gameHome.getId());
@@ -86,6 +120,10 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("WEBURL: "+gameHome.getWebsiteUrl());
         System.out.println("COVER: "+gameHome.getGameCover());
         System.out.println("RELEASEDATE: "+gameHome.getReleaseDate());
+        System.out.println("COVERURL: "+gameHome.getGameCoverURL());
+        System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
+        System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
+
 
         return view;
     }

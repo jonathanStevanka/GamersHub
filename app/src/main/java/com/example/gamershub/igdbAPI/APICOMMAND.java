@@ -339,57 +339,100 @@ public class APICOMMAND {
                             final String gameWebsiteURL = jsonObject.getString("url");
 
 
-
-                            if (jsonObject.has("id")){
-
-                                AndroidNetworking.post("https://api-v3.igdb.com/release_dates/").addHeaders("user-key",BuildConfig.IGDBKey)
+                            if (jsonObject.has("cover")){
+                                AndroidNetworking.post("https://api-v3.igdb.com/covers/").addHeaders("user-key",BuildConfig.IGDBKey)
                                         .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                        .addStringBody("fields id,game,human,m,platform; where game ="+gameId+"; limit 1;")
+                                        .addStringBody("fields game,height,image_id,url,width; where game = "+ gameId +"; limit 1;")
                                         .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+
 
                                     @Override
                                     public void onResponse(JSONArray response) {
-                                        JSONObject json = new JSONObject();
-                                        for (int i =0; i < response.length();i++){
-                                            try{
-                                                json = response.getJSONObject(i);
-                                                if (json.has("platform"))
-                                                    game.setId(gameId);
-                                                    game.setName(gameName);
-                                                    game.setGameCover(gameCover);
-                                                    game.setDescription(gameSummary);
-                                                    game.setRating(gameRating);
-                                                    game.setWebsiteUrl(gameWebsiteURL);
+                                        JSONObject localJSON;
+                                        try{
+                                            for (int r = 0; r < response.length();r++){
+                                                localJSON = response.getJSONObject(r);
 
-                                                    game.setPlatform(json.getInt("platform"));
-                                                    game.setReleaseDate(json.getString("human"));
+                                                if (localJSON.has("id")){
 
 
+                                                    final double height = localJSON.getDouble("height");
+                                                    final double width = localJSON.getDouble("width");
+                                                    final String tempUrl=localJSON.getString("url");
+                                                    final String newUrl = tempUrl.replace("thumb","720p");
 
-                                                    if (desiredPlatform==null){
-                                                        arrayList.add(game);
-                                                    }
-                                                    if (desiredPlatform=="PS4"){
-                                                        if (game.getPlatform()==48){
-                                                            arrayList.add(game);
+                                                    System.out.println(newUrl);
+
+
+                                                    AndroidNetworking.post("https://api-v3.igdb.com/release_dates/").addHeaders("user-key",BuildConfig.IGDBKey)
+                                                            .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                                                            .addStringBody("fields id,game,human,m,platform; where game ="+gameId+"; limit 1;")
+                                                            .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+
+                                                        @Override
+                                                        public void onResponse(JSONArray response) {
+                                                            JSONObject json = new JSONObject();
+                                                            for (int i =0; i < response.length();i++){
+                                                                try{
+                                                                    json = response.getJSONObject(i);
+
+                                                                    game.setId(gameId);
+                                                                    game.setName(gameName);
+                                                                    game.setGameCover(gameCover);
+                                                                    game.setDescription(gameSummary);
+                                                                    game.setRating(gameRating);
+                                                                    game.setWebsiteUrl(gameWebsiteURL);
+                                                                    game.setHeight(height);
+                                                                    game.setWidth(width);
+                                                                    game.setGameCoverURL("https:"+newUrl);
+                                                                    game.setPlatform(json.getInt("platform"));
+                                                                    game.setReleaseDate(json.getString("human"));
+
+
+
+                                                                    if (desiredPlatform==null){
+                                                                        arrayList.add(game);
+                                                                    }
+                                                                    if (desiredPlatform=="PS4"){
+                                                                        if (game.getPlatform()==48){
+                                                                            arrayList.add(game);
+                                                                        }
+                                                                    }
+                                                                    if (desiredPlatform=="XBOX"){
+                                                                        if (game.getPlatform()==49){
+                                                                            arrayList.add(game);
+                                                                        }
+                                                                    }
+                                                                    if (desiredPlatform=="PC"){
+                                                                        if (game.getPlatform()==6){
+                                                                            arrayList.add(game);
+                                                                        }
+                                                                    }
+                                                                }catch (JSONException e){
+                                                                    e.printStackTrace();
+                                                                    e.getCause();
+                                                                }
+                                                            }
+                                                            customHomeAdapterClass.notifyDataSetChanged();
+                                                            progressDialog.dismiss();
                                                         }
-                                                    }
-                                                    if (desiredPlatform=="XBOX"){
-                                                        if (game.getPlatform()==49){
-                                                            arrayList.add(game);
+
+                                                        @Override
+                                                        public void onError(ANError anError) {
+                                                            System.out.println(anError.getErrorCode());
+                                                            System.out.println(anError.getErrorBody());
+                                                            System.out.println(anError.getErrorDetail());
+                                                            System.out.println(anError.getResponse());
                                                         }
-                                                    }
-                                                    if (desiredPlatform=="PC"){
-                                                        if (game.getPlatform()==6){
-                                                            arrayList.add(game);
-                                                        }
-                                                    }
-                                            }catch (JSONException e){
+
+                                                    });
+                                                }
 
                                             }
+                                        }catch (JSONException e){
+                                            e.printStackTrace();
+                                            e.getCause();
                                         }
-                                        customHomeAdapterClass.notifyDataSetChanged();
-                                        progressDialog.dismiss();
                                     }
 
                                     @Override
@@ -399,8 +442,12 @@ public class APICOMMAND {
                                         System.out.println(anError.getErrorDetail());
                                         System.out.println(anError.getResponse());
                                     }
-
                                 });
+                            }
+
+
+                            if (jsonObject.has("id")){
+
 
                             }
                         }
@@ -451,17 +498,21 @@ public class APICOMMAND {
 
                                                         release_game.setId(gameMatchID);
                                                         release_game.setName(json.getString("name"));
+
                                                         if (json.has("summary")){
                                                             release_game.setDescription(json.getString("summary"));
                                                         }
-                                                        release_game.setWebsiteUrl(json.getString("url"));
-                                                        if (json.has("cover")){
-                                                            release_game.setGameCover(json.getInt("cover"));
+                                                        if (json.has("url")){
+                                                            release_game.setWebsiteUrl(json.getString("url"));
                                                         }
                                                         if (json.has("rating")){
                                                             release_game.setRating(json.getDouble("rating"));
                                                         }
-                                                        arrayList.add(release_game);
+
+                                                        if (json.has("cover")){
+                                                            release_game.setGameCover(json.getInt("cover"));
+                                                        }
+
                                                     }
                                                 }
 
