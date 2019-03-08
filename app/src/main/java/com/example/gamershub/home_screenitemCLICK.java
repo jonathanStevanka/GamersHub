@@ -89,8 +89,7 @@ public class home_screenitemCLICK extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screenitem_click, container, false);
 
-
-
+        //set the items to the ID of the object so we can have access
         videoGameTitle = view.findViewById(R.id.videoGameName);
         videoGameDescription = view.findViewById(R.id.videoGameDescription);
         videoGameRating = view.findViewById(R.id.videoGameRating);
@@ -121,6 +120,10 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("WEBURL: "+gameHome.getWebsiteUrl());
         System.out.println("COVER: "+gameHome.getGameCover());
         System.out.println("RELEASEDATE: "+gameHome.getReleaseDate());
+        System.out.println("COVERURL: "+gameHome.getGameCoverURL());
+        System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
+        System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
+
 
         return view;
     }

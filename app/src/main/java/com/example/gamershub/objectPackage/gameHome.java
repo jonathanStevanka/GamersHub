@@ -2,6 +2,7 @@ package com.example.gamershub.objectPackage;
 
 //import the java Serializable Java class so that we can serialize this class later on in the application
 import java.io.Serializable;
+import java.util.ArrayList;
 
 //make sure this class implements 'Serializable'
 public class gameHome implements Serializable {
@@ -12,10 +13,20 @@ public class gameHome implements Serializable {
     private String websiteUrl;
     private String imageViewUrl;
     private Double rating;
-
+    private Double popularity;
+    private Double price;
     private int gameCover;
     private int platform;
     private String releaseDate;
+    private String gameCoverURL;
+    private String gameScreenshots;
+
+
+    //create variables for game COVER properties
+    private double height;
+    private double width;
+
+
 
     /**
      * Create a empty public constructer for the GameHome class
@@ -115,6 +126,35 @@ public class gameHome implements Serializable {
         this.releaseDate = releaseDate;
     }
 
+    /**
+     * @param id
+     * @param name
+     * @param description
+     * @param websiteUrl
+     * @param imageViewUrl
+     * @param rating
+     * @param popularity
+     * @param price
+     * @param gameCover
+     * @param platform
+     * @param releaseDate
+     * @param gameCoverURL
+     */
+    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, Double popularity, Double price, int gameCover, int platform, String releaseDate, String gameCoverURL) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.websiteUrl = websiteUrl;
+        this.imageViewUrl = imageViewUrl;
+        this.rating = rating;
+        this.popularity = popularity;
+        this.price = price;
+        this.gameCover = gameCover;
+        this.platform = platform;
+        this.releaseDate = releaseDate;
+        this.gameCoverURL = gameCoverURL;
+        this.gameScreenshots = gameScreenshots;
+    }
 
     /**
      * CREATE GETTER AND SETTER METHODS BELOW
@@ -193,5 +233,51 @@ public class gameHome implements Serializable {
         this.releaseDate = releaseDate;
     }
 
+    public String getGameCoverURL() {
+        return gameCoverURL;
+    }
 
+    public void setGameCoverURL(String gameCoverURL) {
+        this.gameCoverURL = gameCoverURL;
+    }
+
+    public Double getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(Double popularity) {
+        this.popularity = popularity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getGameScreenshots() {
+        return gameScreenshots;
+    }
+
+    public void setGameScreenshots(String gameScreenshots) {
+        this.gameScreenshots = gameScreenshots;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
 }
