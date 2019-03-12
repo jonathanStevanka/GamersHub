@@ -60,31 +60,6 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
                  * FOR TESTING PURPOSES ONLY DELETE LATER
                  */
 
-//                DatabaseHelper db = new DatabaseHelper(context);
-//                db.addGame(game);
-//                db.close();
-//
-//                ArrayList<gameHome> test123 = db.grabAllGames();
-//                gameHome testgame;
-//                for (int i = 0; i<test123.size();i++){
-//                    testgame = null;
-//                    testgame = test123.get(i);
-//
-//                    System.out.println("----------------------------------------");
-//
-//                    System.out.println("ID: "+testgame.getId());
-//                    System.out.println("NAME: "+testgame.getName());
-//                    System.out.println("DESCRIPTION: "+testgame.getDescription());
-//                    System.out.println("RATING: "+testgame.getRating());
-//                    System.out.println("IMAGEURL: "+testgame.getImageViewUrl());
-//                    System.out.println("PLATFORM: "+testgame.getPlatform());
-//                    System.out.println("WEBURL: "+testgame.getWebsiteUrl());
-//                    System.out.println("COVER: "+testgame.getGameCover());
-//                    System.out.println("RELEASEDATE: "+testgame.getReleaseDate());
-//
-//                    System.out.println("----------------------------------------");
-//
-//                }
 
                 /**
                  * -------------------------------------------------------

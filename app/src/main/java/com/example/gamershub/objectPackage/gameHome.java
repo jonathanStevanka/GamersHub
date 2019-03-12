@@ -140,7 +140,7 @@ public class gameHome implements Serializable {
      * @param releaseDate
      * @param gameCoverURL
      */
-    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, Double popularity, Double price, int gameCover, int platform, String releaseDate, String gameCoverURL) {
+    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, Double popularity, Double price, int gameCover, int platform, String releaseDate, String gameCoverURL,String gameScreenshots) {
         this.id = id;
         this.name = name;
         this.description = description;

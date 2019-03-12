@@ -10,6 +10,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.example.gamershub.BuildConfig;
+import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.R;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.gameHome;
@@ -287,10 +288,11 @@ public class APICOMMAND {
         customHomeAdapterClass.notifyDataSetChanged();
         return arrayList;
     }
+
     /**
      * THE METHOD BELOW IS FOR THE INITIAL LAUNCH OF THE DEVICE, IT WILL PULL FROM MANY DIFFERENT CATEGORIES AND FILL RESPECTIVELY
      */
-    public void getData(final Context context,final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url, final String desiredPlatform){
+    public void getData(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url, final String desiredPlatform){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading Game data...please wait");
@@ -333,10 +335,14 @@ public class APICOMMAND {
                             //grab the ID field from the object
                             final int gameId = jsonObject.getInt("id");
                             final String gameName = jsonObject.getString("name");
+                            if (!jsonObject.has("cover")){
+                                continue;
+                            }
                             final int gameCover = jsonObject.getInt("cover");
                             final double gameRating = jsonObject.getDouble("rating");
                             final String gameSummary = jsonObject.getString("summary");
                             final String gameWebsiteURL = jsonObject.getString("url");
+
 
 
                             if (jsonObject.has("cover")){
@@ -361,7 +367,7 @@ public class APICOMMAND {
                                                     final String tempUrl=localJSON.getString("url");
                                                     final String newUrl = tempUrl.replace("thumb","720p");
 
-                                                    System.out.println(newUrl);
+                                                    //System.out.println(newUrl);
 
 
                                                     AndroidNetworking.post("https://api-v3.igdb.com/release_dates/").addHeaders("user-key",BuildConfig.IGDBKey)
@@ -372,6 +378,7 @@ public class APICOMMAND {
                                                         @Override
                                                         public void onResponse(JSONArray response) {
                                                             JSONObject json = new JSONObject();
+                                                            DatabaseHelper db = new DatabaseHelper(context);
                                                             for (int i =0; i < response.length();i++){
                                                                 try{
                                                                     json = response.getJSONObject(i);
@@ -408,11 +415,13 @@ public class APICOMMAND {
                                                                             arrayList.add(game);
                                                                         }
                                                                     }
+                                                                    db.addGame(game);
                                                                 }catch (JSONException e){
                                                                     e.printStackTrace();
                                                                     e.getCause();
                                                                 }
                                                             }
+                                                            db.close();
                                                             customHomeAdapterClass.notifyDataSetChanged();
                                                             progressDialog.dismiss();
                                                         }
@@ -445,11 +454,6 @@ public class APICOMMAND {
                                 });
                             }
 
-
-                            if (jsonObject.has("id")){
-
-
-                            }
                         }
 
 
@@ -555,6 +559,4 @@ public class APICOMMAND {
         });
 
     }
-
-
 }

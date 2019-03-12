@@ -91,13 +91,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor pointer = db.rawQuery(query, null);
         if(pointer.moveToFirst()){
             do{
-
-
-                /**
-                 *
-                 * @param releaseDate
-                 */
-
                 game.setId(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
                 game.setName(pointer.getString(pointer.getColumnIndex(TITLE_COLUMN)));
                 game.setDescription(pointer.getString(pointer.getColumnIndex(DESCRIPTION_COLUMN)));
@@ -107,12 +100,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 game.setGameCover(pointer.getInt(pointer.getColumnIndex(COVERID_COLUMN)));
                 game.setPlatform(pointer.getInt(pointer.getColumnIndex(PLATFORM_COLUMN)));
                 game.setReleaseDate(pointer.getString(pointer.getColumnIndex(RELEASE_DATE_COLUMN)));
+                game.setGameCoverURL(pointer.getString(pointer.getColumnIndex(COVERURL_COLUMN)));
+
                 allGames.add(game);
             }while(pointer.moveToNext());
         }
+        pointer.close();
         db.close();
         return allGames;
     }
+    public String[] GrabAllGameTitles(){
+        ArrayList<gameHome> allGames = grabAllGames();
+        String[] titles = null;
+        if (allGames!=null){
+            titles = new String[allGames.size()];
+            for (int i = 0; i < allGames.size(); i++){
+                titles[i] = allGames.get(i).getName();
+            }
+        }
+        return titles;
+    }
+
+    //update
+
+
+    //delete
+
+    /**
+     * Custom search methods
+     */
+
 
 
     @Override

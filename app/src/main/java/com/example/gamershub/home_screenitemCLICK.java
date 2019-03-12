@@ -100,6 +100,7 @@ public class home_screenitemCLICK extends Fragment {
         videoGameWebUrl = view.findViewById(R.id.videoGameWebURL);
 
 
+
         videoGameTitle.setText(String.valueOf(gameHome.getName()));
         videoGameDescription.setText(String.valueOf(gameHome.getDescription()));
         videoGameRating.setText(String.valueOf(String.valueOf(gameHome.getRating())));
