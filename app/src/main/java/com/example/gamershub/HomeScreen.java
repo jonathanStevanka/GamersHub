@@ -67,10 +67,6 @@ public class HomeScreen extends Fragment {
     ArrayList<gameHome> popularGamesXBOX = new ArrayList<>();
     ArrayList<gameHome> popularGamesPC = new ArrayList<>();
 
-    DatabaseHelper db;
-    ArrayList<gameHome> testingGameList = new ArrayList<>();
-    String[] testingStringArray = null;
-
     Timestamp time = null;
 
     //create a fragment transaction
@@ -159,12 +155,6 @@ public class HomeScreen extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
 
-//        if (testingGameList != null){
-//            testingStringArray = db.GrabAllGameTitles();
-//            System.out.println(testingStringArray[0]);
-//            System.out.println(testingStringArray[1]);
-//        }
-
 
         //connect the trending recyclerview
         trending = view.findViewById(R.id.trendingGamesALL);
@@ -214,6 +204,7 @@ public class HomeScreen extends Fragment {
 
             /**
              * FOR TESTING PURPOSES ONLY
+             * -this will load dummy data inside the recyclerviews
              */
 
             //apicommand.InitialLoad(trendingGames,customAdapterClass);
@@ -226,9 +217,7 @@ public class HomeScreen extends Fragment {
              * This is where the action happens
              * Please check the params on the 'getData()' function
              * The getData() method will grab the data and programmatically add it to each recyclerview inside the application.
-             */
-
-            /**
+             *
              * WE SHOULD ALSO BE CHECKING TO SEE IF THERE IS ANY SAVED DATA ON THE DEVICE, IF THERE IS
              * PULL IT IN INSTEAD OF USING OUR API TO PULL REQUESTS
              * SHOULD HELP ON KEEPING THE API PULLS DOWN
@@ -236,6 +225,8 @@ public class HomeScreen extends Fragment {
 
             if (trendingGames.isEmpty()){
                 apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
+
+                //grab all local game titles
                 //testingStringArray = db.GrabAllGameTitles();
             }
 

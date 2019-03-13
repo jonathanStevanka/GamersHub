@@ -311,9 +311,6 @@ public class APICOMMAND {
                 JSONObject jsonObject = null;
                 //Instantiate a new 'gameHome' Object so we can add data to the arraylist
 
-
-                int platform = 0;
-
                 /**
                  * values below are to be used as finals in the fields below
                  */
@@ -342,6 +339,32 @@ public class APICOMMAND {
                             final double gameRating = jsonObject.getDouble("rating");
                             final String gameSummary = jsonObject.getString("summary");
                             final String gameWebsiteURL = jsonObject.getString("url");
+                            final JSONArray gameScreenShotIDs = jsonObject.getJSONArray("screenshots");
+
+
+
+
+                            if (jsonObject.has("screenshots")){
+                                System.out.println("Game Screenshots: "+gameScreenShotIDs);
+
+                                AndroidNetworking.post("https://api-v3.igdb.com/screenshots/").addHeaders("user-key",BuildConfig.IGDBKey)
+                                        .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                                        .addStringBody(Resources.getSystem().getString(R.string.search_screenShotTable)+gameId+"; limit 1;")
+                                        .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+
+                                    @Override
+                                    public void onResponse(JSONArray response) {
+                                        
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+
+                                    }
+                                });
+                            }
+
+
 
 
 
@@ -455,6 +478,14 @@ public class APICOMMAND {
                             }
 
                         }
+
+
+
+
+
+
+
+
 
 
                         if (url=="release_dates"){

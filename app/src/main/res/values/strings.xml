@@ -14,12 +14,13 @@
     <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
 
     <!-- working-->
-    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url; sort popularity desc; limit 4;</string>
+    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url,screenshots; sort popularity desc; limit 1;</string>
+    <string name="search_screenShotTable">fields alpha_channel, animated, game, height, image_id, url, width; where game =</string>
 
-    <string name="search_upcomingGames">fields id,game,human,m,platform; where date &gt; 1551648064; sort date asc;</string>
+
 
     <!-- testing-->
-
+    <string name="search_upcomingGames">fields id,game,human,m,platform; where date &gt; 1551648064; sort date asc;</string>
 
     <!-- needs looking at-->
     <string name="search_recentlyReleasedPS4games">fields id,game,human,m,platform; where date &lt; 1551648064; sort date desc; limit 25;</string>
