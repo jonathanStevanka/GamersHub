@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.objectPackage.gameHome;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -92,6 +94,9 @@ public class home_screenitemCLICK extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screenitem_click, container, false);
 
+        //create connections to the images/viewpager
+        ImageView imageCover = view.findViewById(R.id.gameCoverPhoto);
+
         //set the items to the ID of the object so we can have access
         videoGameTitle = view.findViewById(R.id.videoGameName);
         videoGameDescription = view.findViewById(R.id.videoGameDescription);
@@ -102,6 +107,8 @@ public class home_screenitemCLICK extends Fragment {
         videoGamePlatform = view.findViewById(R.id.videoGamePlatform);
         videoGameWebUrl = view.findViewById(R.id.videoGameWebURL);
 
+
+        Picasso.get().load(gameHome.getGameCoverURL()).into(imageCover);
 
 
         videoGameTitle.setText(String.valueOf(gameHome.getName()));
