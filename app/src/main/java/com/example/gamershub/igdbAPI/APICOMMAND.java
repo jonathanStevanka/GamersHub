@@ -10,6 +10,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.example.gamershub.BuildConfig;
+import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.R;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.gameHome;
@@ -19,7 +20,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+
+import static java.text.DateFormat.getDateInstance;
+import static java.text.DateFormat.getDateTimeInstance;
 
 public class APICOMMAND {
 
@@ -287,16 +295,48 @@ public class APICOMMAND {
         customHomeAdapterClass.notifyDataSetChanged();
         return arrayList;
     }
+
+    public void loadDataFromLocal(final Context context,DatabaseHelper db, final  CustomHomeAdapterClass customHomeAdapterClass,final ArrayList<gameHome> arrayList,final ArrayList<gameHome> localArraylist){
+
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Discovering local data...please wait");
+        progressDialog.show();
+
+        /**
+         * This method will load data from localDB into gameHome objects to be then populated into the recyclerviews
+         */
+
+        //create an arraylist that conforms to 'gameHome'
+        //grab the database data
+
+
+        for (int i=0;i<localArraylist.size();i++){
+            System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i).getName());
+
+            if (arrayList.contains(localArraylist.get(i))){
+                System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i));
+                continue;
+            }else {
+                arrayList.add(localArraylist.get(i));
+            }
+        }
+
+        customHomeAdapterClass.notifyDataSetChanged();
+        progressDialog.dismiss();
+    }
+
     /**
      * THE METHOD BELOW IS FOR THE INITIAL LAUNCH OF THE DEVICE, IT WILL PULL FROM MANY DIFFERENT CATEGORIES AND FILL RESPECTIVELY
      */
-    public void getData(final Context context,final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url, final String desiredPlatform){
+    public void getData(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url, final String desiredPlatform){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading Game data...please wait");
         progressDialog.show();
 
-
+        //create a timestamp at the start so we can utilize this in the loading part of our application
+        //it will check if the data is older than 24hrs and if so will then update with new data
+        final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
 
         AndroidNetworking.post("https://api-v3.igdb.com/"+url+"/").addHeaders("user-key",BuildConfig.IGDBKey)
                 .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
@@ -308,9 +348,6 @@ public class APICOMMAND {
                 //Instantiate a new JSONObject for the response information
                 JSONObject jsonObject = null;
                 //Instantiate a new 'gameHome' Object so we can add data to the arraylist
-
-
-                int platform = 0;
 
                 /**
                  * values below are to be used as finals in the fields below
@@ -333,10 +370,74 @@ public class APICOMMAND {
                             //grab the ID field from the object
                             final int gameId = jsonObject.getInt("id");
                             final String gameName = jsonObject.getString("name");
+                            if (!jsonObject.has("cover")){
+                                continue;
+                            }
                             final int gameCover = jsonObject.getInt("cover");
                             final double gameRating = jsonObject.getDouble("rating");
                             final String gameSummary = jsonObject.getString("summary");
                             final String gameWebsiteURL = jsonObject.getString("url");
+
+                            //test to see if we can grab the all ID'S from a certain game object
+                            //working, now lets take it a step further.
+                            final JSONArray gameScreenShotIDs = jsonObject.getJSONArray("screenshots");
+
+                            //create a string array so that we can hold the urls coming in
+
+                            if (jsonObject.has("screenshots")){
+
+                                //test to see if anything is inside the int array
+                                System.out.println("Game Screenshots: "+gameScreenShotIDs);
+
+
+
+                                AndroidNetworking.post("https://api-v3.igdb.com/screenshots/").addHeaders("user-key",BuildConfig.IGDBKey)
+                                        .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                                        .addStringBody(context.getString(R.string.search_screenShotTable)+gameId+";")
+                                        .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+
+                                    @Override
+                                    public void onResponse(JSONArray response) {
+                                        JSONObject localJSON;
+                                        String[] screenshotURLArray = new String[response.length()];
+                                        try{
+                                            for (int r=0; r < response.length(); r++){
+                                                localJSON = response.optJSONObject(r);
+
+                                                /**
+                                                 * left off at:
+                                                 *  -grab all the URLS, append the 'https:' and the 'T_720p'
+                                                 *  -set the arraylist of strings to the game object so we acess later
+                                                 *  -test functionality
+                                                 */
+                                                    System.out.println("-----------------------------------------");
+                                                if (localJSON.has("url")){
+                                                    final String tempUrl=localJSON.getString("url");
+                                                    final String newUrl = tempUrl.replace("thumb","720p");
+
+                                                    screenshotURLArray[r] = "https:"+newUrl;
+                                                    System.out.println("GameID: "+gameId +"; ScreenshotURL:  "+screenshotURLArray[r]);
+                                                }
+                                                System.out.println("-----------------------------------------");
+
+                                            }
+                                            //System.out.println(screenshotURLArray.length);
+                                            game.setGameScreenshots(screenshotURLArray);
+                                        }catch (JSONException e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+
+                                    }
+                                });
+                            }
+
+
+
 
 
                             if (jsonObject.has("cover")){
@@ -361,7 +462,7 @@ public class APICOMMAND {
                                                     final String tempUrl=localJSON.getString("url");
                                                     final String newUrl = tempUrl.replace("thumb","720p");
 
-                                                    System.out.println(newUrl);
+                                                    //System.out.println(newUrl);
 
 
                                                     AndroidNetworking.post("https://api-v3.igdb.com/release_dates/").addHeaders("user-key",BuildConfig.IGDBKey)
@@ -372,6 +473,7 @@ public class APICOMMAND {
                                                         @Override
                                                         public void onResponse(JSONArray response) {
                                                             JSONObject json = new JSONObject();
+                                                            DatabaseHelper db = new DatabaseHelper(context);
                                                             for (int i =0; i < response.length();i++){
                                                                 try{
                                                                     json = response.getJSONObject(i);
@@ -388,7 +490,7 @@ public class APICOMMAND {
                                                                     game.setPlatform(json.getInt("platform"));
                                                                     game.setReleaseDate(json.getString("human"));
 
-
+                                                                    game.setTimestamp(currentDateTimeStamp);
 
                                                                     if (desiredPlatform==null){
                                                                         arrayList.add(game);
@@ -408,11 +510,15 @@ public class APICOMMAND {
                                                                             arrayList.add(game);
                                                                         }
                                                                     }
+
+                                                                    System.out.println(game.getName());
+                                                                    db.addGame(game);
                                                                 }catch (JSONException e){
                                                                     e.printStackTrace();
                                                                     e.getCause();
                                                                 }
                                                             }
+                                                            db.close();
                                                             customHomeAdapterClass.notifyDataSetChanged();
                                                             progressDialog.dismiss();
                                                         }
@@ -445,12 +551,15 @@ public class APICOMMAND {
                                 });
                             }
 
-
-                            if (jsonObject.has("id")){
-
-
-                            }
                         }
+
+
+
+
+
+
+
+
 
 
                         if (url=="release_dates"){
@@ -488,9 +597,6 @@ public class APICOMMAND {
 
                                                     if (gameMatchID == gameObjectID){
 
-                                                        if (json.has("rating")){
-                                                            gameRating = json.getDouble("rating");
-                                                        }
 
                                                         if (json.has("popularity")){
                                                             gamePop = json.getDouble("popularity");
@@ -555,6 +661,4 @@ public class APICOMMAND {
         });
 
     }
-
-
 }
