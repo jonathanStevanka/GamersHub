@@ -14,7 +14,7 @@
     <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
 
     <!-- working-->
-    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url,screenshots; sort popularity desc; limit 3;</string>
+    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url,screenshots; where rating_count &gt; 225; sort rating desc; limit 10;</string>
     <string name="search_screenShotTable">fields alpha_channel, animated, game, height, image_id, url, width; where game =</string>
 
 

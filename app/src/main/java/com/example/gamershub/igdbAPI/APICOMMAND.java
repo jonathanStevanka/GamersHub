@@ -597,9 +597,6 @@ public class APICOMMAND {
 
                                                     if (gameMatchID == gameObjectID){
 
-                                                        if (json.has("rating")){
-                                                            gameRating = json.getDouble("rating");
-                                                        }
 
                                                         if (json.has("popularity")){
                                                             gamePop = json.getDouble("popularity");
