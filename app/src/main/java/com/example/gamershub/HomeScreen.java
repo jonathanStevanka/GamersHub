@@ -67,8 +67,6 @@ public class HomeScreen extends Fragment {
     ArrayList<gameHome> popularGamesXBOX = new ArrayList<>();
     ArrayList<gameHome> popularGamesPC = new ArrayList<>();
 
-    Timestamp time = null;
-
     //create a fragment transaction
     FragmentManager fm;
 
@@ -105,8 +103,6 @@ public class HomeScreen extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        //String test = getDateInstance().format(new Date());
-
         fm = getActivity().getSupportFragmentManager();
 
 
@@ -197,22 +193,31 @@ public class HomeScreen extends Fragment {
         popularOnPC.setAdapter(customAdapterClass);
 
 
+        //check to see if there is any objects inside our local database
+        DatabaseHelper db = new DatabaseHelper(getContext());
+        ArrayList<gameHome> dbTest = db.grabAllGames();
 
+        //if the database is not empty, load objects from the DB into our recyclerviews
+        if (!dbTest.isEmpty()){
+            if (!trendingGames.isEmpty()){
+
+            }else {
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest);
+            }
+        }
+        db.close();
 
 
         if (savedInstanceState == null){
-
             /**
              * FOR TESTING PURPOSES ONLY
              * -this will load dummy data inside the recyclerviews
              */
-
             //apicommand.InitialLoad(trendingGames,customAdapterClass);
             //apicommand.InitialLoad(upcomingGames,customAdapterClass);
             //apicommand.InitialLoad(popularGamesPs4,customAdapterClass);
             //apicommand.InitialLoad(popularGamesXBOX,customAdapterClass);
             //apicommand.InitialLoad(popularGamesPC,customAdapterClass);
-
             /**
              * This is where the action happens
              * Please check the params on the 'getData()' function
@@ -222,14 +227,10 @@ public class HomeScreen extends Fragment {
              * PULL IT IN INSTEAD OF USING OUR API TO PULL REQUESTS
              * SHOULD HELP ON KEEPING THE API PULLS DOWN
              */
-
             if (trendingGames.isEmpty()){
                 apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
 
-                //grab all local game titles
-                //testingStringArray = db.GrabAllGameTitles();
             }
-
 
             //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
 

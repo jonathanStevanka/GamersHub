@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.objectPackage.gameHome;
+
+import java.util.ArrayList;
 
 
 /**
@@ -110,8 +113,42 @@ public class home_screenitemCLICK extends Fragment {
         videoGamePlatform.setText(String.valueOf(gameHome.getPlatform()));
         videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
 
+        DatabaseHelper db = new DatabaseHelper(getContext());
+        ArrayList<gameHome> test = db.grabAllGames();
+
+        if (test.isEmpty()){
+            System.out.println("database is empty!!");
+        }
+        if (!test.isEmpty()){
+            gameHome testgame;
+
+//            for (int i=0; i<test.size();i++){
+//                testgame = test.get(i);
+//                System.out.println("------------------------------------");
+//                System.out.println("INFORMATION FOR GAME");
+//                System.out.println("------------------------------------");
+//                System.out.println("ID: "+testgame.getId());
+//                System.out.println("NAME: "+testgame.getName());
+//                System.out.println("DESCRIPTION: "+testgame.getDescription());
+//                System.out.println("RATING: "+testgame.getRating());
+//                System.out.println("IMAGEURL: "+testgame.getImageViewUrl());
+//                System.out.println("PLATFORM: "+testgame.getPlatform());
+//                System.out.println("WEBURL: "+testgame.getWebsiteUrl());
+//                System.out.println("COVER: "+testgame.getGameCover());
+//                System.out.println("RELEASEDATE: "+testgame.getReleaseDate());
+//                System.out.println("COVERURL: "+testgame.getGameCoverURL());
+//                System.out.println("COVERURL-WIDTH: "+testgame.getWidth());
+//                System.out.println("COVERURL-HEIGHT: "+testgame.getHeight());
+//                System.out.println("SCREENSHOTURL'S: "+testgame.getGameScreenshotExtendedURL());
+//                System.out.println("TIME OF DATA ADDED TO SYSTEM: "+testgame.getTimestamp());
+//                System.out.println("------------------------------------");
+//            }
+        }
 
         //and volla
+        System.out.println("------------------------------------");
+        System.out.println("INFORMATION FOR GAME");
+
         System.out.println("ID: "+gameHome.getId());
         System.out.println("NAME: "+gameHome.getName());
         System.out.println("DESCRIPTION: "+gameHome.getDescription());
@@ -124,6 +161,10 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("COVERURL: "+gameHome.getGameCoverURL());
         System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
         System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
+        System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
+        System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
+
+        System.out.println("------------------------------------");
 
 
         return view;
