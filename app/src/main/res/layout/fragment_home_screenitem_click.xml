@@ -69,25 +69,42 @@
                 android:id="@+id/videoGameScreenshots"
                 android:layout_width="0dp"
                 android:layout_height="345dp"
-                android:layout_marginStart="5dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="5dp"
+                android:background="@android:color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/videoGameRating" />
+
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/screenshotIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginStart="125dp"
+                android:layout_marginEnd="125dp"
+                app:dotsColor="@color/colorPrimaryDark"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="10dp"
+                app:dotsSpacing="4dp"
+                app:dotsWidthFactor="2.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videoGameScreenshots"
+                app:progressMode="true"
+                app:selectedDotColor="@color/colorAccent" />
 
             <TextView
                 android:id="@+id/videoGameImageURL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/videoGameScreenshots" />
+                app:layout_constraintTop_toBottomOf="@+id/screenshotIndicator" />
 
             <TextView
                 android:id="@+id/videoGamePlatform"

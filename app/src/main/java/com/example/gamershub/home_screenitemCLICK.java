@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.objectPackage.gameHome;
 import com.squareup.picasso.Picasso;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
 
@@ -103,7 +104,7 @@ public class home_screenitemCLICK extends Fragment {
         //link the viewpager
         ViewPager screenshotViewPager = view.findViewById(R.id.videoGameScreenshots);
 
-
+        final DotsIndicator dotsIndicator = (DotsIndicator) view.findViewById(R.id.screenshotIndicator);
 
         //set the items to the ID of the object so we can have access
         videoGameTitle = view.findViewById(R.id.videoGameName);
@@ -161,14 +162,9 @@ public class home_screenitemCLICK extends Fragment {
 
         String[] screenshotURLS = gameHome.getGameScreenshotExtendedURL().replace("[","").replace("]","").split(", ");
 
-        for (int i=0;i<screenshotURLS.length;i++){
-            System.out.println(screenshotURLS[i]);
-        }
-
-
         customAdapter adapter = new customAdapter(screenshotURLS,getContext());
         screenshotViewPager.setAdapter(adapter);
-
+        dotsIndicator.setViewPager(screenshotViewPager);
         return view;
     }
 
@@ -244,9 +240,7 @@ public class home_screenitemCLICK extends Fragment {
             View view = layoutInflater.inflate(R.layout.screenshotlayout,container,false);
 
             final ImageView screenshotHolder = view.findViewById(R.id.screenshotHolder);
-
             Picasso.get().load(screenshots[position]).into(screenshotHolder);
-
             container.addView(view);
             return view;
         }
