@@ -2,7 +2,9 @@ package com.example.gamershub.objectPackage;
 
 //import the java Serializable Java class so that we can serialize this class later on in the application
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //make sure this class implements 'Serializable'
 public class gameHome implements Serializable {
@@ -19,9 +21,9 @@ public class gameHome implements Serializable {
     private int platform;
     private String releaseDate;
     private String gameCoverURL;
-    private String gameScreenshots;
-
-
+    private String[] gameScreenshots;
+    private String gameScreenshotExtendedURL;
+    private String timestamp;
     //create variables for game COVER properties
     private double height;
     private double width;
@@ -140,7 +142,7 @@ public class gameHome implements Serializable {
      * @param releaseDate
      * @param gameCoverURL
      */
-    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, Double popularity, Double price, int gameCover, int platform, String releaseDate, String gameCoverURL) {
+    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, Double popularity, Double price, int gameCover, int platform, String releaseDate, String gameCoverURL,String[] gameScreenshots) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -258,10 +260,12 @@ public class gameHome implements Serializable {
     }
 
     public String getGameScreenshots() {
-        return gameScreenshots;
+        String test  = Arrays.toString(gameScreenshots);
+        this.setGameScreenshotExtendedURL(test);
+        return test;
     }
 
-    public void setGameScreenshots(String gameScreenshots) {
+    public void setGameScreenshots(String[] gameScreenshots) {
         this.gameScreenshots = gameScreenshots;
     }
 
@@ -279,5 +283,21 @@ public class gameHome implements Serializable {
 
     public void setWidth(double width) {
         this.width = width;
+    }
+
+    public String getGameScreenshotExtendedURL() {
+        return gameScreenshotExtendedURL;
+    }
+
+    public void setGameScreenshotExtendedURL(String gameScreenshotExtendedURL) {
+        this.gameScreenshotExtendedURL = gameScreenshotExtendedURL;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }

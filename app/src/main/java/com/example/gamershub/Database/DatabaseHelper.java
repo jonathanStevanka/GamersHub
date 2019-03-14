@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String RELEASE_DATE_COLUMN = "release_date";
     public static final String COVERURL_COLUMN = "coverURL";
     public static final String SCREENSHOTURL_COLUMN = "screenshotURL";
-
+    public static final String TIMESTAMP_COLUMN = "timestamp";
 
 
     /**
@@ -50,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             GAME_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY,"
             + GAMEID_COLUMN + " INTEGER, " + TITLE_COLUMN + " TEXT, " + DESCRIPTION_COLUMN + " TEXT,"
             + PRICE_COLUMN + " DOUBLE, " + WEBURL_COLUMN + " TEXT, " + IMAGEURL_COLUMN + " TEXT, " + RATING_COLUMN + " DOUBLE," +
-            COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN + " INTEGER, " + RELEASE_DATE_COLUMN + " TEXT, " + SCREENSHOTURL_COLUMN + " TEXT, " + COVERURL_COLUMN + ")";
+            COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN + " INTEGER, " + RELEASE_DATE_COLUMN + " TEXT, " + SCREENSHOTURL_COLUMN + " TEXT, " + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
 
 
 
@@ -65,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addGame(gameHome game){
         //grab the current database on this phone
         SQLiteDatabase db = this.getWritableDatabase();
+        System.out.println("AddGame@Databasehelper: "+game.getName());
         ContentValues val = new ContentValues();
         val.put(GAMEID_COLUMN, game.getId());
         val.put(TITLE_COLUMN, game.getName());
@@ -78,6 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put(PLATFORM_COLUMN, game.getPlatform());
         val.put(RELEASE_DATE_COLUMN, game.getReleaseDate());
         val.put(SCREENSHOTURL_COLUMN, game.getGameScreenshots());
+        val.put(TIMESTAMP_COLUMN, game.getTimestamp());
         db.insert(GAME_TABLE, null, val);
         db.close();
     }
@@ -85,19 +87,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //read
     public ArrayList<gameHome> grabAllGames(){
         ArrayList<gameHome> allGames = new ArrayList<>();
-        gameHome game = new gameHome();
+        gameHome game = null;
         String query = "SELECT * FROM " + GAME_TABLE;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor pointer = db.rawQuery(query, null);
         if(pointer.moveToFirst()){
             do{
-
-
-                /**
-                 *
-                 * @param releaseDate
-                 */
-
+                game = new gameHome();
                 game.setId(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
                 game.setName(pointer.getString(pointer.getColumnIndex(TITLE_COLUMN)));
                 game.setDescription(pointer.getString(pointer.getColumnIndex(DESCRIPTION_COLUMN)));
@@ -107,12 +103,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 game.setGameCover(pointer.getInt(pointer.getColumnIndex(COVERID_COLUMN)));
                 game.setPlatform(pointer.getInt(pointer.getColumnIndex(PLATFORM_COLUMN)));
                 game.setReleaseDate(pointer.getString(pointer.getColumnIndex(RELEASE_DATE_COLUMN)));
+                game.setGameCoverURL(pointer.getString(pointer.getColumnIndex(COVERURL_COLUMN)));
+                game.setGameScreenshotExtendedURL(pointer.getString(pointer.getColumnIndex(SCREENSHOTURL_COLUMN)));
+                game.setTimestamp(pointer.getString(pointer.getColumnIndex(TIMESTAMP_COLUMN)));
                 allGames.add(game);
             }while(pointer.moveToNext());
         }
+        pointer.close();
         db.close();
         return allGames;
     }
+    public String[] GrabAllGameTitles(){
+        ArrayList<gameHome> allGames = grabAllGames();
+        String[] titles = null;
+        if (allGames!=null){
+            titles = new String[allGames.size()];
+            for (int i = 0; i < allGames.size(); i++){
+                titles[i] = allGames.get(i).getName();
+            }
+        }
+        return titles;
+    }
+
+    //update
+
+
+    //delete
+
+    /**
+     * Custom search methods
+     */
+
 
 
     @Override

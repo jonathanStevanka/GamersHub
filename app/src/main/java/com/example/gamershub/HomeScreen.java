@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.igdbAPI.APICOMMAND;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.gameHome;
@@ -66,8 +67,6 @@ public class HomeScreen extends Fragment {
     ArrayList<gameHome> popularGamesXBOX = new ArrayList<>();
     ArrayList<gameHome> popularGamesPC = new ArrayList<>();
 
-    Timestamp time = null;
-
     //create a fragment transaction
     FragmentManager fm;
 
@@ -104,14 +103,12 @@ public class HomeScreen extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        //String test = getDateInstance().format(new Date());
+        fm = getActivity().getSupportFragmentManager();
+
 
         if (savedInstanceState != null){
             trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
         }
-
-        fm = getActivity().getSupportFragmentManager();
-
     }
 
 
@@ -146,7 +143,6 @@ public class HomeScreen extends Fragment {
             trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
         }
 
-
     }
 
     @Override
@@ -167,7 +163,6 @@ public class HomeScreen extends Fragment {
         //connect the popularOnPC recyclerview
         popularOnPC = view.findViewById(R.id.popularPC);
 
-
         /**
          * Connect the customadapterclass we made to each recyclerview that we have
          */
@@ -177,12 +172,10 @@ public class HomeScreen extends Fragment {
         //set the adapter on desired recyclerView
         trending.setAdapter(customAdapterClass);
 
-
         //connect the custom adapter class to the desired arraylists
         customAdapterClass = new CustomHomeAdapterClass(upcomingGames,getContext(),fm);
         //set the adapter on desired recyclerView
         upcoming.setAdapter(customAdapterClass);
-
 
         //connect the custom adapter class to the desired arraylists
         customAdapterClass = new CustomHomeAdapterClass(popularGamesPs4,getContext(),fm);
@@ -200,27 +193,46 @@ public class HomeScreen extends Fragment {
         popularOnPC.setAdapter(customAdapterClass);
 
 
+        //check to see if there is any objects inside our local database
+        DatabaseHelper db = new DatabaseHelper(getContext());
+        ArrayList<gameHome> dbTest = db.grabAllGames();
+
+        //if the database is not empty, load objects from the DB into our recyclerviews
+        if (!dbTest.isEmpty()){
+            if (!trendingGames.isEmpty()){
+
+            }else {
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest);
+            }
+        }
+        db.close();
+
+
         if (savedInstanceState == null){
             /**
              * FOR TESTING PURPOSES ONLY
+             * -this will load dummy data inside the recyclerviews
              */
-
             //apicommand.InitialLoad(trendingGames,customAdapterClass);
             //apicommand.InitialLoad(upcomingGames,customAdapterClass);
             //apicommand.InitialLoad(popularGamesPs4,customAdapterClass);
             //apicommand.InitialLoad(popularGamesXBOX,customAdapterClass);
             //apicommand.InitialLoad(popularGamesPC,customAdapterClass);
-
             /**
              * This is where the action happens
              * Please check the params on the 'getData()' function
              * The getData() method will grab the data and programmatically add it to each recyclerview inside the application.
+             *
+             * WE SHOULD ALSO BE CHECKING TO SEE IF THERE IS ANY SAVED DATA ON THE DEVICE, IF THERE IS
+             * PULL IT IN INSTEAD OF USING OUR API TO PULL REQUESTS
+             * SHOULD HELP ON KEEPING THE API PULLS DOWN
              */
-
             if (trendingGames.isEmpty()){
                 apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
+
             }
-            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
+
+            //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
 
             //working
             //apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_trendingGames),"games","PS4");
