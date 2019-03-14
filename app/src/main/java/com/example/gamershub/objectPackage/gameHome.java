@@ -259,7 +259,11 @@ public class gameHome implements Serializable {
         this.price = price;
     }
 
-    public String getGameScreenshots() {
+    public String[] getGameScreenshots() {
+        return gameScreenshots;
+    }
+
+    public String setGameScreenFromURLStringArray(){
         String test  = Arrays.toString(gameScreenshots);
         this.setGameScreenshotExtendedURL(test);
         return test;

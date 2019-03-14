@@ -78,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put(COVERURL_COLUMN, game.getGameCoverURL());
         val.put(PLATFORM_COLUMN, game.getPlatform());
         val.put(RELEASE_DATE_COLUMN, game.getReleaseDate());
-        val.put(SCREENSHOTURL_COLUMN, game.getGameScreenshots());
+        val.put(SCREENSHOTURL_COLUMN, game.setGameScreenFromURLStringArray());
         val.put(TIMESTAMP_COLUMN, game.getTimestamp());
         db.insert(GAME_TABLE, null, val);
         db.close();

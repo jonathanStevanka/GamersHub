@@ -3,7 +3,10 @@ package com.example.gamershub;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +100,11 @@ public class home_screenitemCLICK extends Fragment {
         //create connections to the images/viewpager
         ImageView imageCover = view.findViewById(R.id.gameCoverPhoto);
 
+        //link the viewpager
+        ViewPager screenshotViewPager = view.findViewById(R.id.videoGameScreenshots);
+
+
+
         //set the items to the ID of the object so we can have access
         videoGameTitle = view.findViewById(R.id.videoGameName);
         videoGameDescription = view.findViewById(R.id.videoGameDescription);
@@ -111,6 +119,7 @@ public class home_screenitemCLICK extends Fragment {
         Picasso.get().load(gameHome.getGameCoverURL()).into(imageCover);
 
 
+
         videoGameTitle.setText(String.valueOf(gameHome.getName()));
         videoGameDescription.setText(String.valueOf(gameHome.getDescription()));
         videoGameRating.setText(String.valueOf(String.valueOf(gameHome.getRating())));
@@ -123,56 +132,42 @@ public class home_screenitemCLICK extends Fragment {
         DatabaseHelper db = new DatabaseHelper(getContext());
         ArrayList<gameHome> test = db.grabAllGames();
 
-        if (test.isEmpty()){
-            System.out.println("database is empty!!");
-        }
-        if (!test.isEmpty()){
-            gameHome testgame;
-
-//            for (int i=0; i<test.size();i++){
-//                testgame = test.get(i);
-//                System.out.println("------------------------------------");
-//                System.out.println("INFORMATION FOR GAME");
-//                System.out.println("------------------------------------");
-//                System.out.println("ID: "+testgame.getId());
-//                System.out.println("NAME: "+testgame.getName());
-//                System.out.println("DESCRIPTION: "+testgame.getDescription());
-//                System.out.println("RATING: "+testgame.getRating());
-//                System.out.println("IMAGEURL: "+testgame.getImageViewUrl());
-//                System.out.println("PLATFORM: "+testgame.getPlatform());
-//                System.out.println("WEBURL: "+testgame.getWebsiteUrl());
-//                System.out.println("COVER: "+testgame.getGameCover());
-//                System.out.println("RELEASEDATE: "+testgame.getReleaseDate());
-//                System.out.println("COVERURL: "+testgame.getGameCoverURL());
-//                System.out.println("COVERURL-WIDTH: "+testgame.getWidth());
-//                System.out.println("COVERURL-HEIGHT: "+testgame.getHeight());
-//                System.out.println("SCREENSHOTURL'S: "+testgame.getGameScreenshotExtendedURL());
-//                System.out.println("TIME OF DATA ADDED TO SYSTEM: "+testgame.getTimestamp());
-//                System.out.println("------------------------------------");
-//            }
-        }
 
         //and volla
-        System.out.println("------------------------------------");
-        System.out.println("INFORMATION FOR GAME");
+//        System.out.println("------------------------------------");
+//        System.out.println("INFORMATION FOR GAME");
+//
+//        System.out.println("ID: "+gameHome.getId());
+//        System.out.println("NAME: "+gameHome.getName());
+//        System.out.println("DESCRIPTION: "+gameHome.getDescription());
+//        System.out.println("RATING: "+gameHome.getRating());
+//        System.out.println("IMAGEURL: "+gameHome.getImageViewUrl());
+//        System.out.println("PLATFORM: "+gameHome.getPlatform());
+//        System.out.println("WEBURL: "+gameHome.getWebsiteUrl());
+//        System.out.println("COVER: "+gameHome.getGameCover());
+//        System.out.println("RELEASEDATE: "+gameHome.getReleaseDate());
+//        System.out.println("COVERURL: "+gameHome.getGameCoverURL());
+//        System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
+//        System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
+//        System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
+//        System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
+//
+//        System.out.println("------------------------------------");
+        //System.out.println("SCREENSHOT LENGTH: "+gameHome.getGameScreenshotExtendedURL());
 
-        System.out.println("ID: "+gameHome.getId());
-        System.out.println("NAME: "+gameHome.getName());
-        System.out.println("DESCRIPTION: "+gameHome.getDescription());
-        System.out.println("RATING: "+gameHome.getRating());
-        System.out.println("IMAGEURL: "+gameHome.getImageViewUrl());
-        System.out.println("PLATFORM: "+gameHome.getPlatform());
-        System.out.println("WEBURL: "+gameHome.getWebsiteUrl());
-        System.out.println("COVER: "+gameHome.getGameCover());
-        System.out.println("RELEASEDATE: "+gameHome.getReleaseDate());
-        System.out.println("COVERURL: "+gameHome.getGameCoverURL());
-        System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
-        System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
-        System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
-        System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
 
-        System.out.println("------------------------------------");
 
+
+
+        String[] screenshotURLS = gameHome.getGameScreenshotExtendedURL().replace("[","").replace("]","").split(", ");
+
+        for (int i=0;i<screenshotURLS.length;i++){
+            System.out.println(screenshotURLS[i]);
+        }
+
+
+        customAdapter adapter = new customAdapter(screenshotURLS,getContext());
+        screenshotViewPager.setAdapter(adapter);
 
         return view;
     }
@@ -215,4 +210,51 @@ public class home_screenitemCLICK extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    public class customAdapter extends PagerAdapter{
+
+        //create an array of strings to hold the screenshots
+        String[] screenshots = null;
+        //create a context to hold the context data
+        Context context;
+        //create a layout inflater so we can inflate our view on the viewpager
+        LayoutInflater layoutInflater;
+
+        public customAdapter(String[] screenshots, Context context){
+            this.screenshots = screenshots;
+            this.context = context;
+            layoutInflater = layoutInflater.from(context);
+        }
+
+
+        @Override
+        public int getCount() {
+            return screenshots.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
+            return view.equals(o);
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            View view = layoutInflater.inflate(R.layout.screenshotlayout,container,false);
+
+            final ImageView screenshotHolder = view.findViewById(R.id.screenshotHolder);
+
+            Picasso.get().load(screenshots[position]).into(screenshotHolder);
+
+            container.addView(view);
+            return view;
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            container.removeView((View) object);
+        }
+    }
+
 }
