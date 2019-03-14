@@ -339,22 +339,54 @@ public class APICOMMAND {
                             final double gameRating = jsonObject.getDouble("rating");
                             final String gameSummary = jsonObject.getString("summary");
                             final String gameWebsiteURL = jsonObject.getString("url");
+
+                            //test to see if we can grab the all ID'S from a certain game object
+                            //working, now lets take it a step further.
                             final JSONArray gameScreenShotIDs = jsonObject.getJSONArray("screenshots");
 
-
-
+                            //create a string array so that we can hold the urls coming in
 
                             if (jsonObject.has("screenshots")){
+
+                                //test to see if anything is inside the int array
                                 System.out.println("Game Screenshots: "+gameScreenShotIDs);
+
+
 
                                 AndroidNetworking.post("https://api-v3.igdb.com/screenshots/").addHeaders("user-key",BuildConfig.IGDBKey)
                                         .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                        .addStringBody(Resources.getSystem().getString(R.string.search_screenShotTable)+gameId+"; limit 1;")
+                                        .addStringBody(context.getString(R.string.search_screenShotTable)+gameId+";")
                                         .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                     @Override
                                     public void onResponse(JSONArray response) {
-                                        
+                                        JSONObject localJSON;
+                                        String[] screenshotURLArray = new String[response.length()];
+                                        try{
+                                            for (int r=0; r < response.length(); r++){
+                                                localJSON = response.optJSONObject(r);
+
+                                                /**
+                                                 * left off at:
+                                                 *  -grab all the URLS, append the 'https:' and the 'T_720p'
+                                                 *  -set the arraylist of strings to the game object so we acess later
+                                                 *  -test functionality
+                                                 */
+
+                                                if (localJSON.has("url")){
+                                                    final String tempUrl=localJSON.getString("url");
+                                                    final String newUrl = tempUrl.replace("thumb","720p");
+
+                                                    screenshotURLArray[r] = "https:"+newUrl;
+                                                    System.out.println("GameID: "+gameId +"; ScreenshotURL:  "+screenshotURLArray[r]);
+                                                }
+
+                                            }
+                                            System.out.println(screenshotURLArray.length);
+                                        }catch (JSONException e){
+                                            e.printStackTrace();
+                                            e.getCause();
+                                        }
                                     }
 
                                     @Override
