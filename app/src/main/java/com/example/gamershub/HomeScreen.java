@@ -70,6 +70,7 @@ public class HomeScreen extends Fragment {
     //create a fragment transaction
     FragmentManager fm;
 
+
     //Create an instance of our 'CustomHomeAdapterClass'
     private CustomHomeAdapterClass customAdapterClass;
 
@@ -104,6 +105,7 @@ public class HomeScreen extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         fm = getActivity().getSupportFragmentManager();
+
 
 
         if (savedInstanceState != null){
@@ -141,6 +143,7 @@ public class HomeScreen extends Fragment {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState !=null){
             trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
+            upcomingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("upcoming");
         }
 
     }
@@ -192,17 +195,39 @@ public class HomeScreen extends Fragment {
         //set the adapter on desired recyclerView
         popularOnPC.setAdapter(customAdapterClass);
 
-
         //check to see if there is any objects inside our local database
         DatabaseHelper db = new DatabaseHelper(getContext());
         ArrayList<gameHome> dbTest = db.grabAllGames();
 
+
+
         //if the database is not empty, load objects from the DB into our recyclerviews
         if (!dbTest.isEmpty()){
             if (!trendingGames.isEmpty()){
+                //On the inital load of the app AFTER it has been launched before to add data from API into the database.
+                //this should always be FALSE.
+                //UNLESS
+                //the phone rotates the output will be TRUE
+                //and we are covered because we added the arraylist data to our onsaveinstance state so we can
+                //return everything back to how we wanted it
+
+                //was having problems seeing data after it had been updated
+                trendingGames = new ArrayList<>();
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest,"trendingGames");
 
             }else {
-                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest);
+                //if 'trendingGames' is empty then this method will load localdata from the phone
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest,"trendingGames");
+            }
+
+            if (!upcomingGames.isEmpty()){
+                //was having problems seeing data after it had been updated
+                upcomingGames = new ArrayList<>();
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
+
+            }else {
+                //if 'trendingGames' is empty then this method will load localdata from the phone
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
             }
         }
         db.close();
@@ -228,11 +253,13 @@ public class HomeScreen extends Fragment {
              * SHOULD HELP ON KEEPING THE API PULLS DOWN
              */
             if (trendingGames.isEmpty()){
-                apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
+                apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames");
 
             }
+            if (upcomingGames.isEmpty()){
+                apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames");
+            }
 
-            //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null);
 
             //working
             //apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_trendingGames),"games","PS4");
