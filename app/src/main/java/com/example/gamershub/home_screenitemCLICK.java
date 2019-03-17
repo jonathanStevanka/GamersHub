@@ -10,11 +10,15 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dinuscxj.progressbar.CircleProgressBar;
 import com.example.gamershub.Database.DatabaseHelper;
+import com.example.gamershub.igdbAPI.APICOMMAND;
 import com.example.gamershub.objectPackage.gameHome;
 import com.squareup.picasso.Picasso;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
@@ -48,12 +52,12 @@ public class home_screenitemCLICK extends Fragment {
     //define the onscreenObjects
     private TextView videoGameTitle;
     private TextView videoGameDescription;
-    private TextView videoGameRating;
     private TextView videoGameImageUrl;
     private TextView videoGamePlatform;
     private TextView videoGameWebUrl;
     private TextView videoGameCover;
     private TextView videoGameInitialRelease;
+    boolean isPinned;
 
 
     public home_screenitemCLICK() {
@@ -93,23 +97,28 @@ public class home_screenitemCLICK extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screenitem_click, container, false);
 
+        //create a connection to our DatabaseHelper class
+        final DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
+
         //create connections to the images/viewpager
         ImageView imageCover = view.findViewById(R.id.gameCoverPhoto);
-
+        final Button addToPinnedGamesBtn = view.findViewById(R.id.addToPinnedGamesBTN);
         //link the viewpager
         ViewPager screenshotViewPager = view.findViewById(R.id.videoGameScreenshots);
+        CircleProgressBar ratingOverall = view.findViewById(R.id.rating);
+        CircleProgressBar aggervatedRating = view.findViewById(R.id.ratingAggervated);
+        CircleProgressBar totalRating = view.findViewById(R.id.totalRating);
 
         final DotsIndicator dotsIndicator = (DotsIndicator) view.findViewById(R.id.screenshotIndicator);
 
         //set the items to the ID of the object so we can have access
         videoGameTitle = view.findViewById(R.id.videoGameName);
         videoGameDescription = view.findViewById(R.id.videoGameDescription);
-        videoGameRating = view.findViewById(R.id.videoGameRating);
         videoGameCover = view.findViewById(R.id.videoGameCover);
         videoGameImageUrl = view.findViewById(R.id.videoGameImageURL);
         videoGameInitialRelease = view.findViewById(R.id.videoGameInitialReleaseDate);
@@ -123,40 +132,78 @@ public class home_screenitemCLICK extends Fragment {
 
         videoGameTitle.setText(String.valueOf(gameHome.getName()));
         videoGameDescription.setText(String.valueOf(gameHome.getDescription()));
-        videoGameRating.setText(String.valueOf(String.valueOf(gameHome.getRating())));
         videoGameCover.setText(String.valueOf(String.valueOf(gameHome.getGameCover())));
         videoGameImageUrl.setText(String.valueOf(gameHome.getImageViewUrl()));
         videoGameInitialRelease.setText(String.valueOf(gameHome.getReleaseDate()));
         videoGamePlatform.setText(String.valueOf(gameHome.getPlatform()));
         videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
 
-        DatabaseHelper db = new DatabaseHelper(getContext());
-        ArrayList<gameHome> test = db.grabAllGames();
-
 
         //and volla
-//        System.out.println("------------------------------------");
-//        System.out.println("INFORMATION FOR GAME");
-//
-//        System.out.println("ID: "+gameHome.getId());
-//        System.out.println("NAME: "+gameHome.getName());
-//        System.out.println("DESCRIPTION: "+gameHome.getDescription());
-//        System.out.println("RATING: "+gameHome.getRating());
-//        System.out.println("IMAGEURL: "+gameHome.getImageViewUrl());
-//        System.out.println("PLATFORM: "+gameHome.getPlatform());
-//        System.out.println("WEBURL: "+gameHome.getWebsiteUrl());
-//        System.out.println("COVER: "+gameHome.getGameCover());
-//        System.out.println("RELEASEDATE: "+gameHome.getReleaseDate());
-//        System.out.println("COVERURL: "+gameHome.getGameCoverURL());
-//        System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
-//        System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
-//        System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
-//        System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
-//
-//        System.out.println("------------------------------------");
+        System.out.println("------------------------------------");
+        System.out.println("INFORMATION FOR GAME");
+
+        System.out.println("LOCAL DBID: "+gameHome.getLocalDBID());
+        System.out.println("ID: "+gameHome.getId());
+        System.out.println("NAME: "+gameHome.getName());
+        System.out.println("DESCRIPTION: "+gameHome.getDescription());
+        System.out.println("IGDB-RATING: "+gameHome.getRating());
+        System.out.println("aggervated-RATING: "+gameHome.getAggervatedRating());
+        System.out.println("Total-RATING: "+gameHome.getTotalRating());
+        System.out.println("IMAGEURL: "+gameHome.getImageViewUrl());
+        System.out.println("PLATFORM: "+gameHome.getPlatform());
+        System.out.println("WEBURL: "+gameHome.getWebsiteUrl());
+        System.out.println("COVER: "+gameHome.getGameCover());
+        System.out.println("RELEASEDATE: "+gameHome.getReleaseDate());
+        System.out.println("COVERURL: "+gameHome.getGameCoverURL());
+        System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
+        System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
+        System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
+        System.out.println("GAME PINNED BY USER: "+gameHome.getIspinned());
+        System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
+        System.out.println("TOPIC: "+gameHome.getRecyclerviewTopic());
+        System.out.println("------------------------------------");
         //System.out.println("SCREENSHOT LENGTH: "+gameHome.getGameScreenshotExtendedURL());
 
 
+        /**
+         * the code below is for testing the 'add to pinned games button'
+         * -possibly going to change to an imagebutton down the road, or both who knows.
+         */
+
+        if (gameHome.getIspinned().contains("yes")){
+            addToPinnedGamesBtn.setText(getResources().getString(R.string.removePinBtnText));
+        }
+        if (gameHome.getIspinned().contains("no")){
+            addToPinnedGamesBtn.setText(getResources().getString(R.string.addPinBtnText));
+        }
+        System.out.println("@!isPinned: is the game a pinned game?: "+gameHome.getIspinned());
+
+        addToPinnedGamesBtn.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    /**
+                     * when this method is called it will search the local database for this information, and apply the
+                     * 'yes' inside the 'pinned' column, then when you open up the pinned games it will show the
+                     * current games you have pinned in a recyclerview that goes vertically down the phone.
+                     */
+                    //System.out.println("Local ID from gameID: "+databaseHelper.grabIDfromGameID(gameHome.getId()));
+
+                    if (gameHome.getIspinned().contains("no")) {
+                        databaseHelper.addToPinnedGames(gameHome.getId());
+                        addToPinnedGamesBtn.setText(getResources().getString(R.string.removePinBtnText));
+                        gameHome.setIspinned("yes");
+
+                    } else if (gameHome.getIspinned().contains("yes")){
+                        databaseHelper.removeFromPinnedGames(gameHome.getId());
+                        addToPinnedGamesBtn.setText(getResources().getString(R.string.addPinBtnText));
+                        gameHome.setIspinned("no");
+                    }
+
+                }
+
+            });
 
 
 
@@ -165,6 +212,21 @@ public class home_screenitemCLICK extends Fragment {
         customAdapter adapter = new customAdapter(screenshotURLS,getContext());
         screenshotViewPager.setAdapter(adapter);
         dotsIndicator.setViewPager(screenshotViewPager);
+        ratingOverall.setProgressFormatter(new RatingCircleFormatter());
+        aggervatedRating.setProgressFormatter(new RatingCircleFormatter());
+        totalRating.setProgressFormatter(new RatingCircleFormatter());
+        Double rating = gameHome.getRating();
+        Double aggerRating = gameHome.getAggervatedRating();
+        Double totRating = gameHome.getTotalRating();
+        if (rating!=null){
+            ratingOverall.setProgress(rating.intValue());
+        }
+        if (aggerRating!=null){
+            aggervatedRating.setProgress(aggerRating.intValue());
+        }
+        if (totRating!=null){
+            totalRating.setProgress(totRating.intValue());
+        }
         return view;
     }
 
@@ -248,6 +310,15 @@ public class home_screenitemCLICK extends Fragment {
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
+        }
+    }
+
+    public static final class RatingCircleFormatter implements CircleProgressBar.ProgressFormatter{
+        private static final String DEFAULT_PATTERN = "%d%%";
+
+        @Override
+        public CharSequence format(int progress, int max) {
+            return String.format(DEFAULT_PATTERN, (int) ((float) progress / (float) max * 100));
         }
     }
 

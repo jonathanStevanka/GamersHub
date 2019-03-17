@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapterClass.customAdap> {
 
+
     private ArrayList<gameHome> games;
     private Context context;
     //create a private fragment manager so we can utilize the fragmentransaction inside this class
@@ -64,7 +65,6 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
                 /**
                  * -------------------------------------------------------
                  */
-
                 //create a fragmentTransaction and pass the data to another fragment
                 Bundle objectBundle = new Bundle();
                 //create a new game to be placed inside the bundle

@@ -10,11 +10,14 @@ import java.util.Arrays;
 public class gameHome implements Serializable {
 
     private int id;
+    private int localDBID;
     private String name;
     private String description;
     private String websiteUrl;
     private String imageViewUrl;
     private Double rating;
+    private Double aggervatedRating;
+    private Double totalRating;
     private Double popularity;
     private Double price;
     private int gameCover;
@@ -24,6 +27,8 @@ public class gameHome implements Serializable {
     private String[] gameScreenshots;
     private String gameScreenshotExtendedURL;
     private String timestamp;
+    private String ispinned;
+    private String recyclerviewTopic;
     //create variables for game COVER properties
     private double height;
     private double width;
@@ -303,5 +308,45 @@ public class gameHome implements Serializable {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Double getAggervatedRating() {
+        return aggervatedRating;
+    }
+
+    public void setAggervatedRating(Double aggervatedRating) {
+        this.aggervatedRating = aggervatedRating;
+    }
+
+    public Double getTotalRating() {
+        return totalRating;
+    }
+
+    public void setTotalRating(Double totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public String getIspinned() {
+        return ispinned;
+    }
+
+    public void setIspinned(String ispinned) {
+        this.ispinned = ispinned;
+    }
+
+    public int getLocalDBID() {
+        return localDBID;
+    }
+
+    public void setLocalDBID(int localDBID) {
+        this.localDBID = localDBID;
+    }
+
+    public String getRecyclerviewTopic() {
+        return recyclerviewTopic;
+    }
+
+    public void setRecyclerviewTopic(String recyclerviewTopic) {
+        this.recyclerviewTopic = recyclerviewTopic;
     }
 }
