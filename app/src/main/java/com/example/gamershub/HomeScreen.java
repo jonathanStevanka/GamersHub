@@ -144,6 +144,10 @@ public class HomeScreen extends Fragment {
         if (savedInstanceState !=null){
             trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
             upcomingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("upcoming");
+            popularGamesXBOX = (ArrayList<gameHome>) savedInstanceState.getSerializable("popularXBOX");
+            popularGamesPC = (ArrayList<gameHome>) savedInstanceState.getSerializable("popularPC");
+            popularGamesPs4 = (ArrayList<gameHome>) savedInstanceState.getSerializable("popularPS4");
+
         }
 
     }
@@ -229,6 +233,8 @@ public class HomeScreen extends Fragment {
                 //if 'trendingGames' is empty then this method will load localdata from the phone
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
             }
+
+
         }
         db.close();
 
@@ -259,12 +265,19 @@ public class HomeScreen extends Fragment {
             if (upcomingGames.isEmpty()){
                 apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames");
             }
+//            if (popularGamesPs4.isEmpty()){
+//                apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_upcomingGamesPS4),"games","PS4","popularGamesPs4");
+//
+//            }
+//            if (popularGamesXBOX.isEmpty()){
+//                apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_upcomingGamesXBOX),"games","XBOX","popularGamesXBOX");
+//            }
+//            if (popularGamesPC.isEmpty()){
+//                apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_upcomingGamesPC),"games","PC","popularGamesPC");
+//            }
 
 
             //working
-            //apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_trendingGames),"games","PS4");
-            //apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_trendingGames),"games","XBOX");
-            //apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_trendingGames),"games","PC");
             //System.out.println("test1");
         }
 

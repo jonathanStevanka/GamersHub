@@ -24,9 +24,9 @@
     <!-- needs looking at-->
     <string name="search_recentlyReleasedPS4games">fields id,game,human,m,platform; where date &lt; 1551648064; sort date desc; limit 25;</string>
     <!-- not tested-->
-    <string name="search_upcomingGamesPS4">fields id,game,human,m,platform; where platform = 48 &amp; date &gt; 1551648064;</string>
-    <string name="search_upcomingGamesPC">fields id,game,human,m,platform; where platform = 49 &amp; date &gt; 1551648064;</string>
-    <string name="search_upcomingGamesXBOX">fields id,game,human,m,platform; where platform = 6 &amp; date &gt; 1551648064;</string>
+    <string name="search_upcomingGamesPS4">fields id,game,human,m,platform; where platform = 48 &amp; date &gt; 1552862789;</string>
+    <string name="search_upcomingGamesPC">fields id,game,human,m,platform; where platform = 49 &amp; date &gt; 1552862789;</string>
+    <string name="search_upcomingGamesXBOX">fields id,game,human,m,platform; where platform = 6 &amp; date &gt; 1552862789;</string>
 
 
 
