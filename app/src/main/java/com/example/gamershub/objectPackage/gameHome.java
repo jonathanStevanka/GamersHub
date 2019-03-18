@@ -21,7 +21,7 @@ public class gameHome implements Serializable {
     private Double popularity;
     private Double price;
     private int gameCover;
-    private int platform;
+    private String platformsTest;
     private String releaseDate;
     private String gameCoverURL;
     private String[] gameScreenshots;
@@ -118,10 +118,9 @@ public class gameHome implements Serializable {
      * @param imageViewUrl
      * @param rating
      * @param gameCover
-     * @param platform
      * @param releaseDate
      */
-    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, int gameCover, int platform, String releaseDate) {
+    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, int gameCover, String releaseDate) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -129,7 +128,6 @@ public class gameHome implements Serializable {
         this.imageViewUrl = imageViewUrl;
         this.rating = rating;
         this.gameCover = gameCover;
-        this.platform = platform;
         this.releaseDate = releaseDate;
     }
 
@@ -143,11 +141,10 @@ public class gameHome implements Serializable {
      * @param popularity
      * @param price
      * @param gameCover
-     * @param platform
      * @param releaseDate
      * @param gameCoverURL
      */
-    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, Double popularity, Double price, int gameCover, int platform, String releaseDate, String gameCoverURL,String[] gameScreenshots) {
+    public gameHome(int id, String name, String description, String websiteUrl, String imageViewUrl, Double rating, Double popularity, Double price, int gameCover, String releaseDate, String gameCoverURL,String[] gameScreenshots) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -157,7 +154,6 @@ public class gameHome implements Serializable {
         this.popularity = popularity;
         this.price = price;
         this.gameCover = gameCover;
-        this.platform = platform;
         this.releaseDate = releaseDate;
         this.gameCoverURL = gameCoverURL;
         this.gameScreenshots = gameScreenshots;
@@ -224,13 +220,6 @@ public class gameHome implements Serializable {
         this.gameCover = gameCover;
     }
 
-    public int getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(int platform) {
-        this.platform = platform;
-    }
 
     public String getReleaseDate() {
         return releaseDate;
@@ -348,5 +337,13 @@ public class gameHome implements Serializable {
 
     public void setRecyclerviewTopic(String recyclerviewTopic) {
         this.recyclerviewTopic = recyclerviewTopic;
+    }
+
+    public String getPlatformsTest() {
+        return platformsTest;
+    }
+
+    public void setPlatformsTest(String platformsTest) {
+        this.platformsTest = platformsTest;
     }
 }

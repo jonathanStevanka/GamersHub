@@ -204,6 +204,11 @@ public class HomeScreen extends Fragment {
         ArrayList<gameHome> dbTest = db.grabAllGames();
 
 
+        /**
+         * create the methods to load in data into each individual recyclerview where the destination column in the DB
+         * matches the one that is in gameHome.getTopic() method.
+         * if it equates to true then it will add that data to that particular recyclerview
+         */
 
         //if the database is not empty, load objects from the DB into our recyclerviews
         if (!dbTest.isEmpty()){
@@ -224,19 +229,44 @@ public class HomeScreen extends Fragment {
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest,"trendingGames");
             }
 
-            if (!upcomingGames.isEmpty()){
-                //was having problems seeing data after it had been updated
-                upcomingGames = new ArrayList<>();
-                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
+                if (!popularGamesPs4.isEmpty()){
+                    //was having problems seeing data after it had been updated
+                    popularGamesPs4 = new ArrayList<>();
+                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
 
-            }else {
-                //if 'trendingGames' is empty then this method will load localdata from the phone
-                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
+                }else {
+                    //if 'trendingGames' is empty then this method will load localdata from the phone
+                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
+                }
+
+
+                if (!popularGamesXBOX.isEmpty()){
+                    popularGamesXBOX = new ArrayList<>();
+                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
+                }else{
+                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
+
+                }
+
+
+                if (!popularGamesPC.isEmpty()){
+                    popularGamesPC = new ArrayList<>();
+                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
+                }else{
+                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
+
+                }
+
+                if (!upcomingGames.isEmpty()){
+                    //was having problems seeing data after it had been updated
+                    apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
+
+                }else {
+                    apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
+                }
+
             }
-
-
-        }
-        db.close();
+            db.close();
 
 
         if (savedInstanceState == null){
@@ -260,14 +290,12 @@ public class HomeScreen extends Fragment {
              */
             if (trendingGames.isEmpty()){
                 apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames");
-
             }
             if (upcomingGames.isEmpty()){
                 apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames");
             }
 //            if (popularGamesPs4.isEmpty()){
-//                apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_upcomingGamesPS4),"games","PS4","popularGamesPs4");
-//
+//                apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_upcomingGamesPS4),"release_dates","PS4","popularGamesPs4");
 //            }
 //            if (popularGamesXBOX.isEmpty()){
 //                apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_upcomingGamesXBOX),"games","XBOX","popularGamesXBOX");
@@ -276,6 +304,11 @@ public class HomeScreen extends Fragment {
 //                apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_upcomingGamesPC),"games","PC","popularGamesPC");
 //            }
 
+            System.out.println("trendingGames SIZE: "+trendingGames.size());
+            System.out.println("upcomingGames SIZE: "+upcomingGames.size());
+            System.out.println("popularGamesPs4 SIZE: "+popularGamesPs4.size());
+            System.out.println("popularGamesXBOX SIZE: "+popularGamesXBOX.size());
+            System.out.println("popularGamesPC SIZE: "+popularGamesPC.size());
 
             //working
             //System.out.println("test1");

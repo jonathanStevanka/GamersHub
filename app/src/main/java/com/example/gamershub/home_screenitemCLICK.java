@@ -135,7 +135,7 @@ public class home_screenitemCLICK extends Fragment {
         videoGameCover.setText(String.valueOf(String.valueOf(gameHome.getGameCover())));
         videoGameImageUrl.setText(String.valueOf(gameHome.getImageViewUrl()));
         videoGameInitialRelease.setText(String.valueOf(gameHome.getReleaseDate()));
-        videoGamePlatform.setText(String.valueOf(gameHome.getPlatform()));
+        videoGamePlatform.setText(String.valueOf(gameHome.getPlatformsTest()));
         videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
 
 
@@ -151,7 +151,7 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("aggervated-RATING: "+gameHome.getAggervatedRating());
         System.out.println("Total-RATING: "+gameHome.getTotalRating());
         System.out.println("IMAGEURL: "+gameHome.getImageViewUrl());
-        System.out.println("PLATFORM: "+gameHome.getPlatform());
+        System.out.println("PLATFORM: "+gameHome.getPlatformsTest());
         System.out.println("WEBURL: "+gameHome.getWebsiteUrl());
         System.out.println("COVER: "+gameHome.getGameCover());
         System.out.println("RELEASEDATE: "+gameHome.getReleaseDate());

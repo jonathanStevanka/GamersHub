@@ -55,16 +55,6 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                /**
-                 * FOR TESTING PURPOSES ONLY DELETE LATER
-                 */
-
-
-                /**
-                 * -------------------------------------------------------
-                 */
                 //create a fragmentTransaction and pass the data to another fragment
                 Bundle objectBundle = new Bundle();
                 //create a new game to be placed inside the bundle

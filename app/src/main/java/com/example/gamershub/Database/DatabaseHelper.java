@@ -25,8 +25,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //create our table names
     public static final String GAME_TABLE = "ALLGAMES";
 
+    /**
+     * CREATE THE STRINGS THAT WILL REPRESENT OUR COLUMN
+     */
 
-    //create the columns for 'ALLGAMES'
     public static final String ID_COLUMN = "id";
     public static final String GAMEID_COLUMN = "gameID";
     public static final String TITLE_COLUMN = "title";
@@ -53,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             GAME_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY,"
             + GAMEID_COLUMN + " INTEGER, " + TITLE_COLUMN + " TEXT, " + DESCRIPTION_COLUMN + " TEXT,"
             + PRICE_COLUMN + " DOUBLE, " + WEBURL_COLUMN + " TEXT, " + IMAGEURL_COLUMN + " TEXT, " + RATING_COLUMN + " DOUBLE," +
-            AGGERRATING_COLUMN + " DOUBLE," + TOTALRATING_COLUMN + " DOUBLE, " + COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN + " INTEGER, " + RELEASE_DATE_COLUMN + " TEXT, " + PINNED_COLUMN + " VARCHAR, " + SCREENSHOTURL_COLUMN + " TEXT, "+ TOPIC_COLUMN + " TEXT, " + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
+            AGGERRATING_COLUMN + " DOUBLE," + TOTALRATING_COLUMN + " DOUBLE, " + COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN + " TEXT, " + RELEASE_DATE_COLUMN + " TEXT, " + PINNED_COLUMN + " VARCHAR, " + SCREENSHOTURL_COLUMN + " TEXT, "+ TOPIC_COLUMN + " TEXT, " + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
 
 
 
@@ -68,7 +70,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addGame(gameHome game){
         //grab the current database on this phone
         SQLiteDatabase db = this.getWritableDatabase();
+        System.out.println("---------------------------------------");
         System.out.println("AddGame@Databasehelper: "+game.getName());
+        System.out.println("AddGame@Databasehelper: "+game.getIspinned());
+        System.out.println("AddGame@Databasehelper: "+game.getRecyclerviewTopic());
+        System.out.println("AddGame@Databasehelper: "+game.getPlatformsTest());
+        System.out.println("---------------------------------------");
         ContentValues val = new ContentValues();
         val.put(GAMEID_COLUMN, game.getId());
         val.put(TITLE_COLUMN, game.getName());
@@ -81,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put(TOTALRATING_COLUMN, game.getTotalRating());
         val.put(COVERID_COLUMN, game.getGameCover());
         val.put(COVERURL_COLUMN, game.getGameCoverURL());
-        val.put(PLATFORM_COLUMN, game.getPlatform());
+        val.put(PLATFORM_COLUMN, game.getPlatformsTest());
         val.put(RELEASE_DATE_COLUMN, game.getReleaseDate());
         val.put(SCREENSHOTURL_COLUMN, game.setGameScreenFromURLStringArray());
         val.put(PINNED_COLUMN,game.getIspinned());
@@ -111,7 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 game.setAggervatedRating(pointer.getDouble(pointer.getColumnIndex(AGGERRATING_COLUMN)));
                 game.setTotalRating(pointer.getDouble(pointer.getColumnIndex(TOTALRATING_COLUMN)));
                 game.setGameCover(pointer.getInt(pointer.getColumnIndex(COVERID_COLUMN)));
-                game.setPlatform(pointer.getInt(pointer.getColumnIndex(PLATFORM_COLUMN)));
+                game.setPlatformsTest(pointer.getString(pointer.getColumnIndex(PLATFORM_COLUMN)));
                 game.setReleaseDate(pointer.getString(pointer.getColumnIndex(RELEASE_DATE_COLUMN)));
                 game.setGameCoverURL(pointer.getString(pointer.getColumnIndex(COVERURL_COLUMN)));
                 game.setGameScreenshotExtendedURL(pointer.getString(pointer.getColumnIndex(SCREENSHOTURL_COLUMN)));
