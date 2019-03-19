@@ -37,25 +37,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif-black"
-                        android:text="Indi games coming soon"
+                        android:text="Indie games coming soon"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/popularPC" />
+
+                    <TextView
+                        android:id="@+id/row1Title3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-black"
+                        android:text="Popular on PS4"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/trendingGamesALL" />
-
-                        <TextView
-                            android:id="@+id/row1Title3"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="sans-serif-black"
-                            android:text="Popular on PS4"
-                            android:textAlignment="center"
-                            android:textSize="20sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/upcomingGamesALL" />
 
                         <TextView
                             android:id="@+id/row1Title4"
@@ -94,16 +94,16 @@
                             app:layout_constraintTop_toBottomOf="@+id/row1Title"
                             tools:listitem="@layout/homeitemlayout" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/upcomingGamesALL"
-                            android:layout_width="0dp"
-                            android:layout_height="200dp"
-                            android:layout_marginTop="8dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/row1Title2"
-                            tools:listitem="@layout/homeitemlayout" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/upcomingGamesALL"
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/row1Title2"
+                        tools:listitem="@layout/homeitemlayout" />
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/popularPS4"

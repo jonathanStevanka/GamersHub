@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -17,6 +18,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.gamershub.Database.DatabaseHelper;
+import com.example.gamershub.objectPackage.gameHome;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +46,7 @@ public class search_screen extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private TextView searchBar;
-    private TextView searchBtn;
+    private Button searchBtn;
 
     RecyclerView searchedGame;
     FragmentManager fm;
@@ -92,6 +94,97 @@ public class search_screen extends Fragment {
         searchBtn = view.findViewById(R.id.searchBtn);
         searchedGame = view.findViewById(R.id.searchedGameRecyclerView);
 
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchedGame = null;
+                if (searchBar.getText()!=null){
+                    searchedGame = searchBar.getText().toString();
+
+                    System.out.println("search "+"\""+searchedGame+"\"; "+getString(R.string.search_pinnedGamesScreen));
+
+                    AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
+                            .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                            .addStringBody("search "+"\""+searchedGame+"\"; "+getString(R.string.search_pinnedGamesScreen))
+                            .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            //Instantiate a new JSONObject for the response information
+                            JSONObject jsonGameObject = null;
+                            JSONArray jsonScreenshotObject = null;
+                            JSONObject jsonReleaseObject = null;
+                            gameHome game = new gameHome();
+
+                            try {
+
+                                for (int i=0; i<response.length();i++){
+                                    jsonGameObject = response.getJSONObject(i);
+
+                                    String[] screenshotUrlsUnextended;
+
+                                    //String[] screenshotURLS = gameHome.getGameScreenshotExtendedURL().replace("[","").replace("]","").split(", ");
+
+
+                                    int gameId = jsonGameObject.getInt("id");
+                                    int gameCover = jsonGameObject.getInt("cover");
+                                    String gameName = jsonGameObject.getString("name");
+                                    String platforms = jsonGameObject.getString("platforms");
+                                    //popularity goes here
+                                    double gameRating = jsonGameObject.getDouble("rating");
+                                    //releaedates goes here
+
+                                    //screenshots goes here
+                                    if (jsonGameObject.has("screenshots")){
+                                        jsonScreenshotObject = jsonGameObject.getJSONArray("screenshots");
+                                        for (int r =0; r<jsonScreenshotObject.length();r++){
+                                            screenshotUrlsUnextended = new String[jsonScreenshotObject.length()];
+                                            System.out.println(jsonScreenshotObject.get(r));
+                                        }
+                                    }
+                                    System.out.println(jsonGameObject.has("aggregated_rating"));
+                                    double aggervatedRating = jsonGameObject.getDouble("aggregated_rating");
+
+
+                                    String gameSummary = jsonGameObject.getString("summary");
+                                    double totalRating = jsonGameObject.getDouble("total_rating");
+                                    String gameWebsiteURL = jsonGameObject.getString("url");
+
+                                    System.out.println("----------------------------------------------------");
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME ID - "+gameId);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME NAME - "+gameName);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME COVERID - "+gameCover);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME PLATFORMS - "+platforms);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME AGGERVATED_RATING - "+aggervatedRating);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME RATING - "+gameRating);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME TOTALRATING - "+totalRating);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SCREENSHOTS - "+jsonScreenshotObject);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SUMMARY - "+gameSummary);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME WEBURL - "+gameWebsiteURL);
+                                    System.out.println("----------------------------------------------------");
+
+
+                                }
+
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                                e.getCause();
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+
+                        }
+
+                    });
+
+                }
+
+            }
+        });
 
 
 

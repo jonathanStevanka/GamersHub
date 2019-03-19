@@ -298,21 +298,12 @@ public class APICOMMAND {
             platforms = new String[trendingGames.size()];
             platforms = trendingGames.get(i).getPlatformsTest().replace("[","").replace("]","").split(",");
 
-            //System.out.println("------------------------------");
-            //System.out.println(trendingGames.get(i).getName());
-            //System.out.println(trendingGames.get(i).getRecyclerviewTopic());
-            //System.out.println(destination);
-
             for (int r=0; r<platforms.length;r++){
 
                 gamePlatformG = Integer.valueOf(platforms[r]);
-                //System.out.println(gamePlatformG);
-                //System.out.println(gamePlatform);
-                //System.out.println(gamePlatform==gamePlatformG);
-                //System.out.println("'"+!trendingGames.get(i).getRecyclerviewTopic().contentEquals("upcomingGames")+"'");
+
                 if (gamePlatform==gamePlatformG && !trendingGames.get(i).getRecyclerviewTopic().contentEquals("upcomingGames")){
                     arrayList.add(trendingGames.get(i));
-                    //System.out.println("Game was added");
                 }
             }
             //System.out.println("------------------------------");
@@ -363,7 +354,7 @@ public class APICOMMAND {
     /**
      * THE METHOD BELOW IS FOR THE INITIAL LAUNCH OF THE DEVICE, IT WILL PULL FROM MANY DIFFERENT CATEGORIES AND FILL RESPECTIVELY
      */
-    public void getData(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url, final String desiredPlatform, final String destination){
+    public void getData(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url, final String desiredPlatform, final String destination,final ArrayList<gameHome> popularOnPS4,final ArrayList<gameHome> popularOnXBOX,final ArrayList<gameHome> popularOnPC){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading Game data...please wait");
@@ -541,6 +532,39 @@ public class APICOMMAND {
                                                                             arrayList.add(game);
                                                                         }
                                                                     }
+
+
+                                                                    /**
+                                                                     * create an inline method so at the start when the application is called it will load data from the inital call into
+                                                                     * all of the other recyclerviews exccept for upcoming games as that relies on its own call.
+                                                                     */
+
+                                                                    String[] platformFromJSON = game.getPlatformsTest().replace("[","")
+                                                                            .replace("]","").split(",");
+                                                                    int gamePlatform;
+                                                                    System.out.println("--------------------------------------------------");
+                                                                    System.out.println("APICOMMAND@GETDATA:551- game name: "+game.getName());
+
+                                                                    for (int r=0; r<platformFromJSON.length;r++){
+                                                                        gamePlatform = Integer.valueOf(platformFromJSON[r]);
+                                                                        System.out.println("APICOMMAND@GETDATA:551- game platform: "+gamePlatform);
+
+                                                                        if (gamePlatform==6 && !game.getRecyclerviewTopic().contentEquals("upcomingGames")){
+                                                                            System.out.println("APICOMMAND@GETDATA:551- Game has been added");
+                                                                            popularOnPC.add(game);
+                                                                        }
+
+                                                                        if (gamePlatform==48 && !game.getRecyclerviewTopic().contentEquals("upcomingGames")){
+                                                                            System.out.println("APICOMMAND@GETDATA:551- Game has been added");
+                                                                            popularOnPS4.add(game);
+                                                                        }
+
+                                                                        if (gamePlatform==49 && !game.getRecyclerviewTopic().contentEquals("upcomingGames")){
+                                                                            System.out.println("APICOMMAND@GETDATA:551- Game has been added");
+                                                                            popularOnXBOX.add(game);
+                                                                        }
+                                                                    }
+                                                                    System.out.println("--------------------------------------------------");
 
                                                                     System.out.println(game.getName());
                                                                     db.addGame(game);

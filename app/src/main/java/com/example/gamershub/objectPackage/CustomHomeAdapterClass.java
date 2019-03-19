@@ -50,7 +50,7 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
         final gameHome game = games.get(i);
         viewHolder.name.setText(game.getName());
         Picasso.get().load(game.getGameCoverURL()).into(viewHolder.gameCover);
-
+        viewHolder.setIsRecyclable(true);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

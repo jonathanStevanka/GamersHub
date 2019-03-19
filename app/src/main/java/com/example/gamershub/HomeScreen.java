@@ -288,10 +288,10 @@ public class HomeScreen extends Fragment {
 
 
         if (trendingGames.isEmpty()){
-            apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames");
+            apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
         }
         if (upcomingGames.isEmpty()){
-            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames");
+            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
         }
 //            if (popularGamesPs4.isEmpty()){
 //                apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_upcomingGamesPS4),"release_dates","PS4","popularGamesPs4");
