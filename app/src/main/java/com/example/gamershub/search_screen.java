@@ -4,9 +4,23 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.gamershub.Database.DatabaseHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -28,6 +42,12 @@ public class search_screen extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private TextView searchBar;
+    private TextView searchBtn;
+
+    RecyclerView searchedGame;
+    FragmentManager fm;
 
     public search_screen() {
         // Required empty public constructor
@@ -58,13 +78,24 @@ public class search_screen extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        fm = getChildFragmentManager();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_screen, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_screen, container, false);
+
+        searchBar = view.findViewById(R.id.searchBar);
+        searchBtn = view.findViewById(R.id.searchBtn);
+        searchedGame = view.findViewById(R.id.searchedGameRecyclerView);
+
+
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -104,5 +135,58 @@ public class search_screen extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getTotalGameCount();
+    }
+
+    public void getTotalGameCount(){
+
+        DatabaseHelper db = new DatabaseHelper(getContext());
+        String totalGameCount = db.grabGameCount();
+        if (totalGameCount!=null){
+            searchBar.setHint("Search "+totalGameCount+" Games");
+            db.close();
+        }else{
+            AndroidNetworking.post("https://api-v3.igdb.com/games/count").addHeaders("user-key",BuildConfig.IGDBKey)
+                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                    .setPriority(Priority.LOW).build().getAsJSONObject(new JSONObjectRequestListener() {
+
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    JSONObject jsonObject = null;
+                    String totalGames=null;
+                    DatabaseHelper db = new DatabaseHelper(getContext());
+                    if (response!=null){
+                        jsonObject = response;
+                        try {
+                            totalGames = jsonObject.getString("count");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (totalGames!=null){
+                        db.addGameCount(totalGames);
+                        getTotalGameCount();
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    anError.getErrorCode();
+                    anError.getErrorBody();
+                    anError.getErrorDetail();
+                    anError.getResponse();
+                }
+
+
+            });
+        }
+
     }
 }

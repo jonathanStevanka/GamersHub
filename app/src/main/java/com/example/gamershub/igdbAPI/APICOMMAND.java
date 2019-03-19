@@ -11,6 +11,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.example.gamershub.BuildConfig;
 import com.example.gamershub.Database.DatabaseHelper;
+import com.example.gamershub.HomeScreen;
 import com.example.gamershub.R;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.CustomPinnedAdapterClass;
@@ -182,7 +183,7 @@ public class APICOMMAND {
      */
 
 
-    public ArrayList<gameHome> dumpGameInfo(ArrayList<JSONObject> jsonObjects){
+    public ArrayList<gameHome> dumpGameInfo(ArrayList<JSONObject> jsonObjects) {
 
 
         final ArrayList<gameHome> contents = new ArrayList<gameHome>();
@@ -267,7 +268,7 @@ public class APICOMMAND {
 
             if (arrayList.contains(localArraylist.get(i))){
                 //System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i));
-                continue;
+
             }else {
 
                 if (localArraylist.get(i).getRecyclerviewTopic().contains(destination)){
@@ -292,36 +293,32 @@ public class APICOMMAND {
         int currentPlat;
         int gamePlatformG;
 
+       //System.out.println(destination+"trendingGamesSize: "+ trendingGames.size());
         for (int i=0;i<trendingGames.size();i++){
             platforms = new String[trendingGames.size()];
             platforms = trendingGames.get(i).getPlatformsTest().replace("[","").replace("]","").split(",");
 
+            //System.out.println("------------------------------");
+            //System.out.println(trendingGames.get(i).getName());
+            //System.out.println(trendingGames.get(i).getRecyclerviewTopic());
+            //System.out.println(destination);
 
-            if (arrayList.contains(localArraylist.get(i))){
-                //System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i));
-                continue;
-            }else {
+            for (int r=0; r<platforms.length;r++){
 
-                System.out.println("------------------------------");
-                System.out.println(trendingGames.get(i).getName());
-
-                for (int r=0; r<platforms.length;r++){
-                    //System.out.println(platforms[r]);
-                    gamePlatformG = Integer.valueOf(platforms[r]);
-                    System.out.println(gamePlatformG);
-                    System.out.println(gamePlatform);
-                    System.out.println(gamePlatformG==gamePlatform);
-
-
-                    if (gamePlatformG==gamePlatform && !localArraylist.get(i).getRecyclerviewTopic().contains("upcomingGames")){
-                        arrayList.add(localArraylist.get(i));
-                    }
+                gamePlatformG = Integer.valueOf(platforms[r]);
+                //System.out.println(gamePlatformG);
+                //System.out.println(gamePlatform);
+                //System.out.println(gamePlatform==gamePlatformG);
+                //System.out.println("'"+!trendingGames.get(i).getRecyclerviewTopic().contentEquals("upcomingGames")+"'");
+                if (gamePlatform==gamePlatformG && !trendingGames.get(i).getRecyclerviewTopic().contentEquals("upcomingGames")){
+                    arrayList.add(trendingGames.get(i));
+                    //System.out.println("Game was added");
                 }
-                System.out.println("------------------------------");
             }
+            //System.out.println("------------------------------");
+            customHomeAdapterClass.notifyDataSetChanged();
         }
 
-        customHomeAdapterClass.notifyDataSetChanged();
         progressDialog.dismiss();
     }
 
@@ -345,7 +342,7 @@ public class APICOMMAND {
             //System.out.println("APICOMMAND@loadDataFromLocal: Total size of localArraylist= "+localArraylist.size());
             //System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i).getName() + " TIME DATA WAS ADDED TO DEVICE: "+localArraylist.get(i).getTimestamp());
 
-            System.out.println(localArraylist.get(i).getIspinned());
+            //System.out.println(localArraylist.get(i).getIspinned());
             if (!localArraylist.isEmpty()){
                 if (arrayList.contains(localArraylist.get(i))){
                     //System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i));
@@ -379,7 +376,7 @@ public class APICOMMAND {
         AndroidNetworking.post("https://api-v3.igdb.com/"+url+"/").addHeaders("user-key",BuildConfig.IGDBKey)
                 .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
                 .addStringBody(search)
-                .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+                .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
 
@@ -430,7 +427,7 @@ public class APICOMMAND {
                                 AndroidNetworking.post("https://api-v3.igdb.com/screenshots/").addHeaders("user-key",BuildConfig.IGDBKey)
                                         .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
                                         .addStringBody(context.getString(R.string.search_screenShotTable)+gameId+";")
-                                        .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+                                        .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                     @Override
                                     public void onResponse(JSONArray response) {
@@ -473,7 +470,7 @@ public class APICOMMAND {
                                 AndroidNetworking.post("https://api-v3.igdb.com/covers/").addHeaders("user-key",BuildConfig.IGDBKey)
                                         .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
                                         .addStringBody("fields game,height,image_id,url,width; where game = "+ gameId +"; limit 1;")
-                                        .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+                                        .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
 
                                     @Override
@@ -618,7 +615,7 @@ public class APICOMMAND {
                                 AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
                                         .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
                                         .addStringBody("fields id,name,popularity,cover,rating,aggregated_rating,total_rating,summary,platforms,url,screenshots; where id ="+gameId+"; limit 1;")
-                                        .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+                                        .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                     @Override
                                     public void onResponse(JSONArray response) {
@@ -667,7 +664,7 @@ public class APICOMMAND {
                                                             AndroidNetworking.post("https://api-v3.igdb.com/covers/").addHeaders("user-key",BuildConfig.IGDBKey)
                                                                     .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
                                                                     .addStringBody("fields game,height,image_id,url,width; where game = "+ gameId +"; limit 1;")
-                                                                    .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+                                                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
 
                                                                 @Override
@@ -697,7 +694,7 @@ public class APICOMMAND {
                                                                                 AndroidNetworking.post("https://api-v3.igdb.com/release_dates/").addHeaders("user-key",BuildConfig.IGDBKey)
                                                                                         .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
                                                                                         .addStringBody("fields id,game,human,m; where game ="+release_game.getId()+"; limit 1;")
-                                                                                        .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+                                                                                        .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                                                                     @Override
                                                                                     public void onResponse(JSONArray response) {
@@ -753,7 +750,7 @@ public class APICOMMAND {
                                                             AndroidNetworking.post("https://api-v3.igdb.com/screenshots/").addHeaders("user-key",BuildConfig.IGDBKey)
                                                                     .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
                                                                     .addStringBody(context.getString(R.string.search_screenShotTable)+gameMatchID+";")
-                                                                    .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+                                                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                                                 @Override
                                                                 public void onResponse(JSONArray response) {
@@ -780,16 +777,17 @@ public class APICOMMAND {
                                                                         }
                                                                         //System.out.println(screenshotURLArray.length);
 
-                                                                        release_game.setGameScreenshots(screenshotURLArray);
-                                                                        arrayList.add(release_game);
-                                                                        db.addGame(release_game);
-                                                                        customHomeAdapterClass.notifyDataSetChanged();
-                                                                        progressDialog.dismiss();
 
                                                                     }catch (JSONException e){
                                                                         e.printStackTrace();
                                                                         e.getCause();
                                                                     }
+                                                                    release_game.setGameScreenshots(screenshotURLArray);
+                                                                    arrayList.add(release_game);
+                                                                    db.addGame(release_game);
+                                                                    customHomeAdapterClass.notifyDataSetChanged();
+                                                                    progressDialog.dismiss();
+
                                                                     db.close();
                                                                 }
 

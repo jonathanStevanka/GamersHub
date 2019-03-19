@@ -48,6 +48,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PINNED_COLUMN = "pinned";
     public static final String TOPIC_COLUMN = "topic";
 
+
+    public static final String COUNT_COLUMN = "count";
+    public static final String GAMECOUNT_TABLE = "GAMECOUNT";
+
+
     /**
      * Create the 'Create Table' querys
      */
@@ -57,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + PRICE_COLUMN + " DOUBLE, " + WEBURL_COLUMN + " TEXT, " + IMAGEURL_COLUMN + " TEXT, " + RATING_COLUMN + " DOUBLE," +
             AGGERRATING_COLUMN + " DOUBLE," + TOTALRATING_COLUMN + " DOUBLE, " + COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN + " TEXT, " + RELEASE_DATE_COLUMN + " TEXT, " + PINNED_COLUMN + " VARCHAR, " + SCREENSHOTURL_COLUMN + " TEXT, "+ TOPIC_COLUMN + " TEXT, " + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
 
-
+    public static final String CREATE_TOTAL_GAME_COUNT_TABLE = "CREATE TABLE " +  GAMECOUNT_TABLE  + "(" + COUNT_COLUMN + " TEXT " + ")";
 
     /**
      * Create the CRUD methods
@@ -70,12 +75,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addGame(gameHome game){
         //grab the current database on this phone
         SQLiteDatabase db = this.getWritableDatabase();
-        System.out.println("---------------------------------------");
-        System.out.println("AddGame@Databasehelper: "+game.getName());
-        System.out.println("AddGame@Databasehelper: "+game.getIspinned());
-        System.out.println("AddGame@Databasehelper: "+game.getRecyclerviewTopic());
-        System.out.println("AddGame@Databasehelper: "+game.getPlatformsTest());
-        System.out.println("---------------------------------------");
+        //System.out.println("---------------------------------------");
+        //System.out.println("AddGame@Databasehelper: "+game.getName());
+        //System.out.println("AddGame@Databasehelper: "+game.getIspinned());
+        //System.out.println("AddGame@Databasehelper: "+game.getRecyclerviewTopic());
+        //System.out.println("AddGame@Databasehelper: "+game.getPlatformsTest());
+        //System.out.println("---------------------------------------");
         ContentValues val = new ContentValues();
         val.put(GAMEID_COLUMN, game.getId());
         val.put(TITLE_COLUMN, game.getName());
@@ -177,10 +182,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+    //CRUD methods for the game count table
+
+    //create
+    public void addGameCount(String gameCount){
+        String total = null;
+        if (gameCount!=null){
+            total = String.valueOf(gameCount);
+        }
+        //grab the current database on this phone
+        SQLiteDatabase db = this.getWritableDatabase();
+        //System.out.println("---------------------------------------");
+        //System.out.println("addGameCount@Databasehelper: "+game.getName());
+        //System.out.println("---------------------------------------");
+        ContentValues val = new ContentValues();
+        val.put(COUNT_COLUMN, total);
+        db.insert(GAMECOUNT_TABLE, null, val);
+        db.close();
+    }
+    //read
+    public String grabGameCount(){
+        String totalGameCount = null;
+        String query = "SELECT * FROM " + GAMECOUNT_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor pointer = db.rawQuery(query, null);
+        if(pointer.moveToFirst()){
+            do{
+                totalGameCount = pointer.getString(pointer.getColumnIndex(COUNT_COLUMN));
+            }while(pointer.moveToNext());
+        }
+        pointer.close();
+        db.close();
+        return totalGameCount;
+    }
+
+    //update
+
+    //delete
+
+
+
+
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_GAME);
+        db.execSQL(CREATE_TOTAL_GAME_COUNT_TABLE);
     }
 
     @Override

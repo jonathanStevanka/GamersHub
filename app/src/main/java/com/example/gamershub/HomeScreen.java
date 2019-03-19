@@ -2,6 +2,7 @@ package com.example.gamershub;
 
 import java.sql.Timestamp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.androidnetworking.AndroidNetworking;
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.igdbAPI.APICOMMAND;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
@@ -70,7 +72,6 @@ public class HomeScreen extends Fragment {
     //create a fragment transaction
     FragmentManager fm;
 
-
     //Create an instance of our 'CustomHomeAdapterClass'
     private CustomHomeAdapterClass customAdapterClass;
 
@@ -105,7 +106,6 @@ public class HomeScreen extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         fm = getActivity().getSupportFragmentManager();
-
 
 
         if (savedInstanceState != null){
@@ -221,79 +221,78 @@ public class HomeScreen extends Fragment {
                 //return everything back to how we wanted it
 
                 //was having problems seeing data after it had been updated
-                trendingGames = new ArrayList<>();
-                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest,"trendingGames");
+                //trendingGames = new ArrayList<>();
+                //apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest,"trendingGames");
 
             }else {
                 //if 'trendingGames' is empty then this method will load localdata from the phone
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest,"trendingGames");
             }
 
-                if (!popularGamesPs4.isEmpty()){
-                    //was having problems seeing data after it had been updated
-                    popularGamesPs4 = new ArrayList<>();
-                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
+            if (!popularGamesPs4.isEmpty()){
+                //was having problems seeing data after it had been updated
+                //popularGamesPs4 = new ArrayList<>();
+                //apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
 
-                }else {
-                    //if 'trendingGames' is empty then this method will load localdata from the phone
-                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
-                }
-
-
-                if (!popularGamesXBOX.isEmpty()){
-                    popularGamesXBOX = new ArrayList<>();
-                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
-                }else{
-                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
-
-                }
+            }else {
+                //if 'trendingGames' is empty then this method will load localdata from the phone
+                apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
+            }
 
 
-                if (!popularGamesPC.isEmpty()){
-                    popularGamesPC = new ArrayList<>();
-                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
-                }else{
-                    apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
-
-                }
-
-                if (!upcomingGames.isEmpty()){
-                    //was having problems seeing data after it had been updated
-                    apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
-
-                }else {
-                    apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
-                }
+            if (!popularGamesXBOX.isEmpty()){
+                //popularGamesXBOX = new ArrayList<>();
+                //apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
+            }else{
+                apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
 
             }
-            db.close();
 
 
-        if (savedInstanceState == null){
-            /**
-             * FOR TESTING PURPOSES ONLY
-             * -this will load dummy data inside the recyclerviews
-             */
-            //apicommand.InitialLoad(trendingGames,customAdapterClass);
-            //apicommand.InitialLoad(upcomingGames,customAdapterClass);
-            //apicommand.InitialLoad(popularGamesPs4,customAdapterClass);
-            //apicommand.InitialLoad(popularGamesXBOX,customAdapterClass);
-            //apicommand.InitialLoad(popularGamesPC,customAdapterClass);
-            /**
-             * This is where the action happens
-             * Please check the params on the 'getData()' function
-             * The getData() method will grab the data and programmatically add it to each recyclerview inside the application.
-             *
-             * WE SHOULD ALSO BE CHECKING TO SEE IF THERE IS ANY SAVED DATA ON THE DEVICE, IF THERE IS
-             * PULL IT IN INSTEAD OF USING OUR API TO PULL REQUESTS
-             * SHOULD HELP ON KEEPING THE API PULLS DOWN
-             */
-            if (trendingGames.isEmpty()){
-                apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames");
+            if (!popularGamesPC.isEmpty()){
+                //popularGamesPC = new ArrayList<>();
+                //apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
+            }else{
+                apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
+
             }
-            if (upcomingGames.isEmpty()){
-                apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames");
+
+            if (!upcomingGames.isEmpty()){
+                //was having problems seeing data after it had been updated
+                //apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
+
+            }else {
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
             }
+        }
+        db.close();
+
+        /**
+         * FOR TESTING PURPOSES ONLY
+         * -this will load dummy data inside the recyclerviews
+         */
+        //apicommand.InitialLoad(trendingGames,customAdapterClass);
+        //apicommand.InitialLoad(upcomingGames,customAdapterClass);
+        //apicommand.InitialLoad(popularGamesPs4,customAdapterClass);
+        //apicommand.InitialLoad(popularGamesXBOX,customAdapterClass);
+        //apicommand.InitialLoad(popularGamesPC,customAdapterClass);
+        /**
+         * This is where the action happens
+         * Please check the params on the 'getData()' function
+         * The getData() method will grab the data and programmatically add it to each recyclerview inside the application.
+         *
+         * WE SHOULD ALSO BE CHECKING TO SEE IF THERE IS ANY SAVED DATA ON THE DEVICE, IF THERE IS
+         * PULL IT IN INSTEAD OF USING OUR API TO PULL REQUESTS
+         * SHOULD HELP ON KEEPING THE API PULLS DOWN
+         */
+
+
+        if (trendingGames.isEmpty()){
+            apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames");
+        }
+        if (upcomingGames.isEmpty()){
+            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames");
+        }
 //            if (popularGamesPs4.isEmpty()){
 //                apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_upcomingGamesPS4),"release_dates","PS4","popularGamesPs4");
 //            }
@@ -304,16 +303,14 @@ public class HomeScreen extends Fragment {
 //                apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_upcomingGamesPC),"games","PC","popularGamesPC");
 //            }
 
-            System.out.println("trendingGames SIZE: "+trendingGames.size());
-            System.out.println("upcomingGames SIZE: "+upcomingGames.size());
-            System.out.println("popularGamesPs4 SIZE: "+popularGamesPs4.size());
-            System.out.println("popularGamesXBOX SIZE: "+popularGamesXBOX.size());
-            System.out.println("popularGamesPC SIZE: "+popularGamesPC.size());
+        System.out.println("trendingGames SIZE: "+trendingGames.size());
+        System.out.println("upcomingGames SIZE: "+upcomingGames.size());
+        System.out.println("popularGamesPs4 SIZE: "+popularGamesPs4.size());
+        System.out.println("popularGamesXBOX SIZE: "+popularGamesXBOX.size());
+        System.out.println("popularGamesPC SIZE: "+popularGamesPC.size());
 
-            //working
-            //System.out.println("test1");
-        }
-
+        //working
+        //System.out.println("test1");
 
 
         //set the layoutManager on all recyclerViews and set them to horizontal
@@ -365,6 +362,4 @@ public class HomeScreen extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
 }
