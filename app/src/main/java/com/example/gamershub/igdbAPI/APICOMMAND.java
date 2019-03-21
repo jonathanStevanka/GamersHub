@@ -26,6 +26,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 import static java.text.DateFormat.getDateInstance;
@@ -276,7 +277,6 @@ public class APICOMMAND {
                 }
             }
         }
-
         customHomeAdapterClass.notifyDataSetChanged();
         progressDialog.dismiss();
     }
@@ -307,9 +307,11 @@ public class APICOMMAND {
                 }
             }
             //System.out.println("------------------------------");
-            customHomeAdapterClass.notifyDataSetChanged();
         }
-
+        if (!destination.contains("upcomingGames")){
+            Collections.shuffle(arrayList);
+        }
+        customHomeAdapterClass.notifyDataSetChanged();
         progressDialog.dismiss();
     }
 
@@ -418,7 +420,7 @@ public class APICOMMAND {
                                 AndroidNetworking.post("https://api-v3.igdb.com/screenshots/").addHeaders("user-key",BuildConfig.IGDBKey)
                                         .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
                                         .addStringBody(context.getString(R.string.search_screenShotTable)+gameId+";")
-                                        .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+                                        .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                     @Override
                                     public void onResponse(JSONArray response) {
@@ -437,8 +439,8 @@ public class APICOMMAND {
                                                 if (localJSON.has("url")){
                                                     final String tempUrl=localJSON.getString("url");
                                                     final String newUrl = tempUrl.replace("thumb","720p");
-
                                                     screenshotURLArray[r] = "https:"+newUrl;
+
                                                 }
 
                                             }
@@ -485,7 +487,7 @@ public class APICOMMAND {
                                                     AndroidNetworking.post("https://api-v3.igdb.com/release_dates/").addHeaders("user-key",BuildConfig.IGDBKey)
                                                             .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
                                                             .addStringBody("fields id,game,human,m; where game ="+gameId+"; limit 1;")
-                                                            .setPriority(Priority.IMMEDIATE).build().getAsJSONArray(new JSONArrayRequestListener() {
+                                                            .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                                         @Override
                                                         public void onResponse(JSONArray response) {
@@ -564,16 +566,21 @@ public class APICOMMAND {
                                                                             popularOnXBOX.add(game);
                                                                         }
                                                                     }
-                                                                    System.out.println("--------------------------------------------------");
 
-                                                                    System.out.println(game.getName());
-                                                                    db.addGame(game);
+                                                                    if (!db.grabAllGames().contains(game)) {
+                                                                        db.addGame(game);
+                                                                    }
                                                                 }catch (JSONException e){
                                                                     e.printStackTrace();
                                                                     e.getCause();
                                                                 }
                                                             }
                                                             db.close();
+                                                            if (!popularOnPC.isEmpty() && !popularOnPS4.isEmpty() && !popularOnXBOX.isEmpty()){
+                                                                Collections.shuffle(popularOnPC);
+                                                                Collections.shuffle(popularOnPS4);
+                                                                Collections.shuffle(popularOnXBOX);
+                                                            }
                                                             customHomeAdapterClass.notifyDataSetChanged();
                                                             progressDialog.dismiss();
                                                         }

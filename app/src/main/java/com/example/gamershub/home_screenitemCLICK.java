@@ -159,6 +159,7 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
         System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
         System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
+        System.out.println("RECYCLERVIEWDESTINATION: "+gameHome.getRecyclerviewTopic());
         System.out.println("GAME PINNED BY USER: "+gameHome.getIspinned());
         System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
         System.out.println("TOPIC: "+gameHome.getRecyclerviewTopic());
@@ -171,12 +172,13 @@ public class home_screenitemCLICK extends Fragment {
          * -possibly going to change to an imagebutton down the road, or both who knows.
          */
 
-        if (gameHome.getIspinned().contains("yes")){
-            addToPinnedGamesBtn.setText(getResources().getString(R.string.removePinBtnText));
-        }
-        if (gameHome.getIspinned().contains("no")){
-            addToPinnedGamesBtn.setText(getResources().getString(R.string.addPinBtnText));
-        }
+            if (gameHome.getIspinned().contains("yes")){
+                addToPinnedGamesBtn.setText(getResources().getString(R.string.removePinBtnText));
+            }
+            if (gameHome.getIspinned().contains("no")){
+                addToPinnedGamesBtn.setText(getResources().getString(R.string.addPinBtnText));
+            }
+
         System.out.println("@!isPinned: is the game a pinned game?: "+gameHome.getIspinned());
 
         addToPinnedGamesBtn.setOnClickListener(new View.OnClickListener() {

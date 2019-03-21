@@ -1,10 +1,13 @@
 package com.example.gamershub;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +21,14 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.gamershub.Database.DatabaseHelper;
+import com.example.gamershub.objectPackage.CustomPinnedAdapterClass;
 import com.example.gamershub.objectPackage.gameHome;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
@@ -47,6 +53,11 @@ public class search_screen extends Fragment {
 
     private TextView searchBar;
     private Button searchBtn;
+    private ArrayList<gameHome> searchedGames = new ArrayList<>();
+
+    //Create a new CustomPinnedAdapterClass so we can re-use it throughout the code and recyclerviews if we decided to add more lateron
+    private CustomPinnedAdapterClass customPinnedAdapterClass;
+
 
     RecyclerView searchedGame;
     FragmentManager fm;
@@ -81,7 +92,19 @@ public class search_screen extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        fm = getChildFragmentManager();
+        fm = getActivity().getSupportFragmentManager();
+
+        if (savedInstanceState != null){
+            searchedGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("searchedGames");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (searchedGames != null){
+            outState.putSerializable("searchedGames",searchedGames);
+        }
     }
 
     @Override
@@ -90,82 +113,133 @@ public class search_screen extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_screen, container, false);
 
+
         searchBar = view.findViewById(R.id.searchBar);
         searchBtn = view.findViewById(R.id.searchBtn);
         searchedGame = view.findViewById(R.id.searchedGameRecyclerView);
+        searchedGame.setNestedScrollingEnabled(false);
 
+        //connect the custom adapter class to the desired arraylists
+        customPinnedAdapterClass = new CustomPinnedAdapterClass(searchedGames,getContext(),fm);
+        searchedGame.setAdapter(customPinnedAdapterClass);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 String searchedGame = null;
                 if (searchBar.getText()!=null){
+
+
+                    final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                    progressDialog.setMessage("Loading Game data...please wait");
+                    progressDialog.show();
+
+
                     searchedGame = searchBar.getText().toString();
 
                     System.out.println("search "+"\""+searchedGame+"\"; "+getString(R.string.search_pinnedGamesScreen));
 
                     AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
                             .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                            .addStringBody("search "+"\""+searchedGame+"\"; "+getString(R.string.search_pinnedGamesScreen))
+                            .addStringBody("search "+"\""+searchedGame+"\";"+getString(R.string.search_pinnedGamesScreen))
                             .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                         @Override
                         public void onResponse(JSONArray response) {
+                            DatabaseHelper db = new DatabaseHelper(getContext());
                             //Instantiate a new JSONObject for the response information
                             JSONObject jsonGameObject = null;
-                            JSONArray jsonScreenshotObject = null;
-                            JSONObject jsonReleaseObject = null;
-                            gameHome game = new gameHome();
+                            JSONArray jsonScreenshotArray = null;
+                            JSONArray jsonReleaseObject = null;
+                            JSONObject jsonCoverObject = null;
+                            gameHome game;
 
                             try {
-
+                                customPinnedAdapterClass.RemoveAllData();
                                 for (int i=0; i<response.length();i++){
+                                    game = new gameHome();
+
                                     jsonGameObject = response.getJSONObject(i);
 
-                                    String[] screenshotUrlsUnextended;
 
                                     //String[] screenshotURLS = gameHome.getGameScreenshotExtendedURL().replace("[","").replace("]","").split(", ");
 
+//                                    videoGameInitialRelease.setText(String.valueOf(gameHome.getReleaseDate()));
+//                                    videoGamePlatform.setText(String.valueOf(gameHome.getPlatformsTest()));
+//                                    videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
 
-                                    int gameId = jsonGameObject.getInt("id");
-                                    int gameCover = jsonGameObject.getInt("cover");
-                                    String gameName = jsonGameObject.getString("name");
-                                    String platforms = jsonGameObject.getString("platforms");
-                                    //popularity goes here
-                                    double gameRating = jsonGameObject.getDouble("rating");
-                                    //releaedates goes here
-
-                                    //screenshots goes here
-                                    if (jsonGameObject.has("screenshots")){
-                                        jsonScreenshotObject = jsonGameObject.getJSONArray("screenshots");
-                                        for (int r =0; r<jsonScreenshotObject.length();r++){
-                                            screenshotUrlsUnextended = new String[jsonScreenshotObject.length()];
-                                            System.out.println(jsonScreenshotObject.get(r));
-                                        }
+                                    if (jsonGameObject.has("id")){
+                                        game.setId(jsonGameObject.getInt("id"));
                                     }
-                                    System.out.println(jsonGameObject.has("aggregated_rating"));
-                                    double aggervatedRating = jsonGameObject.getDouble("aggregated_rating");
 
+                                    game.setName(jsonGameObject.getString("name"));
+                                    if (jsonGameObject.has("platforms")){
+                                        game.setPlatformsTest(jsonGameObject.getString("platforms"));
+                                    }
+                                    //popularity goes here
+                                    if (jsonGameObject.has("rating")){
+                                        //double gameRating = jsonGameObject.getDouble("rating");
+                                        game.setRating(jsonGameObject.getDouble("rating"));
+                                    }
 
-                                    String gameSummary = jsonGameObject.getString("summary");
-                                    double totalRating = jsonGameObject.getDouble("total_rating");
-                                    String gameWebsiteURL = jsonGameObject.getString("url");
+                                    if (jsonGameObject.has("release_dates")){
+                                        jsonReleaseObject = jsonGameObject.getJSONArray("release_dates");
+
+                                    }
+
+                                    if (jsonGameObject.has("cover")){
+                                        jsonCoverObject = jsonGameObject.getJSONObject("cover");
+                                        game.setGameCover(jsonCoverObject.getInt("id"));
+                                        game.setGameCoverURL("https:"+jsonCoverObject.getString("url").replace("thumb","720p"));
+                                    }
+                                    if (jsonGameObject.has("screenshots")){
+                                        jsonScreenshotArray = jsonGameObject.getJSONArray("screenshots");
+                                        String[] screenshotUrlsUnextended = new String[jsonScreenshotArray.length()];
+                                        for (int r =0; r<jsonScreenshotArray.length();r++){
+                                            screenshotUrlsUnextended[r] = "https:"+jsonScreenshotArray.getJSONObject(r).getString("url").replace("thumb","720p");
+                                            System.out.println("'"+screenshotUrlsUnextended[r]+"'");
+                                        }
+                                        game.setGameScreenshots(screenshotUrlsUnextended);
+                                    }
+                                    if (jsonGameObject.has("aggregated_rating")){
+                                        game.setAggervatedRating(jsonGameObject.getDouble("aggregated_rating"));
+                                    }
+                                    if (jsonGameObject.has("summary")){
+                                        game.setDescription(jsonGameObject.getString("summary"));
+                                    }
+                                    if (jsonGameObject.has("total_rating")){
+                                        game.setTotalRating(jsonGameObject.getDouble("total_rating"));
+                                    }
+                                    if (jsonGameObject.has("url")){
+                                        game.setWebsiteUrl(jsonGameObject.getString("url"));
+
+                                    }
+                                    game.setIspinned("no");
+                                    game.setRecyclerviewTopic("searchGamesScreen");
+
 
                                     System.out.println("----------------------------------------------------");
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME ID - "+gameId);
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME NAME - "+gameName);
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME COVERID - "+gameCover);
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME PLATFORMS - "+platforms);
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME AGGERVATED_RATING - "+aggervatedRating);
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME RATING - "+gameRating);
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME TOTALRATING - "+totalRating);
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SCREENSHOTS - "+jsonScreenshotObject);
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SUMMARY - "+gameSummary);
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME WEBURL - "+gameWebsiteURL);
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME ID - "+game.getId());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME NAME - "+game.getName());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME COVERURL - "+game.getGameCoverURL());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME PLATFORMS - "+game.getPlatformsTest());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME AGGERVATED_RATING - "+game.getAggervatedRating());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME RATING - "+game.getRating());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME TOTALRATING - "+game.getRating());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SCREENSHOTS - "+game.getGameScreenshotExtendedURL());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SUMMARY - "+game.getDescription());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME WEBURL - "+game.getWebsiteUrl());
                                     System.out.println("----------------------------------------------------");
 
-
+                                    searchedGames.add(game);
+                                    db.addGame(game);
+                                    customPinnedAdapterClass.notifyDataSetChanged();
                                 }
+
+                                progressDialog.dismiss();
+                                db.close();
+                                System.out.println(searchedGames.size());
 
                             }catch (JSONException e){
                                 e.printStackTrace();
@@ -176,7 +250,10 @@ public class search_screen extends Fragment {
 
                         @Override
                         public void onError(ANError anError) {
-
+                            anError.getResponse();
+                            anError.getErrorBody();
+                            anError.getErrorCode();
+                            anError.getErrorDetail();
                         }
 
                     });
@@ -185,6 +262,8 @@ public class search_screen extends Fragment {
 
             }
         });
+
+        searchedGame.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
 
 
 

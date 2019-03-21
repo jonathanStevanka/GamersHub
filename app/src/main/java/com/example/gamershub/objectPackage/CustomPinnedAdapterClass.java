@@ -121,4 +121,9 @@ public class CustomPinnedAdapterClass extends RecyclerView.Adapter<CustomPinnedA
         }
     }
 
+    public void RemoveAllData(){
+        pinnedGames.clear();
+        notifyDataSetChanged();
+    }
+
 }
