@@ -49,7 +49,7 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
     public void onBindViewHolder(@NonNull final customAdap viewHolder, final int i) {
         final gameHome game = games.get(i);
         viewHolder.name.setText(game.getName());
-        Picasso.get().load(game.getGameCoverURL()).into(viewHolder.gameCover);
+        Picasso.get().load(game.getGameCoverURL()).resize(290,390).into(viewHolder.gameCover);
         viewHolder.setIsRecyclable(true);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

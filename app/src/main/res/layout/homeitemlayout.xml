@@ -15,9 +15,10 @@
 
         <ImageView
             android:id="@+id/gameImage"
-            android:layout_width="290px"
-            android:layout_height="400px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:adjustViewBounds="true"
             app:layout_constraintBottom_toTopOf="@+id/gameTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

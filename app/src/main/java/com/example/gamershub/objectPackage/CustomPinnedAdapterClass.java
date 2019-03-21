@@ -47,7 +47,7 @@ public class CustomPinnedAdapterClass extends RecyclerView.Adapter<CustomPinnedA
     public void onBindViewHolder(@NonNull final customAdap viewHolder,final int i) {
         final gameHome game = pinnedGames.get(i);
         viewHolder.name.setText(game.getName());
-        Picasso.get().load(game.getGameCoverURL()).into(viewHolder.gameCover);
+        Picasso.get().load(game.getGameCoverURL()).resize(290,390).into(viewHolder.gameCover);
 
         if (game.getRating()!=null){
             viewHolder.rating.setProgress(game.getRating().intValue());
