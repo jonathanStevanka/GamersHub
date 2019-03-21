@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.gamershub.objectPackage.gameHome;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import static java.text.DateFormat.getDateTimeInstance;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -29,25 +32,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * CREATE THE STRINGS THAT WILL REPRESENT OUR COLUMN
      */
 
+    //the ID column will represent the DB id
     public static final String ID_COLUMN = "id";
+    //the gameID column will represent the gameID
     public static final String GAMEID_COLUMN = "gameID";
+    //the title column will represent the game title
     public static final String TITLE_COLUMN = "title";
+    //the description column will represent the description
     public static final String DESCRIPTION_COLUMN = "description";
+    //the price column will represent the game price
     public static final String PRICE_COLUMN = "price";
+    //the webURL column will represent the game webURL
     public static final String WEBURL_COLUMN = "webURL";
+    //the imageURL column will represent the game imageURL
     public static final String IMAGEURL_COLUMN = "imageURL";
+    //the rating column will represent the game rating
     public static final String RATING_COLUMN = "rating";
+    //the agger_rating column will represent the game agger_rating
     public static final String AGGERRATING_COLUMN = "agger_rating";
+    //the total_rating column will represent the game total_rating
     public static final String TOTALRATING_COLUMN = "total_rating";
+    //the cover column will represent the game cover
     public static final String COVERID_COLUMN = "cover";
+    //the platform column will represent the game platform
     public static final String PLATFORM_COLUMN = "platform";
+    //the release_date column will represent the game release_date
     public static final String RELEASE_DATE_COLUMN = "release_date";
+    //the coverURL column will represent the game coverURL
     public static final String COVERURL_COLUMN = "coverURL";
+    //the screenshotURL column will represent the game screenshotURL
     public static final String SCREENSHOTURL_COLUMN = "screenshotURL";
+    //the timestamp column will represent the game timestamp
     public static final String TIMESTAMP_COLUMN = "timestamp";
+    //the pinned column will represent if the game is pinned or not
     public static final String PINNED_COLUMN = "pinned";
+    //the topic column will represent the recyclerview this data should belong too if it gets loaded in
     public static final String TOPIC_COLUMN = "topic";
 
+
+    /**
+     * CREATE THE TABLE 'GAME COUNT' INFO
+     */
 
     public static final String COUNT_COLUMN = "count";
     public static final String GAMECOUNT_TABLE = "GAMECOUNT";
@@ -62,15 +87,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + PRICE_COLUMN + " DOUBLE, " + WEBURL_COLUMN + " TEXT, " + IMAGEURL_COLUMN + " TEXT, " + RATING_COLUMN + " DOUBLE," +
             AGGERRATING_COLUMN + " DOUBLE," + TOTALRATING_COLUMN + " DOUBLE, " + COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN + " TEXT, " + RELEASE_DATE_COLUMN + " TEXT, " + PINNED_COLUMN + " VARCHAR, " + SCREENSHOTURL_COLUMN + " TEXT, "+ TOPIC_COLUMN + " TEXT, " + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
 
-    public static final String CREATE_TOTAL_GAME_COUNT_TABLE = "CREATE TABLE " +  GAMECOUNT_TABLE  + "(" + COUNT_COLUMN + " TEXT " + ")";
+    public static final String CREATE_TOTAL_GAME_COUNT_TABLE = "CREATE TABLE " +  GAMECOUNT_TABLE  + "(" + COUNT_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT " + ")";
 
     /**
      * Create the CRUD methods
      */
-
-
-
-
     //create
     public void addGame(gameHome game){
         //grab the current database on this phone
@@ -143,12 +164,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //delete
 
-
     /**
      *
      * Custom method's for data inside our LocalDatabase
      */
-
     public String[] grabAllGameTitles(){
         ArrayList<gameHome> allGames = grabAllGames();
         String[] titles = null;
@@ -181,11 +200,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
     //CRUD methods for the game count table
 
     //create
     public void addGameCount(String gameCount){
+        final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
         String total = null;
         if (gameCount!=null){
             total = String.valueOf(gameCount);
@@ -197,6 +216,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //System.out.println("---------------------------------------");
         ContentValues val = new ContentValues();
         val.put(COUNT_COLUMN, total);
+        val.put(TIMESTAMP_COLUMN, currentDateTimeStamp);
         db.insert(GAMECOUNT_TABLE, null, val);
         db.close();
     }
@@ -218,9 +238,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //update
 
+
+
+
     //delete
-
-
 
 
 

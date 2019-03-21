@@ -18,8 +18,8 @@
 
             <ImageView
                 android:id="@+id/gameCoverPhoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="290px"
+                android:layout_height="390px"
                 android:layout_marginStart="150dp"
                 android:layout_marginTop="47dp"
                 android:layout_marginEnd="151dp"
