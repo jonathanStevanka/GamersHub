@@ -86,6 +86,7 @@ public class pinnedgames_screen extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        fm = getActivity().getSupportFragmentManager();
     }
 
     @Override
@@ -94,8 +95,10 @@ public class pinnedgames_screen extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pinnedgames_screen, container, false);
 
-        pinnedGames = view.findViewById(R.id.pinnedGamesRecyclerView);
+        pinnedGamesList = new ArrayList<>();
 
+        pinnedGames = view.findViewById(R.id.pinnedGamesRecyclerView);
+        pinnedGames.setNestedScrollingEnabled(false);
         //check to see if there is any objects inside our local database
         DatabaseHelper db = new DatabaseHelper(getContext());
         ArrayList<gameHome> dbTest = db.grabAllGames();

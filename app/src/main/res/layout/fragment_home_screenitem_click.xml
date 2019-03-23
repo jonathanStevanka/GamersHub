@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     tools:context=".home_screenitemCLICK">
 
@@ -32,21 +33,23 @@
                 android:id="@+id/videoGameName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="TextView"
+                android:layout_marginTop="300dp"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/gameCoverPhoto" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/ratingLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="43dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="4dp"
-                android:text="Rating"
+                android:text="User rating"
+                android:textColor="@android:color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rating" />
 
@@ -54,11 +57,12 @@
                 android:id="@+id/aggervatedLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="68dp"
+                android:layout_marginStart="50dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="46dp"
-                android:text="Combined Rating"
+                android:text="Critic rating"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
                 app:layout_constraintEnd_toStartOf="@+id/totalReviewLabel"
                 app:layout_constraintStart_toEndOf="@+id/ratingLabel"
                 app:layout_constraintTop_toBottomOf="@+id/ratingAggervated" />
@@ -70,6 +74,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="27dp"
                 android:text="Total Rating"
+                android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/totalRating" />
 
@@ -80,7 +85,6 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="44dp"
 
-                app:drawBackgroundOutsideProgress="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/videoGameName"
                 app:line_width="30dp"
@@ -91,7 +95,7 @@
                 app:progress_start_degree="-90"
                 app:progress_stroke_cap="round"
                 app:progress_stroke_width="3dp"
-                app:progress_text_color="@android:color/holo_blue_bright"
+                app:progress_text_color="@android:color/white"
                 app:progress_text_size="16dp"
                 app:style="solid_line" />
 
@@ -109,7 +113,6 @@
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toEndOf="@+id/rating"
                 app:layout_constraintTop_toBottomOf="@+id/videoGameName"
-                app:style="solid_line"
                 app:line_width="30dp"
                 app:progress_background_color="@color/colorPrimaryDark"
                 app:progress_end_color="@color/colorAccent"
@@ -118,9 +121,9 @@
                 app:progress_start_degree="-90"
                 app:progress_stroke_cap="round"
                 app:progress_stroke_width="3dp"
-                app:progress_text_color="@android:color/holo_blue_bright"
+                app:progress_text_color="@android:color/white"
                 app:progress_text_size="16dp"
-                 />
+                app:style="solid_line" />
 
 
             <com.dinuscxj.progressbar.CircleProgressBar
@@ -141,7 +144,7 @@
                 app:progress_start_degree="-90"
                 app:progress_stroke_cap="round"
                 app:progress_stroke_width="3dp"
-                app:progress_text_color="@android:color/holo_blue_bright"
+                app:progress_text_color="@android:color/white"
                 app:progress_text_size="16dp"
                 app:style="solid_line" />
 
@@ -150,10 +153,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="5dp"
+                android:background="@drawable/descriptionbox_layout"
+                android:padding="10dp"
                 android:text="TextView"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -162,11 +167,12 @@
             <Button
                 android:id="@+id/addToPinnedGamesBTN"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="26dp"
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
+                android:background="@drawable/button_layout"
                 android:text="@string/addPinBtnText"
                 android:textAlignment="center"
                 android:textAllCaps="false"
@@ -175,16 +181,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/aggervatedLabel" />
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/videoGameScreenshots"
-                android:layout_width="0dp"
-                android:layout_height="345dp"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/videoGameDescription" />
-
 
             <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
                 android:id="@+id/screenshotIndicator"
@@ -192,7 +188,7 @@
                 android:layout_height="22dp"
                 android:layout_marginStart="125dp"
                 android:layout_marginEnd="125dp"
-                app:dotsColor="@color/colorPrimaryDark"
+                app:dotsColor="@color/colorPrimary"
                 app:dotsCornerRadius="8dp"
                 app:dotsSize="10dp"
                 app:dotsSpacing="4dp"
@@ -201,7 +197,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/videoGameScreenshots"
                 app:progressMode="true"
-                app:selectedDotColor="@color/colorAccent" >
+                app:selectedDotColor="@color/colorAccent">
 
             </com.tbuonomo.viewpagerdotsindicator.DotsIndicator>
 
@@ -210,21 +206,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimary"
+                android:padding="10dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/screenshotIndicator" />
+                app:layout_constraintTop_toBottomOf="@+id/videoGameDescription" />
 
             <TextView
                 android:id="@+id/videoGamePlatform"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="11dp"
                 android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimary"
+                android:padding="10dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -235,8 +233,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="11dp"
                 android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimary"
+                android:padding="10dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -247,8 +246,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="11dp"
                 android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimary"
+                android:padding="10dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -259,12 +259,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="11dp"
                 android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimary"
+                android:padding="10dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/videoGameCover" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/videoGameScreenshots"
+                android:layout_width="0dp"
+                android:layout_height="345dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@android:color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videoGameInitialReleaseDate" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

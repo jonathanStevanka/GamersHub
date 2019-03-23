@@ -34,7 +34,6 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
     }
 
 
-
     @NonNull
     @Override
     public customAdap onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -50,21 +49,11 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
     public void onBindViewHolder(@NonNull final customAdap viewHolder, final int i) {
         final gameHome game = games.get(i);
         viewHolder.name.setText(game.getName());
-        Picasso.get().load(game.getGameCoverURL()).into(viewHolder.gameCover);
-
+        Picasso.get().load(game.getGameCoverURL()).resize(290,390).into(viewHolder.gameCover);
+        viewHolder.setIsRecyclable(true);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                /**
-                 * FOR TESTING PURPOSES ONLY DELETE LATER
-                 */
-
-
-                /**
-                 * -------------------------------------------------------
-                 */
                 //create a fragmentTransaction and pass the data to another fragment
                 Bundle objectBundle = new Bundle();
                 //create a new game to be placed inside the bundle

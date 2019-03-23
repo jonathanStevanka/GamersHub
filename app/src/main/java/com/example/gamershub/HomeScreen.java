@@ -2,6 +2,7 @@ package com.example.gamershub;
 
 import java.sql.Timestamp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.androidnetworking.AndroidNetworking;
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.igdbAPI.APICOMMAND;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
@@ -25,6 +27,7 @@ import com.example.gamershub.objectPackage.gameHome;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import static java.text.DateFormat.getDateInstance;
@@ -70,7 +73,6 @@ public class HomeScreen extends Fragment {
     //create a fragment transaction
     FragmentManager fm;
 
-
     //Create an instance of our 'CustomHomeAdapterClass'
     private CustomHomeAdapterClass customAdapterClass;
 
@@ -107,7 +109,6 @@ public class HomeScreen extends Fragment {
         fm = getActivity().getSupportFragmentManager();
 
 
-
         if (savedInstanceState != null){
             trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
         }
@@ -134,6 +135,8 @@ public class HomeScreen extends Fragment {
         if (popularGamesPs4 != null){
             outState.putSerializable("popularPS4",popularGamesPs4);
         }
+
+
     }
 
 
@@ -144,6 +147,10 @@ public class HomeScreen extends Fragment {
         if (savedInstanceState !=null){
             trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
             upcomingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("upcoming");
+            popularGamesXBOX = (ArrayList<gameHome>) savedInstanceState.getSerializable("popularXBOX");
+            popularGamesPC = (ArrayList<gameHome>) savedInstanceState.getSerializable("popularPC");
+            popularGamesPs4 = (ArrayList<gameHome>) savedInstanceState.getSerializable("popularPS4");
+
         }
 
     }
@@ -153,7 +160,6 @@ public class HomeScreen extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
-
 
         //connect the trending recyclerview
         trending = view.findViewById(R.id.trendingGamesALL);
@@ -199,7 +205,12 @@ public class HomeScreen extends Fragment {
         DatabaseHelper db = new DatabaseHelper(getContext());
         ArrayList<gameHome> dbTest = db.grabAllGames();
 
-
+        System.out.println("DATABASE SIZE: "+dbTest.size());
+        /**
+         * create the methods to load in data into each individual recyclerview where the destination column in the DB
+         * matches the one that is in gameHome.getTopic() method.
+         * if it equates to true then it will add that data to that particular recyclerview
+         */
 
         //if the database is not empty, load objects from the DB into our recyclerviews
         if (!dbTest.isEmpty()){
@@ -220,54 +231,88 @@ public class HomeScreen extends Fragment {
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest,"trendingGames");
             }
 
+            if (!popularGamesPs4.isEmpty()){
+                //was having problems seeing data after it had been updated
+                //popularGamesPs4 = new ArrayList<>();
+                //apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
+            }else {
+                //if 'trendingGames' is empty then this method will load localdata from the phone
+                apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
+            }
+
+
+            if (!popularGamesXBOX.isEmpty()){
+                //popularGamesXBOX = new ArrayList<>();
+                //apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
+            }else{
+                apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
+            }
+
+
+            if (!popularGamesPC.isEmpty()){
+                //popularGamesPC = new ArrayList<>();
+                //apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
+            }else{
+                apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
+
+            }
+
             if (!upcomingGames.isEmpty()){
                 //was having problems seeing data after it had been updated
-                upcomingGames = new ArrayList<>();
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
 
             }else {
-                //if 'trendingGames' is empty then this method will load localdata from the phone
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
             }
         }
         db.close();
 
-
-        if (savedInstanceState == null){
-            /**
-             * FOR TESTING PURPOSES ONLY
-             * -this will load dummy data inside the recyclerviews
-             */
-            //apicommand.InitialLoad(trendingGames,customAdapterClass);
-            //apicommand.InitialLoad(upcomingGames,customAdapterClass);
-            //apicommand.InitialLoad(popularGamesPs4,customAdapterClass);
-            //apicommand.InitialLoad(popularGamesXBOX,customAdapterClass);
-            //apicommand.InitialLoad(popularGamesPC,customAdapterClass);
-            /**
-             * This is where the action happens
-             * Please check the params on the 'getData()' function
-             * The getData() method will grab the data and programmatically add it to each recyclerview inside the application.
-             *
-             * WE SHOULD ALSO BE CHECKING TO SEE IF THERE IS ANY SAVED DATA ON THE DEVICE, IF THERE IS
-             * PULL IT IN INSTEAD OF USING OUR API TO PULL REQUESTS
-             * SHOULD HELP ON KEEPING THE API PULLS DOWN
-             */
-            if (trendingGames.isEmpty()){
-                apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames");
-
-            }
-            if (upcomingGames.isEmpty()){
-                apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames");
-            }
+        /**
+         * FOR TESTING PURPOSES ONLY
+         * -this will load dummy data inside the recyclerviews
+         */
+        //apicommand.InitialLoad(trendingGames,customAdapterClass);
+        //apicommand.InitialLoad(upcomingGames,customAdapterClass);
+        //apicommand.InitialLoad(popularGamesPs4,customAdapterClass);
+        //apicommand.InitialLoad(popularGamesXBOX,customAdapterClass);
+        //apicommand.InitialLoad(popularGamesPC,customAdapterClass);
+        /**
+         * This is where the action happens
+         * Please check the params on the 'getData()' function
+         * The getData() method will grab the data and programmatically add it to each recyclerview inside the application.
+         *
+         * WE SHOULD ALSO BE CHECKING TO SEE IF THERE IS ANY SAVED DATA ON THE DEVICE, IF THERE IS
+         * PULL IT IN INSTEAD OF USING OUR API TO PULL REQUESTS
+         * SHOULD HELP ON KEEPING THE API PULLS DOWN
+         */
 
 
-            //working
-            //apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_trendingGames),"games","PS4");
-            //apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_trendingGames),"games","XBOX");
-            //apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_trendingGames),"games","PC");
-            //System.out.println("test1");
+        if (trendingGames.isEmpty()){
+            //apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
+            apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
         }
+        if (upcomingGames.isEmpty()){
+            //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
+            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
+        }
+//            if (popularGamesPs4.isEmpty()){
+//                apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_upcomingGamesPS4),"release_dates","PS4","popularGamesPs4");
+//            }
+//            if (popularGamesXBOX.isEmpty()){
+//                apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_upcomingGamesXBOX),"games","XBOX","popularGamesXBOX");
+//            }
+//            if (popularGamesPC.isEmpty()){
+//                apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_upcomingGamesPC),"games","PC","popularGamesPC");
+//            }
 
+        System.out.println("trendingGames SIZE: "+trendingGames.size());
+        System.out.println("upcomingGames SIZE: "+upcomingGames.size());
+        System.out.println("popularGamesPs4 SIZE: "+popularGamesPs4.size());
+        System.out.println("popularGamesXBOX SIZE: "+popularGamesXBOX.size());
+        System.out.println("popularGamesPC SIZE: "+popularGamesPC.size());
+
+        //working
+        //System.out.println("test1");
 
 
         //set the layoutManager on all recyclerViews and set them to horizontal
@@ -319,6 +364,4 @@ public class HomeScreen extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
 }

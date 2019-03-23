@@ -105,6 +105,8 @@ public class home_screenitemCLICK extends Fragment {
         //create a connection to our DatabaseHelper class
         final DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
 
+
+
         //create connections to the images/viewpager
         ImageView imageCover = view.findViewById(R.id.gameCoverPhoto);
         final Button addToPinnedGamesBtn = view.findViewById(R.id.addToPinnedGamesBTN);
@@ -135,8 +137,9 @@ public class home_screenitemCLICK extends Fragment {
         videoGameCover.setText(String.valueOf(String.valueOf(gameHome.getGameCover())));
         videoGameImageUrl.setText(String.valueOf(gameHome.getImageViewUrl()));
         videoGameInitialRelease.setText(String.valueOf(gameHome.getReleaseDate()));
-        videoGamePlatform.setText(String.valueOf(gameHome.getPlatform()));
+        videoGamePlatform.setText(String.valueOf(gameHome.getPlatformsTest()));
         videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
+
 
 
         //and volla
@@ -151,14 +154,13 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("aggervated-RATING: "+gameHome.getAggervatedRating());
         System.out.println("Total-RATING: "+gameHome.getTotalRating());
         System.out.println("IMAGEURL: "+gameHome.getImageViewUrl());
-        System.out.println("PLATFORM: "+gameHome.getPlatform());
+        System.out.println("PLATFORM: "+gameHome.getPlatformsTest());
         System.out.println("WEBURL: "+gameHome.getWebsiteUrl());
         System.out.println("COVER: "+gameHome.getGameCover());
         System.out.println("RELEASEDATE: "+gameHome.getReleaseDate());
         System.out.println("COVERURL: "+gameHome.getGameCoverURL());
-        System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
-        System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
         System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
+        System.out.println("RECYCLERVIEWDESTINATION: "+gameHome.getRecyclerviewTopic());
         System.out.println("GAME PINNED BY USER: "+gameHome.getIspinned());
         System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
         System.out.println("TOPIC: "+gameHome.getRecyclerviewTopic());
@@ -166,17 +168,20 @@ public class home_screenitemCLICK extends Fragment {
         //System.out.println("SCREENSHOT LENGTH: "+gameHome.getGameScreenshotExtendedURL());
 
 
+
+
         /**
          * the code below is for testing the 'add to pinned games button'
          * -possibly going to change to an imagebutton down the road, or both who knows.
          */
 
-        if (gameHome.getIspinned().contains("yes")){
-            addToPinnedGamesBtn.setText(getResources().getString(R.string.removePinBtnText));
-        }
-        if (gameHome.getIspinned().contains("no")){
-            addToPinnedGamesBtn.setText(getResources().getString(R.string.addPinBtnText));
-        }
+            if (gameHome.getIspinned().contains("yes")){
+                addToPinnedGamesBtn.setText(getResources().getString(R.string.removePinBtnText));
+            }
+            if (gameHome.getIspinned().contains("no")){
+                addToPinnedGamesBtn.setText(getResources().getString(R.string.addPinBtnText));
+            }
+
         System.out.println("@!isPinned: is the game a pinned game?: "+gameHome.getIspinned());
 
         addToPinnedGamesBtn.setOnClickListener(new View.OnClickListener() {
@@ -205,8 +210,6 @@ public class home_screenitemCLICK extends Fragment {
 
             });
 
-
-
         String[] screenshotURLS = gameHome.getGameScreenshotExtendedURL().replace("[","").replace("]","").split(", ");
 
         customAdapter adapter = new customAdapter(screenshotURLS,getContext());
@@ -227,6 +230,9 @@ public class home_screenitemCLICK extends Fragment {
         if (totRating!=null){
             totalRating.setProgress(totRating.intValue());
         }
+
+
+
         return view;
     }
 
