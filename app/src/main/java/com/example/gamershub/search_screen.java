@@ -29,6 +29,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import static java.text.DateFormat.getDateTimeInstance;
 
 
 /**
@@ -123,6 +126,9 @@ public class search_screen extends Fragment {
         customPinnedAdapterClass = new CustomPinnedAdapterClass(searchedGames,getContext(),fm);
         searchedGame.setAdapter(customPinnedAdapterClass);
 
+        final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
+
+
         searchBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -160,14 +166,8 @@ public class search_screen extends Fragment {
                                 for (int i=0; i<response.length();i++){
                                     game = new gameHome();
 
+                                    game.setTimestamp(currentDateTimeStamp);
                                     jsonGameObject = response.getJSONObject(i);
-
-
-                                    //String[] screenshotURLS = gameHome.getGameScreenshotExtendedURL().replace("[","").replace("]","").split(", ");
-
-//                                    videoGameInitialRelease.setText(String.valueOf(gameHome.getReleaseDate()));
-//                                    videoGamePlatform.setText(String.valueOf(gameHome.getPlatformsTest()));
-//                                    videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
 
                                     if (jsonGameObject.has("id")){
                                         game.setId(jsonGameObject.getInt("id"));
@@ -185,7 +185,8 @@ public class search_screen extends Fragment {
 
                                     if (jsonGameObject.has("release_dates")){
                                         jsonReleaseObject = jsonGameObject.getJSONArray("release_dates");
-
+                                        String releaseDate = jsonReleaseObject.getJSONObject(0).getString("human");
+                                        game.setReleaseDate(releaseDate);
                                     }
 
                                     if (jsonGameObject.has("cover")){
@@ -219,21 +220,20 @@ public class search_screen extends Fragment {
                                     game.setRecyclerviewTopic("searchGamesScreen");
 
 
-                                    System.out.println("----------------------------------------------------");
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME ID - "+game.getId());
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME NAME - "+game.getName());
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME COVERURL - "+game.getGameCoverURL());
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME PLATFORMS - "+game.getPlatformsTest());
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME AGGERVATED_RATING - "+game.getAggervatedRating());
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME RATING - "+game.getRating());
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME TOTALRATING - "+game.getRating());
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SCREENSHOTS - "+game.getGameScreenshotExtendedURL());
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SUMMARY - "+game.getDescription());
-                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME WEBURL - "+game.getWebsiteUrl());
-                                    System.out.println("----------------------------------------------------");
+//                                    System.out.println("----------------------------------------------------");
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME ID - "+game.getId());
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME NAME - "+game.getName());
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME COVERURL - "+game.getGameCoverURL());
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME PLATFORMS - "+game.getPlatformsTest());
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME AGGERVATED_RATING - "+game.getAggervatedRating());
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME RATING - "+game.getRating());
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME TOTALRATING - "+game.getRating());
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SCREENSHOTS - "+game.getGameScreenshotExtendedURL());
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SUMMARY - "+game.getDescription());
+//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME WEBURL - "+game.getWebsiteUrl());
+//                                    System.out.println("----------------------------------------------------");
 
                                     searchedGames.add(game);
-                                    db.addGame(game);
                                     customPinnedAdapterClass.notifyDataSetChanged();
                                 }
 

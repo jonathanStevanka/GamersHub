@@ -105,6 +105,8 @@ public class home_screenitemCLICK extends Fragment {
         //create a connection to our DatabaseHelper class
         final DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
 
+
+
         //create connections to the images/viewpager
         ImageView imageCover = view.findViewById(R.id.gameCoverPhoto);
         final Button addToPinnedGamesBtn = view.findViewById(R.id.addToPinnedGamesBTN);
@@ -139,6 +141,7 @@ public class home_screenitemCLICK extends Fragment {
         videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
 
 
+
         //and volla
         System.out.println("------------------------------------");
         System.out.println("INFORMATION FOR GAME");
@@ -156,8 +159,6 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("COVER: "+gameHome.getGameCover());
         System.out.println("RELEASEDATE: "+gameHome.getReleaseDate());
         System.out.println("COVERURL: "+gameHome.getGameCoverURL());
-        System.out.println("COVERURL-WIDTH: "+gameHome.getWidth());
-        System.out.println("COVERURL-HEIGHT: "+gameHome.getHeight());
         System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
         System.out.println("RECYCLERVIEWDESTINATION: "+gameHome.getRecyclerviewTopic());
         System.out.println("GAME PINNED BY USER: "+gameHome.getIspinned());
@@ -165,6 +166,8 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("TOPIC: "+gameHome.getRecyclerviewTopic());
         System.out.println("------------------------------------");
         //System.out.println("SCREENSHOT LENGTH: "+gameHome.getGameScreenshotExtendedURL());
+
+
 
 
         /**
@@ -207,8 +210,6 @@ public class home_screenitemCLICK extends Fragment {
 
             });
 
-
-
         String[] screenshotURLS = gameHome.getGameScreenshotExtendedURL().replace("[","").replace("]","").split(", ");
 
         customAdapter adapter = new customAdapter(screenshotURLS,getContext());
@@ -229,6 +230,9 @@ public class home_screenitemCLICK extends Fragment {
         if (totRating!=null){
             totalRating.setProgress(totRating.intValue());
         }
+
+
+
         return view;
     }
 

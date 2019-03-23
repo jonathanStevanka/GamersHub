@@ -85,7 +85,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             GAME_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY,"
             + GAMEID_COLUMN + " INTEGER, " + TITLE_COLUMN + " TEXT, " + DESCRIPTION_COLUMN + " TEXT,"
             + PRICE_COLUMN + " DOUBLE, " + WEBURL_COLUMN + " TEXT, " + IMAGEURL_COLUMN + " TEXT, " + RATING_COLUMN + " DOUBLE," +
-            AGGERRATING_COLUMN + " DOUBLE," + TOTALRATING_COLUMN + " DOUBLE, " + COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN + " TEXT, " + RELEASE_DATE_COLUMN + " TEXT, " + PINNED_COLUMN + " VARCHAR, " + SCREENSHOTURL_COLUMN + " TEXT, "+ TOPIC_COLUMN + " TEXT, " + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
+            AGGERRATING_COLUMN + " DOUBLE," + TOTALRATING_COLUMN + " DOUBLE, " + COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN
+            + " TEXT, " + RELEASE_DATE_COLUMN + " TEXT, " + PINNED_COLUMN + " VARCHAR, " + SCREENSHOTURL_COLUMN + " TEXT, "+ TOPIC_COLUMN + " TEXT, "
+            + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
 
     public static final String CREATE_TOTAL_GAME_COUNT_TABLE = "CREATE TABLE " +  GAMECOUNT_TABLE  + "(" + COUNT_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT " + ")";
 
@@ -158,6 +160,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return allGames;
     }
+
+    public gameHome grabSingleGame(int id){
+        gameHome game = new gameHome();
+        String query = "SELECT * FROM " + GAME_TABLE + " WHERE "+GAMEID_COLUMN+" = "+id+";";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor pointer = db.rawQuery(query, null);
+        if(pointer.moveToFirst()){
+            do{
+                game = new gameHome();
+                game.setLocalDBID(pointer.getInt(pointer.getColumnIndex(ID_COLUMN)));
+                game.setId(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
+                game.setName(pointer.getString(pointer.getColumnIndex(TITLE_COLUMN)));
+                game.setDescription(pointer.getString(pointer.getColumnIndex(DESCRIPTION_COLUMN)));
+                game.setWebsiteUrl(pointer.getString(pointer.getColumnIndex(WEBURL_COLUMN)));
+                game.setImageViewUrl(pointer.getString(pointer.getColumnIndex(IMAGEURL_COLUMN)));
+                game.setRating(pointer.getDouble(pointer.getColumnIndex(RATING_COLUMN)));
+                game.setAggervatedRating(pointer.getDouble(pointer.getColumnIndex(AGGERRATING_COLUMN)));
+                game.setTotalRating(pointer.getDouble(pointer.getColumnIndex(TOTALRATING_COLUMN)));
+                game.setGameCover(pointer.getInt(pointer.getColumnIndex(COVERID_COLUMN)));
+                game.setPlatformsTest(pointer.getString(pointer.getColumnIndex(PLATFORM_COLUMN)));
+                game.setReleaseDate(pointer.getString(pointer.getColumnIndex(RELEASE_DATE_COLUMN)));
+                game.setGameCoverURL(pointer.getString(pointer.getColumnIndex(COVERURL_COLUMN)));
+                game.setGameScreenshotExtendedURL(pointer.getString(pointer.getColumnIndex(SCREENSHOTURL_COLUMN)));
+                game.setIspinned(pointer.getString(pointer.getColumnIndex(PINNED_COLUMN)));
+                game.setTimestamp(pointer.getString(pointer.getColumnIndex(TIMESTAMP_COLUMN)));
+                game.setRecyclerviewTopic(pointer.getString(pointer.getColumnIndex(TOPIC_COLUMN)));
+            }while(pointer.moveToNext());
+        }
+        pointer.close();
+        db.close();
+
+
+        return game;
+    }
+
+
+
 
     //update
 

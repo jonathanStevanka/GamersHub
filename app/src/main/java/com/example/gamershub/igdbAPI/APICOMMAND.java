@@ -308,9 +308,7 @@ public class APICOMMAND {
             }
             //System.out.println("------------------------------");
         }
-        if (!destination.contains("upcomingGames")){
-            Collections.shuffle(arrayList);
-        }
+        Collections.shuffle(arrayList);
         customHomeAdapterClass.notifyDataSetChanged();
         progressDialog.dismiss();
         db.close();
@@ -319,9 +317,6 @@ public class APICOMMAND {
 
     public void loadDataFromLocalPinnedGames(final Context context, DatabaseHelper db, final CustomPinnedAdapterClass customHomeAdapterClass, final ArrayList<gameHome> arrayList, final ArrayList<gameHome> localArraylist){
 
-        final ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Discovering local data...please wait");
-        progressDialog.show();
 
         /**
          * This method will load data from localDB into gameHome objects to be then populated into the recyclerviews
@@ -342,7 +337,7 @@ public class APICOMMAND {
                     //System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i));
                     continue;
                 }else {
-                    if (localArraylist.get(i).getIspinned().contains("yes")){
+                    if (localArraylist.get(i).getIspinned().contains("yes") && !arrayList.contains(localArraylist.get(i))){
                         arrayList.add(localArraylist.get(i));
                     }
                 }
@@ -351,7 +346,6 @@ public class APICOMMAND {
         }
 
         customHomeAdapterClass.notifyDataSetChanged();
-        progressDialog.dismiss();
         db.close();
     }
 
@@ -409,6 +403,8 @@ public class APICOMMAND {
                                             jsonGameObject = response.getJSONObject(i);
 
 
+                                            game.setTimestamp(currentDateTimeStamp);
+
                                             if (jsonGameObject.has("id")) {
                                                 game.setId(jsonGameObject.getInt("id"));
                                             }
@@ -428,7 +424,8 @@ public class APICOMMAND {
 
                                             if (jsonGameObject.has("release_dates")) {
                                                 jsonReleaseObject = jsonGameObject.getJSONArray("release_dates");
-
+                                                String releaseDate = jsonReleaseObject.getJSONObject(0).getString("human");
+                                                game.setReleaseDate(releaseDate);
                                             }
 
                                             if (jsonGameObject.has("cover")) {
@@ -441,7 +438,6 @@ public class APICOMMAND {
                                                 String[] screenshotUrlsUnextended = new String[jsonScreenshotArray.length()];
                                                 for (int r = 0; r < jsonScreenshotArray.length(); r++) {
                                                     screenshotUrlsUnextended[r] = "https:" + jsonScreenshotArray.getJSONObject(r).getString("url").replace("thumb", "720p");
-                                                    System.out.println("'" + screenshotUrlsUnextended[r] + "'");
                                                 }
                                                 game.setGameScreenshots(screenshotUrlsUnextended);
                                             }
@@ -502,15 +498,9 @@ public class APICOMMAND {
 
                                         }
 
-                                        if (!popularOnPC.isEmpty() && popularOnPS4.isEmpty() && popularOnXBOX.isEmpty()){
-                                            Collections.shuffle(popularOnPC);
-                                            Collections.shuffle(popularOnPS4);
-                                            Collections.shuffle(popularOnXBOX);
-                                        }
-
+                                        customHomeAdapterClass.notifyDataSetChanged();
                                         arrayList.add(game);
                                         db.addGame(game);
-                                        customHomeAdapterClass.notifyDataSetChanged();
                                         progressDialog.dismiss();
                                         db.close();
                                     } catch (JSONException e) {
@@ -519,6 +509,12 @@ public class APICOMMAND {
                                     }
 
                         }
+
+
+
+
+
+
 
 
                         if (url=="release_dates"){
@@ -706,10 +702,11 @@ public class APICOMMAND {
                                                                         e.printStackTrace();
                                                                         e.getCause();
                                                                     }
+
+                                                                    customHomeAdapterClass.notifyDataSetChanged();
                                                                     release_game.setGameScreenshots(screenshotURLArray);
                                                                     arrayList.add(release_game);
                                                                     db.addGame(release_game);
-                                                                    customHomeAdapterClass.notifyDataSetChanged();
                                                                     progressDialog.dismiss();
 
                                                                     db.close();
