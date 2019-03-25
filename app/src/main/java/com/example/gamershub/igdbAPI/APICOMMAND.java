@@ -267,17 +267,17 @@ public class APICOMMAND {
             //System.out.println("APICOMMAND@loadDataFromLocal: Total size of localArraylist= "+localArraylist.size());
             //System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i).getName() + " TIME DATA WAS ADDED TO DEVICE: "+localArraylist.get(i).getTimestamp());
 
+
             if (arrayList.contains(localArraylist.get(i))){
-                System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i));
 
             }else {
-                System.out.println(localArraylist.get(i).getRecyclerviewTopic());
+
                 if (localArraylist.get(i).getRecyclerviewTopic().contains(destination)){
                     arrayList.add(localArraylist.get(i));
+                    customHomeAdapterClass.notifyDataSetChanged();
                 }
             }
         }
-        customHomeAdapterClass.notifyDataSetChanged();
         progressDialog.dismiss();
         db.close();
     }

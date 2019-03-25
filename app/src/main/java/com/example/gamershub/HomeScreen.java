@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.example.gamershub.Database.DatabaseHelper;
@@ -63,6 +64,8 @@ public class HomeScreen extends Fragment {
     private RecyclerView popularOnPs4;
     private RecyclerView popularOnXBOX;
     private RecyclerView popularOnPC;
+
+    private TextView recentlySearcheedGamesLabel;
 
     //Create our arraylist's so we can access them throughout the class
     ArrayList<gameHome> trendingGames = new ArrayList<>();
@@ -176,10 +179,7 @@ public class HomeScreen extends Fragment {
         popularOnPC = view.findViewById(R.id.popularPC);
 
         recentlySearched = view.findViewById(R.id.recentlySearchedGames);
-
-        /**
-         * left off here 2019-03-24
-         */
+        recentlySearcheedGamesLabel = view.findViewById(R.id.row1title2_5);
 
         /**
          * Connect the customadapterclass we made to each recyclerview that we have
@@ -228,6 +228,15 @@ public class HomeScreen extends Fragment {
 
         //if the database is not empty, load objects from the DB into our recyclerviews
         if (!dbTest.isEmpty()){
+
+            //make a check here too see if Recently searched is empty or not
+            if (recentlySearchedList.isEmpty()){
+                recentlySearched.setVisibility(view.GONE);
+                recentlySearcheedGamesLabel.setVisibility(view.GONE);
+                System.out.println("RECENTLY SEARCHED IS EMPTY");
+            }
+
+
             if (!trendingGames.isEmpty()){
                 //On the inital load of the app AFTER it has been launched before to add data from API into the database.
                 //this should always be FALSE.
@@ -255,13 +264,14 @@ public class HomeScreen extends Fragment {
                 apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
             }
 
-            if (!recentlySearchedList.isEmpty()){
+
+
+            if (!recentlySearchedList.isEmpty()) {
                 //was having problems seeing data after it had been updated
                 recentlySearchedList = new ArrayList<>();
-                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,recentlySearchedList,dbTest,"searchGamesScreen");
-
-            }else {
-                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,recentlySearchedList,dbTest,"searchGamesScreen");
+                apicommand.loadDataFromLocal(getContext(), db, customAdapterClass, recentlySearchedList, dbTest, "searchGamesScreen");
+            }else{
+                apicommand.loadDataFromLocal(getContext(), db, customAdapterClass, recentlySearchedList, dbTest, "searchGamesScreen");
             }
 
             if (!popularGamesXBOX.isEmpty()){
@@ -288,6 +298,14 @@ public class HomeScreen extends Fragment {
             }else {
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
             }
+
+            //make a check here too see if Recently searched is empty or not
+            if (!recentlySearchedList.isEmpty()){
+                recentlySearched.setVisibility(view.VISIBLE);
+                recentlySearcheedGamesLabel.setVisibility(view.VISIBLE);
+                System.out.println("RECENTLY SEARCHED IS NOT EMPTY");
+            }
+
         }
         db.close();
 
@@ -333,6 +351,7 @@ public class HomeScreen extends Fragment {
 
         //set the layoutManager on all recyclerViews and set them to horizontal
         trending.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        recentlySearched.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         upcoming.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         popularOnPs4.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         popularOnXBOX.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
