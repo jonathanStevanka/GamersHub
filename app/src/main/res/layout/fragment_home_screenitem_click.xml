@@ -149,20 +149,72 @@
                 app:style="solid_line" />
 
             <TextView
-                android:id="@+id/videoGameDescription"
+                android:id="@+id/gameLabelDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/descriptionbox_layout"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:text="Description"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addToPinnedGamesBTN" />
+
+            <TextView
+                android:id="@+id/videoGameDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimary"
                 android:padding="10dp"
                 android:text="TextView"
                 android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gameLabelDescription" />
+
+            <TextView
+                android:id="@+id/gameLabelSummary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimary"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:text="Summary"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videoGameDescription" />
+
+            <TextView
+                android:id="@+id/videoGameSummary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimary"
+                android:padding="10dp"
+                android:text="TextView"
+                android:textAlignment="textStart"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addToPinnedGamesBTN" />
+                app:layout_constraintTop_toBottomOf="@+id/gameLabelSummary" />
 
             <Button
                 android:id="@+id/addToPinnedGamesBTN"
@@ -201,7 +253,7 @@
             </com.tbuonomo.viewpagerdotsindicator.DotsIndicator>
 
             <TextView
-                android:id="@+id/videoGameImageURL"
+                android:id="@+id/videoGamePlatform"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -213,21 +265,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/videoGameDescription" />
+                app:layout_constraintTop_toBottomOf="@+id/gameLabelPlatforms" />
 
             <TextView
-                android:id="@+id/videoGamePlatform"
+                android:id="@+id/gameLabelPlatforms"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimary"
-                android:padding="10dp"
-                android:text="TextView"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:text="Platforms"
                 android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/videoGameImageURL" />
+                app:layout_constraintTop_toBottomOf="@+id/videoGameSummary" />
 
             <TextView
                 android:id="@+id/videoGameWebURL"
@@ -258,6 +314,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/videoGameWebURL" />
 
             <TextView
+                android:id="@+id/gameLabelReleaseDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/colorPrimary"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:text="Release Date"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videoGameCover" />
+
+            <TextView
                 android:id="@+id/videoGameInitialReleaseDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -268,8 +342,9 @@
                 android:text="TextView"
                 android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/videoGameCover" />
+                app:layout_constraintTop_toBottomOf="@+id/gameLabelReleaseDate" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/videoGameScreenshots"

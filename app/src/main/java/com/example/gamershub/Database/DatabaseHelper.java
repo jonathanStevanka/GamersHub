@@ -68,6 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PINNED_COLUMN = "pinned";
     //the topic column will represent the recyclerview this data should belong too if it gets loaded in
     public static final String TOPIC_COLUMN = "topic";
+    public static final String STORYLINE_COLUMN = "storyline";
 
 
     /**
@@ -84,7 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_GAME = "CREATE TABLE " +
             GAME_TABLE + "(" + ID_COLUMN + " INTEGER PRIMARY KEY,"
             + GAMEID_COLUMN + " INTEGER, " + TITLE_COLUMN + " TEXT, " + DESCRIPTION_COLUMN + " TEXT,"
-            + PRICE_COLUMN + " DOUBLE, " + WEBURL_COLUMN + " TEXT, " + IMAGEURL_COLUMN + " TEXT, " + RATING_COLUMN + " DOUBLE," +
+            + STORYLINE_COLUMN + " TEXT, " + PRICE_COLUMN + " DOUBLE, " + WEBURL_COLUMN + " TEXT, " + IMAGEURL_COLUMN + " TEXT, " + RATING_COLUMN + " DOUBLE," +
             AGGERRATING_COLUMN + " DOUBLE," + TOTALRATING_COLUMN + " DOUBLE, " + COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN
             + " TEXT, " + RELEASE_DATE_COLUMN + " TEXT, " + PINNED_COLUMN + " VARCHAR, " + SCREENSHOTURL_COLUMN + " TEXT, "+ TOPIC_COLUMN + " TEXT, "
             + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
@@ -98,16 +99,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addGame(gameHome game){
         //grab the current database on this phone
         SQLiteDatabase db = this.getWritableDatabase();
-        //System.out.println("---------------------------------------");
-        //System.out.println("AddGame@Databasehelper: "+game.getName());
-        //System.out.println("AddGame@Databasehelper: "+game.getIspinned());
-        //System.out.println("AddGame@Databasehelper: "+game.getRecyclerviewTopic());
-        //System.out.println("AddGame@Databasehelper: "+game.getPlatformsTest());
-        //System.out.println("---------------------------------------");
         ContentValues val = new ContentValues();
         val.put(GAMEID_COLUMN, game.getId());
         val.put(TITLE_COLUMN, game.getName());
         val.put(DESCRIPTION_COLUMN, game.getDescription());
+        val.put(STORYLINE_COLUMN,game.getSummary());
         val.put(PRICE_COLUMN, game.getPrice());
         val.put(WEBURL_COLUMN, game.getWebsiteUrl());
         val.put(IMAGEURL_COLUMN, game.getImageViewUrl());
@@ -140,6 +136,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 game.setId(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
                 game.setName(pointer.getString(pointer.getColumnIndex(TITLE_COLUMN)));
                 game.setDescription(pointer.getString(pointer.getColumnIndex(DESCRIPTION_COLUMN)));
+                game.setSummary(pointer.getString(pointer.getColumnIndex(STORYLINE_COLUMN)));
                 game.setWebsiteUrl(pointer.getString(pointer.getColumnIndex(WEBURL_COLUMN)));
                 game.setImageViewUrl(pointer.getString(pointer.getColumnIndex(IMAGEURL_COLUMN)));
                 game.setRating(pointer.getDouble(pointer.getColumnIndex(RATING_COLUMN)));
@@ -173,6 +170,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 game.setId(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
                 game.setName(pointer.getString(pointer.getColumnIndex(TITLE_COLUMN)));
                 game.setDescription(pointer.getString(pointer.getColumnIndex(DESCRIPTION_COLUMN)));
+                game.setSummary(pointer.getString(pointer.getColumnIndex(STORYLINE_COLUMN)));
                 game.setWebsiteUrl(pointer.getString(pointer.getColumnIndex(WEBURL_COLUMN)));
                 game.setImageViewUrl(pointer.getString(pointer.getColumnIndex(IMAGEURL_COLUMN)));
                 game.setRating(pointer.getDouble(pointer.getColumnIndex(RATING_COLUMN)));

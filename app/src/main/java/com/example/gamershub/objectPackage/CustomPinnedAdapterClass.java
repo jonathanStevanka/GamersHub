@@ -130,7 +130,7 @@ public class CustomPinnedAdapterClass extends RecyclerView.Adapter<CustomPinnedA
                     //gently place the 'gameobject' inside the bundle taking advantage of the easy to use
                     //'putserializable' method.... then all we have to do is make sure our 'gameHome' object
                     //implements serializable and that got rid of our other error here.
-                    objectBundle.putSerializable("game", gameForBundle);
+                    objectBundle.putParcelable("game", gameForBundle);
                 }
                 //create a new fragment transaction utilizing the FM we passed into the constructor earlier on
                 FragmentTransaction transaction = fm.beginTransaction();

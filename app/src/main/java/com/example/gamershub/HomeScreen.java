@@ -58,6 +58,7 @@ public class HomeScreen extends Fragment {
 
     //Connect our recyclerviews so we can access them throughout the class
     private RecyclerView trending;
+    private RecyclerView recentlySearched;
     private RecyclerView upcoming;
     private RecyclerView popularOnPs4;
     private RecyclerView popularOnXBOX;
@@ -65,6 +66,7 @@ public class HomeScreen extends Fragment {
 
     //Create our arraylist's so we can access them throughout the class
     ArrayList<gameHome> trendingGames = new ArrayList<>();
+    ArrayList<gameHome> recentlySearchedList = new ArrayList<>();
     ArrayList<gameHome> upcomingGames = new ArrayList<>();
     ArrayList<gameHome> popularGamesPs4 = new ArrayList<>();
     ArrayList<gameHome> popularGamesXBOX = new ArrayList<>();
@@ -110,7 +112,11 @@ public class HomeScreen extends Fragment {
 
 
         if (savedInstanceState != null){
-            trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
+            //trendingGames =  savedInstanceState.getParcelableArrayList("trending");
+            upcomingGames = savedInstanceState.getParcelableArrayList("upcoming");
+            popularGamesXBOX = savedInstanceState.getParcelableArrayList("popularXBOX");
+            popularGamesPC =  savedInstanceState.getParcelableArrayList("popularPC");
+            popularGamesPs4 =  savedInstanceState.getParcelableArrayList("popularPS4");
         }
     }
 
@@ -120,23 +126,21 @@ public class HomeScreen extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (trendingGames != null){
-            outState.putSerializable("trending",trendingGames);
-        }
+//        if (trendingGames != null){
+//            outState.putParcelableArrayList("trending",trendingGames);
+//        }
         if (upcomingGames != null){
-            outState.putSerializable("upcoming",upcomingGames);
+            outState.putParcelableArrayList("upcoming",upcomingGames);
         }
         if (popularGamesXBOX != null){
-            outState.putSerializable("popularXBOX",popularGamesXBOX);
+            outState.putParcelableArrayList("popularXBOX",popularGamesXBOX);
         }
         if (popularGamesPC != null){
-            outState.putSerializable("popularPC",popularGamesPC);
+            outState.putParcelableArrayList("popularPC",popularGamesPC);
         }
         if (popularGamesPs4 != null){
-            outState.putSerializable("popularPS4",popularGamesPs4);
+            outState.putParcelableArrayList("popularPS4",popularGamesPs4);
         }
-
-
     }
 
 
@@ -145,12 +149,11 @@ public class HomeScreen extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState !=null){
-            trendingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("trending");
-            upcomingGames = (ArrayList<gameHome>) savedInstanceState.getSerializable("upcoming");
-            popularGamesXBOX = (ArrayList<gameHome>) savedInstanceState.getSerializable("popularXBOX");
-            popularGamesPC = (ArrayList<gameHome>) savedInstanceState.getSerializable("popularPC");
-            popularGamesPs4 = (ArrayList<gameHome>) savedInstanceState.getSerializable("popularPS4");
-
+            //trendingGames = savedInstanceState.getParcelableArrayList("trending");
+            upcomingGames = savedInstanceState.getParcelableArrayList("upcoming");
+            popularGamesXBOX = savedInstanceState.getParcelableArrayList("popularXBOX");
+            popularGamesPC = savedInstanceState.getParcelableArrayList("popularPC");
+            popularGamesPs4 = savedInstanceState.getParcelableArrayList("popularPS4");
         }
 
     }
@@ -171,6 +174,12 @@ public class HomeScreen extends Fragment {
         popularOnXBOX = view.findViewById(R.id.popularXBOX);
         //connect the popularOnPC recyclerview
         popularOnPC = view.findViewById(R.id.popularPC);
+
+        recentlySearched = view.findViewById(R.id.recentlySearchedGames);
+
+        /**
+         * left off here 2019-03-24
+         */
 
         /**
          * Connect the customadapterclass we made to each recyclerview that we have
@@ -231,10 +240,11 @@ public class HomeScreen extends Fragment {
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,trendingGames,dbTest,"trendingGames");
             }
 
+
             if (!popularGamesPs4.isEmpty()){
                 //was having problems seeing data after it had been updated
-                //popularGamesPs4 = new ArrayList<>();
-                //apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
+                popularGamesPs4 = new ArrayList<>();
+                apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
             }else {
                 //if 'trendingGames' is empty then this method will load localdata from the phone
                 apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
@@ -242,16 +252,16 @@ public class HomeScreen extends Fragment {
 
 
             if (!popularGamesXBOX.isEmpty()){
-                //popularGamesXBOX = new ArrayList<>();
-                //apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
+                popularGamesXBOX = new ArrayList<>();
+                apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
             }else{
                 apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesXBOX,dbTest,"popularGamesXBOX",trendingGames,49);
             }
 
 
             if (!popularGamesPC.isEmpty()){
-                //popularGamesPC = new ArrayList<>();
-                //apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
+                popularGamesPC = new ArrayList<>();
+                apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
             }else{
                 apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPC,dbTest,"popularGamesPC",trendingGames,6);
 
@@ -259,6 +269,7 @@ public class HomeScreen extends Fragment {
 
             if (!upcomingGames.isEmpty()){
                 //was having problems seeing data after it had been updated
+                upcomingGames = new ArrayList<>();
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
 
             }else {
@@ -295,15 +306,6 @@ public class HomeScreen extends Fragment {
             //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
             apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
         }
-//            if (popularGamesPs4.isEmpty()){
-//                apicommand.getData(getContext(),popularGamesPs4,customAdapterClass,getString(R.string.search_upcomingGamesPS4),"release_dates","PS4","popularGamesPs4");
-//            }
-//            if (popularGamesXBOX.isEmpty()){
-//                apicommand.getData(getContext(),popularGamesXBOX,customAdapterClass,getString(R.string.search_upcomingGamesXBOX),"games","XBOX","popularGamesXBOX");
-//            }
-//            if (popularGamesPC.isEmpty()){
-//                apicommand.getData(getContext(),popularGamesPC,customAdapterClass,getString(R.string.search_upcomingGamesPC),"games","PC","popularGamesPC");
-//            }
 
         System.out.println("trendingGames SIZE: "+trendingGames.size());
         System.out.println("upcomingGames SIZE: "+upcomingGames.size());

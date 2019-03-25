@@ -21,8 +21,6 @@
                 android:id="@+id/row1Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Trending games"
                 android:textAlignment="center"
@@ -48,18 +46,31 @@
                 app:layout_constraintTop_toBottomOf="@+id/popularPC" />
 
             <TextView
+                android:id="@+id/row1title2.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="Recently Searched"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trendingGamesALL" />
+
+            <TextView
                 android:id="@+id/row1Title3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Popular on PS4"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/trendingGamesALL" />
+                app:layout_constraintTop_toBottomOf="@+id/recentlySearchedGames" />
 
             <TextView
                 android:id="@+id/row1Title4"
@@ -89,6 +100,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/popularXBOX" />
 
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recentlySearchedGames"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/row1title2.5"
+                tools:listitem="@layout/homeitemlayout" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/trendingGamesALL"

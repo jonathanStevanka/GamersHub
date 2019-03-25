@@ -52,11 +52,17 @@ public class home_screenitemCLICK extends Fragment {
     //define the onscreenObjects
     private TextView videoGameTitle;
     private TextView videoGameDescription;
-    private TextView videoGameImageUrl;
+    private TextView videoGameSummary;
     private TextView videoGamePlatform;
     private TextView videoGameWebUrl;
     private TextView videoGameCover;
     private TextView videoGameInitialRelease;
+    //onscreenLabels
+    private TextView gameSummaryLabel;
+    private TextView gameDescriptionLabel;
+    private TextView gamePlatformsLabel;
+    private TextView gameReleasedateLabel;
+
     boolean isPinned;
 
 
@@ -93,7 +99,7 @@ public class home_screenitemCLICK extends Fragment {
         Bundle game = getArguments();
         //grab the serializable out of the bundle that has our key
         //set this to the gameHome object we created globally
-        gameHome = (gameHome) game.getSerializable("game");
+        gameHome = (gameHome) game.getParcelable("game");
     }
 
     @Override
@@ -121,21 +127,32 @@ public class home_screenitemCLICK extends Fragment {
         //set the items to the ID of the object so we can have access
         videoGameTitle = view.findViewById(R.id.videoGameName);
         videoGameDescription = view.findViewById(R.id.videoGameDescription);
+        videoGameSummary = view.findViewById(R.id.videoGameSummary);
         videoGameCover = view.findViewById(R.id.videoGameCover);
-        videoGameImageUrl = view.findViewById(R.id.videoGameImageURL);
         videoGameInitialRelease = view.findViewById(R.id.videoGameInitialReleaseDate);
         videoGamePlatform = view.findViewById(R.id.videoGamePlatform);
         videoGameWebUrl = view.findViewById(R.id.videoGameWebURL);
 
+        //connect the labels
+        gameDescriptionLabel = view.findViewById(R.id.gameLabelDescription);
+        gameSummaryLabel = view.findViewById(R.id.gameLabelSummary);
+        gamePlatformsLabel = view.findViewById(R.id.gameLabelPlatforms);
+        gameReleasedateLabel = view.findViewById(R.id.gameLabelReleaseDate);
+
+
 
         Picasso.get().load(gameHome.getGameCoverURL()).into(imageCover);
-
-
-
         videoGameTitle.setText(String.valueOf(gameHome.getName()));
         videoGameDescription.setText(String.valueOf(gameHome.getDescription()));
+
+        if (gameHome.getSummary()==null){
+            gameSummaryLabel.setVisibility(view.GONE);
+            videoGameSummary.setVisibility(view.GONE);
+        }else{
+            videoGameSummary.setText(String.valueOf(gameHome.getSummary()));
+        }
+
         videoGameCover.setText(String.valueOf(String.valueOf(gameHome.getGameCover())));
-        videoGameImageUrl.setText(String.valueOf(gameHome.getImageViewUrl()));
         videoGameInitialRelease.setText(String.valueOf(gameHome.getReleaseDate()));
         videoGamePlatform.setText(String.valueOf(gameHome.getPlatformsTest()));
         videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
@@ -150,6 +167,7 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("ID: "+gameHome.getId());
         System.out.println("NAME: "+gameHome.getName());
         System.out.println("DESCRIPTION: "+gameHome.getDescription());
+        System.out.println("SUMMARY: "+gameHome.getSummary());
         System.out.println("IGDB-RATING: "+gameHome.getRating());
         System.out.println("aggervated-RATING: "+gameHome.getAggervatedRating());
         System.out.println("Total-RATING: "+gameHome.getTotalRating());

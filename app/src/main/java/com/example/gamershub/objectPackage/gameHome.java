@@ -1,18 +1,20 @@
 package com.example.gamershub.objectPackage;
 
 //import the java Serializable Java class so that we can serialize this class later on in the application
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//make sure this class implements 'Serializable'
-public class gameHome implements Serializable {
+//make sure this class implements 'Parcelable'
+public class gameHome implements Parcelable {
 
     private int id;
     private int localDBID;
     private String name;
     private String description;
+    private String summary;
     private String websiteUrl;
     private String imageViewUrl;
     private Double rating;
@@ -32,7 +34,6 @@ public class gameHome implements Serializable {
     //create variables for game COVER properties
     private double height;
     private double width;
-
 
 
     /**
@@ -346,4 +347,96 @@ public class gameHome implements Serializable {
     public void setPlatformsTest(String platformsTest) {
         this.platformsTest = platformsTest;
     }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel goingOut, int flags) {
+        goingOut.writeInt(this.id);
+        goingOut.writeInt(this.localDBID);
+        goingOut.writeString(this.name);
+        goingOut.writeString(this.description);
+        goingOut.writeString(this.summary);
+        goingOut.writeString(this.websiteUrl);
+        goingOut.writeString(this.imageViewUrl);
+        if (this.rating!=null){
+            goingOut.writeDouble(this.rating);
+        }
+        if (this.aggervatedRating!=null){
+            goingOut.writeDouble(this.aggervatedRating);
+        }
+        if (this.totalRating!=null){
+            goingOut.writeDouble(this.totalRating);
+        }
+        if (this.price!=null){
+            goingOut.writeDouble(this.price);
+        }
+        if (this.gameCover!=0){
+            goingOut.writeInt(this.gameCover);
+        }
+        goingOut.writeString(this.platformsTest);
+        goingOut.writeString(this.releaseDate);
+        goingOut.writeString(this.gameCoverURL);
+        goingOut.writeArray(this.gameScreenshots);
+        goingOut.writeString(this.gameScreenshotExtendedURL);
+        goingOut.writeString(this.timestamp);
+        goingOut.writeString(this.ispinned);
+        goingOut.writeString(this.recyclerviewTopic);
+        goingOut.writeDouble(this.height);
+        goingOut.writeDouble(this.width);
+    }
+
+    protected gameHome(Parcel comingIN) {
+        this.id = comingIN.readInt();
+        this.localDBID = comingIN.readInt();
+        this.name = comingIN.readString();
+        this.description = comingIN.readString();
+        this.summary = comingIN.readString();
+        this.websiteUrl = comingIN.readString();
+        this.imageViewUrl = comingIN.readString();
+        this.rating = comingIN.readDouble();
+        this.aggervatedRating = comingIN.readDouble();
+        this.totalRating = comingIN.readDouble();
+        this.popularity = comingIN.readDouble();
+        this.price = comingIN.readDouble();
+        this.gameCover = comingIN.readInt();
+        this.platformsTest = comingIN.readString();
+        this.releaseDate = comingIN.readString();
+        this.gameCoverURL = comingIN.readString();
+        this.gameScreenshots = comingIN.createStringArray();
+        this.gameScreenshotExtendedURL = comingIN.readString();
+        this.timestamp = comingIN.readString();
+        this.ispinned = comingIN.readString();
+        this.recyclerviewTopic = comingIN.readString();
+        this.height = comingIN.readDouble();
+        this.width = comingIN.readDouble();
+    }
+
+    public static final Creator<gameHome> CREATOR = new Creator<gameHome>() {
+        @Override
+        public gameHome createFromParcel(Parcel source) {
+            return new gameHome(source);
+        }
+
+        @Override
+        public gameHome[] newArray(int size) {
+            return new gameHome[size];
+        }
+    };
+
+
+
 }
