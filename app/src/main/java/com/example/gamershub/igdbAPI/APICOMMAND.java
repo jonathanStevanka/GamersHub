@@ -268,10 +268,10 @@ public class APICOMMAND {
             //System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i).getName() + " TIME DATA WAS ADDED TO DEVICE: "+localArraylist.get(i).getTimestamp());
 
             if (arrayList.contains(localArraylist.get(i))){
-                //System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i));
+                System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i));
 
             }else {
-
+                System.out.println(localArraylist.get(i).getRecyclerviewTopic());
                 if (localArraylist.get(i).getRecyclerviewTopic().contains(destination)){
                     arrayList.add(localArraylist.get(i));
                 }
@@ -279,6 +279,7 @@ public class APICOMMAND {
         }
         customHomeAdapterClass.notifyDataSetChanged();
         progressDialog.dismiss();
+        db.close();
     }
 
 
@@ -301,7 +302,6 @@ public class APICOMMAND {
             for (int r=0; r<platforms.length;r++){
 
                 gamePlatformG = Integer.valueOf(platforms[r]);
-
                 if (gamePlatform==gamePlatformG && !trendingGames.get(i).getRecyclerviewTopic().contentEquals("upcomingGames")){
                     arrayList.add(trendingGames.get(i));
                 }
@@ -511,7 +511,7 @@ public class APICOMMAND {
                         }
 
                         if (url=="release_dates") {
-                            DatabaseHelper db = new DatabaseHelper(context);
+                            final DatabaseHelper db = new DatabaseHelper(context);
                             //Instantiate a new JSONObject for the response information
                             JSONObject jsonGameObject = null;
                             JSONArray jsonScreenshotArray = null;
@@ -528,15 +528,24 @@ public class APICOMMAND {
                                 if (jsonReleaseObject.has("human")){
                                     game.setReleaseDate(jsonReleaseObject.getString("human"));
                                 }
-                                if (jsonReleaseObject.has("platform")){
-                                    game.setPlatformsTest(jsonReleaseObject.getString(jsonReleaseObject.getString("platform")));
+                                if (jsonReleaseObject.has("platforms")){
+                                    game.setPlatformsTest(jsonReleaseObject.getString("platforms"));
                                 }
                                 if (jsonReleaseObject.has("game")) {
                                     game.setId(jsonReleaseObject.getInt("game"));
 
+
+
+                                    System.out.println(game.getReleaseDate());
+                                    System.out.println(game.getPlatformsTest());
+                                    System.out.println(game.getId());
+
+
+                                    System.out.println("fields id,name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline; where id = "+game.getId()+"; limit 10;");
+
                                     AndroidNetworking.post("https://api-v3.igdb.com/games").addHeaders("user-key",BuildConfig.IGDBKey)
                                             .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                            .addStringBody("fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline; where id ="+jsonReleaseObject.getInt("game"+";"))
+                                            .addStringBody("fields id,name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline; where id = "+game.getId()+"; limit 10;")
                                             .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                         @Override
@@ -595,304 +604,82 @@ public class APICOMMAND {
                                                         game.setSummary(jsonInnerGame.getString("storyline"));
                                                     }
 
-                                                }catch (JSONException e){
 
+                                                    game.setIspinned("no");
+                                                    game.setRecyclerviewTopic(destination);
+
+                                                    System.out.println("----------------------------------------------------");
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME ID - " + game.getId());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME NAME - " + game.getName());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME COVERURL - " + game.getGameCoverURL());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME PLATFORMS - " + game.getPlatformsTest());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME AGGERVATED_RATING - " + game.getAggervatedRating());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME RATING - " + game.getRating());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME TOTALRATING - " + game.getRating());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME SCREENSHOTS - " + game.getGameScreenshotExtendedURL());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME DESCRIPTION - " + game.getDescription());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME SUMMARY - " + game.getSummary());
+                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME WEBURL - " + game.getWebsiteUrl());
+                                                    System.out.println("----------------------------------------------------");
+
+
+                                                    if (game.getPlatformsTest()!=null){
+                                                        String[] platformFromJSON = game.getPlatformsTest().replace("[","")
+                                                                .replace("]","").split(",");
+                                                        int gamePlatform;
+                                                        System.out.println("--------------------------------------------------");
+                                                        System.out.println("APICOMMAND@GETDATA:551- game name: "+game.getName());
+
+                                                        for (int t=0; t<platformFromJSON.length;t++) {
+                                                            gamePlatform = Integer.valueOf(platformFromJSON[t]);
+                                                            System.out.println("APICOMMAND@GETDATA:551- game platform: " + gamePlatform);
+
+                                                            if (gamePlatform == 6 && !game.getRecyclerviewTopic().contentEquals("upcomingGames")) {
+                                                                System.out.println("APICOMMAND@GETDATA:551- Game has been added");
+                                                                popularOnPC.add(game);
+                                                            }
+
+                                                            if (gamePlatform == 48 && !game.getRecyclerviewTopic().contentEquals("upcomingGames")) {
+                                                                System.out.println("APICOMMAND@GETDATA:551- Game has been added");
+                                                                popularOnPS4.add(game);
+                                                            }
+
+                                                            if (gamePlatform == 49 && !game.getRecyclerviewTopic().contentEquals("upcomingGames")){
+                                                                System.out.println("APICOMMAND@GETDATA:551- Game has been added");
+                                                                popularOnXBOX.add(game);
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                    customHomeAdapterClass.notifyDataSetChanged();
+                                                    arrayList.add(game);
+                                                    db.addGame(game);
+                                                    progressDialog.dismiss();
+                                                    db.close();
+
+
+                                                }catch (JSONException e){
+                                                    e.printStackTrace();
+                                                    e.getCause();
                                                 }
                                             }
                                         }
 
                                         @Override
                                         public void onError(ANError anError) {
-
+                                            anError.getErrorDetail();
+                                            anError.getErrorCode();
+                                            anError.getErrorBody();
+                                            anError.getResponse();
                                         }
                                     });
 
                                 }
-                                game.setIspinned("no");
-                                game.setRecyclerviewTopic(destination);
 
-                                System.out.println("----------------------------------------------------");
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME ID - " + game.getId());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME NAME - " + game.getName());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME COVERURL - " + game.getGameCoverURL());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME PLATFORMS - " + game.getPlatformsTest());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME AGGERVATED_RATING - " + game.getAggervatedRating());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME RATING - " + game.getRating());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME TOTALRATING - " + game.getRating());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME SCREENSHOTS - " + game.getGameScreenshotExtendedURL());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME DESCRIPTION - " + game.getDescription());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME SUMMARY - " + game.getSummary());
-                                System.out.println("APICOMMAND@GETDATA460-480: GAME WEBURL - " + game.getWebsiteUrl());
-                                System.out.println("----------------------------------------------------");
-
-
-                                String[] platformFromJSON = game.getPlatformsTest().replace("[","")
-                                        .replace("]","").split(",");
-                                int gamePlatform;
-                                System.out.println("--------------------------------------------------");
-                                System.out.println("APICOMMAND@GETDATA:551- game name: "+game.getName());
-
-                                for (int r=0; r<platformFromJSON.length;r++) {
-                                    gamePlatform = Integer.valueOf(platformFromJSON[r]);
-                                    System.out.println("APICOMMAND@GETDATA:551- game platform: " + gamePlatform);
-
-                                    if (gamePlatform == 6 && !game.getRecyclerviewTopic().contentEquals("upcomingGames")) {
-                                        System.out.println("APICOMMAND@GETDATA:551- Game has been added");
-                                        popularOnPC.add(game);
-                                    }
-
-                                    if (gamePlatform == 48 && !game.getRecyclerviewTopic().contentEquals("upcomingGames")) {
-                                        System.out.println("APICOMMAND@GETDATA:551- Game has been added");
-                                        popularOnPS4.add(game);
-                                    }
-
-                                    if (gamePlatform == 49 && !game.getRecyclerviewTopic().contentEquals("upcomingGames")){
-                                        System.out.println("APICOMMAND@GETDATA:551- Game has been added");
-                                        popularOnXBOX.add(game);
-                                    }
-
-                                }
-
-                                customHomeAdapterClass.notifyDataSetChanged();
-                                arrayList.add(game);
-                                db.addGame(game);
-                                progressDialog.dismiss();
-                                db.close();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 e.getCause();
-                            }
-
-                        }
-
-
-
-
-
-
-                        if (url=="release_dates"){
-
-                            //y; where platform = 48; sort popularity desc;
-                            final gameHome release_game = new gameHome();
-
-
-                            //grab the ID field from the object
-                            final int gameId = jsonObject.getInt("game");
-
-
-                            //grab the Game name field from the object
-                            final int gameObjectID = gameId;
-
-                            if (jsonObject.has("game")) {
-
-                                AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
-                                        .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                        .addStringBody("fields id,name,popularity,cover,rating,aggregated_rating,total_rating,summary,platforms,url,screenshots; where id ="+gameId+"; limit 1;")
-                                        .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
-
-                                    @Override
-                                    public void onResponse(JSONArray response) {
-                                        JSONObject json = new JSONObject();
-                                        int gameMatchID = 0;
-                                        double gameRating = 0;
-                                        double gamePop = 0;
-
-                                        try {
-                                            //set the JSONObject to the response
-                                            for (int r=0; r<response.length();r++){
-
-                                                json = response.getJSONObject(r);
-
-                                                if (json.has("id")){
-                                                    gameMatchID = json.getInt("id");
-                                                    if (gameMatchID == gameObjectID){
-
-                                                        release_game.setId(gameMatchID);
-                                                        release_game.setName(json.getString("name"));
-                                                        release_game.setRecyclerviewTopic(destination);
-                                                        release_game.setIspinned("no");
-
-                                                        if (json.has("platforms")){
-                                                            release_game.setPlatformsTest(json.getString("platforms"));
-                                                        }
-                                                        if (json.has("popularity")){
-                                                            release_game.setPopularity(json.getDouble("popularity"));
-                                                        }
-                                                        if (json.has("summary")){
-                                                            release_game.setDescription(json.getString("summary"));
-                                                        }
-                                                        if (json.has("url")){
-                                                            release_game.setWebsiteUrl(json.getString("url"));
-                                                        }
-                                                        if (json.has("rating")){
-                                                            release_game.setRating(json.getDouble("rating"));
-                                                        }
-                                                        if (json.has("aggregated_rating")){
-                                                            release_game.setAggervatedRating(json.getDouble("aggregated_rating"));
-                                                        }
-                                                        if (json.has("total_rating")){
-                                                            release_game.setTotalRating(json.getDouble("total_rating"));
-                                                        }
-                                                        if (json.has("cover")){
-                                                            AndroidNetworking.post("https://api-v3.igdb.com/covers/").addHeaders("user-key",BuildConfig.IGDBKey)
-                                                                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                                                    .addStringBody("fields game,height,image_id,url,width; where game = "+ gameId +"; limit 1;")
-                                                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
-
-
-                                                                @Override
-                                                                public void onResponse(JSONArray response) {
-                                                                    JSONObject localJSON;
-                                                                    try{
-                                                                        for (int r = 0; r < response.length();r++){
-                                                                            localJSON = response.getJSONObject(r);
-
-                                                                            if (localJSON.has("url")){
-                                                                                final String tempUrl=localJSON.getString("url");
-                                                                                final String newUrl = tempUrl.replace("thumb","720p");
-                                                                                release_game.setGameCoverURL("https:"+newUrl);
-                                                                            }
-
-                                                                            if (localJSON.has("id")){
-
-
-                                                                                final double height = localJSON.getDouble("height");
-                                                                                final double width = localJSON.getDouble("width");
-                                                                                final String tempUrl=localJSON.getString("url");
-                                                                                final String newUrl = tempUrl.replace("thumb","720p");
-
-                                                                                //System.out.println(newUrl);
-
-
-                                                                                AndroidNetworking.post("https://api-v3.igdb.com/release_dates/").addHeaders("user-key",BuildConfig.IGDBKey)
-                                                                                        .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                                                                        .addStringBody("fields id,game,human,m; where game ="+release_game.getId()+"; limit 1;")
-                                                                                        .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
-
-                                                                                    @Override
-                                                                                    public void onResponse(JSONArray response) {
-                                                                                        JSONObject json = new JSONObject();
-                                                                                        for (int i =0; i < response.length();i++){
-                                                                                            try{
-                                                                                                json = response.getJSONObject(i);
-
-                                                                                                release_game.setHeight(height);
-                                                                                                release_game.setWidth(width);
-                                                                                                release_game.setReleaseDate(json.getString("human"));
-                                                                                                release_game.setTimestamp(currentDateTimeStamp);
-
-
-                                                                                            }catch (JSONException e){
-                                                                                                e.printStackTrace();
-                                                                                                e.getCause();
-                                                                                            }
-                                                                                        }
-                                                                                    }
-
-                                                                                    @Override
-                                                                                    public void onError(ANError anError) {
-                                                                                        System.out.println(anError.getErrorCode());
-                                                                                        System.out.println(anError.getErrorBody());
-                                                                                        System.out.println(anError.getErrorDetail());
-                                                                                        System.out.println(anError.getResponse());
-                                                                                    }
-
-                                                                                });
-                                                                            }
-
-                                                                        }
-                                                                    }catch (JSONException e){
-                                                                        e.printStackTrace();
-                                                                        e.getCause();
-                                                                    }
-
-                                                                }
-
-                                                                @Override
-                                                                public void onError(ANError anError) {
-                                                                    System.out.println(anError.getErrorCode());
-                                                                    System.out.println(anError.getErrorBody());
-                                                                    System.out.println(anError.getErrorDetail());
-                                                                    System.out.println(anError.getResponse());
-                                                                }
-                                                            });
-                                                        }
-                                                        if (json.has("screenshots")){
-
-
-                                                            AndroidNetworking.post("https://api-v3.igdb.com/screenshots/").addHeaders("user-key",BuildConfig.IGDBKey)
-                                                                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                                                    .addStringBody(context.getString(R.string.search_screenShotTable)+gameMatchID+";")
-                                                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
-
-                                                                @Override
-                                                                public void onResponse(JSONArray response) {
-                                                                    JSONObject localJSON;
-                                                                    String[] screenshotURLArray = new String[response.length()];
-                                                                    DatabaseHelper db = new DatabaseHelper(context);
-                                                                    try{
-                                                                        for (int r=0; r < response.length(); r++){
-                                                                            localJSON = response.optJSONObject(r);
-
-                                                                            /**
-                                                                             * left off at:
-                                                                             *  -grab all the URLS, append the 'https:' and the 'T_720p'
-                                                                             *  -set the arraylist of strings to the game object so we acess later
-                                                                             *  -test functionality
-                                                                             */
-                                                                            if (localJSON.has("url")){
-                                                                                final String tempUrl=localJSON.getString("url");
-                                                                                final String newUrl = tempUrl.replace("thumb","720p");
-
-                                                                                screenshotURLArray[r] = "https:"+newUrl;
-                                                                            }
-
-                                                                        }
-                                                                        //System.out.println(screenshotURLArray.length);
-
-
-                                                                    }catch (JSONException e){
-                                                                        e.printStackTrace();
-                                                                        e.getCause();
-                                                                    }
-
-                                                                    customHomeAdapterClass.notifyDataSetChanged();
-                                                                    release_game.setGameScreenshots(screenshotURLArray);
-                                                                    arrayList.add(release_game);
-                                                                    db.addGame(release_game);
-                                                                    progressDialog.dismiss();
-
-                                                                    db.close();
-                                                                }
-
-                                                                @Override
-                                                                public void onError(ANError anError) {
-
-                                                                }
-                                                            });
-                                                        }
-
-                                                    }
-                                                }
-
-                                            }
-
-                                        }catch (JSONException e){
-                                            e.printStackTrace();
-                                            e.getCause();
-                                        }
-                                    }
-
-
-                                    @Override
-                                    public void onError(ANError anError) {
-                                        System.out.println(anError.getErrorCode());
-                                        System.out.println(anError.getErrorBody());
-                                        System.out.println(anError.getErrorDetail());
-                                        System.out.println(anError.getResponse());
-                                    }
-
-                                });
                             }
 
                         }

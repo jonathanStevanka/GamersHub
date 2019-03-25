@@ -210,6 +210,11 @@ public class HomeScreen extends Fragment {
         //set the adapter on desired recyclerView
         popularOnPC.setAdapter(customAdapterClass);
 
+        //connect the custom adapter class to the desired arraylists
+        customAdapterClass = new CustomHomeAdapterClass(recentlySearchedList,getContext(),fm);
+        //set the adapter on desired recyclerView
+        recentlySearched.setAdapter(customAdapterClass);
+
         //check to see if there is any objects inside our local database
         DatabaseHelper db = new DatabaseHelper(getContext());
         ArrayList<gameHome> dbTest = db.grabAllGames();
@@ -250,6 +255,14 @@ public class HomeScreen extends Fragment {
                 apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
             }
 
+            if (!recentlySearchedList.isEmpty()){
+                //was having problems seeing data after it had been updated
+                recentlySearchedList = new ArrayList<>();
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,recentlySearchedList,dbTest,"searchGamesScreen");
+
+            }else {
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,recentlySearchedList,dbTest,"searchGamesScreen");
+            }
 
             if (!popularGamesXBOX.isEmpty()){
                 popularGamesXBOX = new ArrayList<>();
@@ -308,6 +321,7 @@ public class HomeScreen extends Fragment {
         }
 
         System.out.println("trendingGames SIZE: "+trendingGames.size());
+        System.out.println("recentlySearched SIZE: "+recentlySearchedList.size());
         System.out.println("upcomingGames SIZE: "+upcomingGames.size());
         System.out.println("popularGamesPs4 SIZE: "+popularGamesPs4.size());
         System.out.println("popularGamesXBOX SIZE: "+popularGamesXBOX.size());
