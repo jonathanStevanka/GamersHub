@@ -50,7 +50,6 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
         final gameHome game = games.get(i);
         viewHolder.name.setText(game.getName());
         Picasso.get().load(game.getGameCoverURL()).resize(290,390).into(viewHolder.gameCover);
-        viewHolder.setIsRecyclable(true);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +63,7 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
                     //gently place the 'gameobject' inside the bundle taking advantage of the easy to use
                     //'putserializable' method.... then all we have to do is make sure our 'gameHome' object
                     //implements serializable and that got rid of our other error here.
-                    objectBundle.putSerializable("game", gameForBundle);
+                    objectBundle.putParcelable("game", gameForBundle);
                 }
                 //create a new fragment transaction utilizing the FM we passed into the constructor earlier on
                 FragmentTransaction transaction = fm.beginTransaction();
@@ -91,6 +90,11 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
             }
         });
 
+    }
+
+    public void RemoveAllData(){
+        games.clear();
+        notifyDataSetChanged();
     }
 
     @Override

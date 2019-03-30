@@ -16,10 +16,10 @@
     <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
 
     <!-- working-->
-    <string name="search_trendingGames">fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human; where rating_count &gt; 225; sort rating desc; limit 50;</string>
+    <string name="search_trendingGames">fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline; where rating_count &gt; 225; sort rating desc; limit 25;</string>
     <string name="search_screenShotTable">fields alpha_channel,animated,game,height,image_id,url,width; where game =</string>
-    <string name="search_upcomingGames">fields id,game,human,platform; where date &gt; 1551648064; sort date asc; limit 15;</string>
-    <string name="search_pinnedGamesScreen"> fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human;</string>
+    <string name="search_upcomingGames">fields *; where date &gt; 1553467746; sort date asc; limit 25;</string>
+    <string name="search_pinnedGamesScreen"> fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline;</string>
 
 
 
@@ -32,5 +32,12 @@
     <string name="search_upcomingGamesXBOX">fields id,game,human,m,platform; where platform = 6 &amp; date &gt; 1552862789;</string>
     <string name="search_recentlyReleasedPS4games">fields id,game,human,m,platform; where platform = 48 &amp; date &lt; 1552916822; sort date asc; limit 15;</string>
 
+
+
+
+
+
+    <!-- ERROR messages to be displayed if content is null -->
+    <string name="gameDoesNotHaveSummary">Does not have a summary available!</string>
 
 </resources>

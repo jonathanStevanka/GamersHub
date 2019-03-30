@@ -216,22 +216,26 @@ public class search_screen extends Fragment {
                                         game.setWebsiteUrl(jsonGameObject.getString("url"));
 
                                     }
+                                    if (jsonGameObject.has("storyline")){
+                                        game.setSummary(jsonGameObject.getString("storyline"));
+                                    }
                                     game.setIspinned("no");
                                     game.setRecyclerviewTopic("searchGamesScreen");
 
 
-//                                    System.out.println("----------------------------------------------------");
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME ID - "+game.getId());
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME NAME - "+game.getName());
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME COVERURL - "+game.getGameCoverURL());
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME PLATFORMS - "+game.getPlatformsTest());
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME AGGERVATED_RATING - "+game.getAggervatedRating());
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME RATING - "+game.getRating());
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME TOTALRATING - "+game.getRating());
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SCREENSHOTS - "+game.getGameScreenshotExtendedURL());
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SUMMARY - "+game.getDescription());
-//                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME WEBURL - "+game.getWebsiteUrl());
-//                                    System.out.println("----------------------------------------------------");
+                                    System.out.println("----------------------------------------------------");
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME ID - "+game.getId());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME NAME - "+game.getName());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME COVERURL - "+game.getGameCoverURL());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME PLATFORMS - "+game.getPlatformsTest());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME AGGERVATED_RATING - "+game.getAggervatedRating());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME RATING - "+game.getRating());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME TOTALRATING - "+game.getRating());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SCREENSHOTS - "+game.getGameScreenshotExtendedURL());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME DESCRIPTION - "+game.getDescription());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SUMMARY - "+game.getSummary());
+                                    System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME WEBURL - "+game.getWebsiteUrl());
+                                    System.out.println("----------------------------------------------------");
 
                                     searchedGames.add(game);
                                     customPinnedAdapterClass.notifyDataSetChanged();
