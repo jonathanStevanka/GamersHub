@@ -193,7 +193,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return game;
     }
 
+    public ArrayList<gameHome> grabAllGamesFromTopic(String destination){
+        ArrayList<gameHome> allGames = new ArrayList<>();
+        gameHome game = null;
+        String query = "SELECT * FROM " + GAME_TABLE + " WHERE "+TOPIC_COLUMN+" LIKE '%"+destination+"%';";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor pointer = db.rawQuery(query, null);
+        if(pointer.moveToFirst()){
+            do{
+                game = new gameHome();
+                game.setLocalDBID(pointer.getInt(pointer.getColumnIndex(ID_COLUMN)));
+                game.setId(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
+                game.setName(pointer.getString(pointer.getColumnIndex(TITLE_COLUMN)));
+                game.setDescription(pointer.getString(pointer.getColumnIndex(DESCRIPTION_COLUMN)));
+                game.setSummary(pointer.getString(pointer.getColumnIndex(STORYLINE_COLUMN)));
+                game.setWebsiteUrl(pointer.getString(pointer.getColumnIndex(WEBURL_COLUMN)));
+                game.setImageViewUrl(pointer.getString(pointer.getColumnIndex(IMAGEURL_COLUMN)));
+                game.setRating(pointer.getDouble(pointer.getColumnIndex(RATING_COLUMN)));
+                game.setAggervatedRating(pointer.getDouble(pointer.getColumnIndex(AGGERRATING_COLUMN)));
+                game.setTotalRating(pointer.getDouble(pointer.getColumnIndex(TOTALRATING_COLUMN)));
+                game.setGameCover(pointer.getInt(pointer.getColumnIndex(COVERID_COLUMN)));
+                game.setPlatformsTest(pointer.getString(pointer.getColumnIndex(PLATFORM_COLUMN)));
+                game.setReleaseDate(pointer.getString(pointer.getColumnIndex(RELEASE_DATE_COLUMN)));
+                game.setGameCoverURL(pointer.getString(pointer.getColumnIndex(COVERURL_COLUMN)));
+                game.setGameScreenshotExtendedURL(pointer.getString(pointer.getColumnIndex(SCREENSHOTURL_COLUMN)));
+                game.setIspinned(pointer.getString(pointer.getColumnIndex(PINNED_COLUMN)));
+                game.setTimestamp(pointer.getString(pointer.getColumnIndex(TIMESTAMP_COLUMN)));
+                game.setRecyclerviewTopic(pointer.getString(pointer.getColumnIndex(TOPIC_COLUMN)));
+                if (allGames.contains(game)){
 
+                }else{
+                    allGames.add(game);
+                }
+            }while(pointer.moveToNext());
+        }
+        pointer.close();
+        db.close();
+        return allGames;
+    }
 
 
     //update
@@ -206,7 +243,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Custom method's for data inside our LocalDatabase
      */
     public String[] grabAllGameTitles(){
-        ArrayList<gameHome> allGames = grabAllGames();
+        ArrayList<gameHome> allGames = grabAllGamesFromTopic("upcomingGames");
         String[] titles = null;
         if (allGames!=null){
             titles = new String[allGames.size()];

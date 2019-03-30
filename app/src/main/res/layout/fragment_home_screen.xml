@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-black"
-                android:text="Indie games coming soon"
+                android:text="New games on the way"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
@@ -101,6 +101,51 @@
                 app:layout_constraintTop_toBottomOf="@+id/popularXBOX" />
 
 
+            <TextView
+                android:id="@+id/row1Title7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Coming out on PS4"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/upcomingGamesALL" />
+
+            <TextView
+                android:id="@+id/row1Title8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Coming out on PC"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/upcomingPS4" />
+
+            <TextView
+                android:id="@+id/row1Title9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Coming out on XBOX"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/upcomingPC" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recentlySearchedGames"
                 android:layout_width="0dp"
@@ -162,6 +207,36 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/row1Title5"
+                tools:listitem="@layout/homeitemlayout" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/upcomingPS4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/row1Title7"
+                tools:listitem="@layout/homeitemlayout" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/upcomingPC"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/row1Title8"
+                tools:listitem="@layout/homeitemlayout" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/upcomingXBOX"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/row1Title9"
                 tools:listitem="@layout/homeitemlayout" />
 
 

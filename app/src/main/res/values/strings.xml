@@ -16,9 +16,9 @@
     <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
 
     <!-- working-->
-    <string name="search_trendingGames">fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline; where rating_count &gt; 225; sort rating desc; limit 50;</string>
+    <string name="search_trendingGames">fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline; where rating_count &gt; 225; sort rating desc; limit 25;</string>
     <string name="search_screenShotTable">fields alpha_channel,animated,game,height,image_id,url,width; where game =</string>
-    <string name="search_upcomingGames">fields *; where date &gt; 1553467746; sort date asc; limit 15;</string>
+    <string name="search_upcomingGames">fields *; where date &gt; 1553467746; sort date asc; limit 25;</string>
     <string name="search_pinnedGamesScreen"> fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline;</string>
 
 

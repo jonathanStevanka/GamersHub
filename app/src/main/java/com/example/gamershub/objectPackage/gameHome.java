@@ -340,6 +340,9 @@ public class gameHome implements Parcelable {
         this.recyclerviewTopic = recyclerviewTopic;
     }
 
+
+
+
     public String getPlatformsTest() {
         return platformsTest;
     }

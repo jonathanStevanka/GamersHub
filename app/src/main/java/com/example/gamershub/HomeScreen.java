@@ -61,6 +61,9 @@ public class HomeScreen extends Fragment {
     private RecyclerView trending;
     private RecyclerView recentlySearched;
     private RecyclerView upcoming;
+    private RecyclerView upcomingOnPS4;
+    private RecyclerView upcomingOnXBOX;
+    private RecyclerView upcomingOnPC;
     private RecyclerView popularOnPs4;
     private RecyclerView popularOnXBOX;
     private RecyclerView popularOnPC;
@@ -70,10 +73,14 @@ public class HomeScreen extends Fragment {
     //Create our arraylist's so we can access them throughout the class
     ArrayList<gameHome> trendingGames = new ArrayList<>();
     ArrayList<gameHome> recentlySearchedList = new ArrayList<>();
-    ArrayList<gameHome> upcomingGames = new ArrayList<>();
     ArrayList<gameHome> popularGamesPs4 = new ArrayList<>();
     ArrayList<gameHome> popularGamesXBOX = new ArrayList<>();
     ArrayList<gameHome> popularGamesPC = new ArrayList<>();
+
+    ArrayList<gameHome> upcomingGames = new ArrayList<>();
+    ArrayList<gameHome> upcomingPS4 = new ArrayList<>();
+    ArrayList<gameHome> upcomingXBOX = new ArrayList<>();
+    ArrayList<gameHome> upcomingPC = new ArrayList<>();
 
     //create a fragment transaction
     FragmentManager fm;
@@ -129,9 +136,9 @@ public class HomeScreen extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-//        if (trendingGames != null){
-//            outState.putParcelableArrayList("trending",trendingGames);
-//        }
+        if (trendingGames != null){
+            outState.putParcelableArrayList("trending",trendingGames);
+        }
         if (upcomingGames != null){
             outState.putParcelableArrayList("upcoming",upcomingGames);
         }
@@ -177,8 +184,17 @@ public class HomeScreen extends Fragment {
         popularOnXBOX = view.findViewById(R.id.popularXBOX);
         //connect the popularOnPC recyclerview
         popularOnPC = view.findViewById(R.id.popularPC);
-
+        //connect the recently searched recyclerview so we can utilize it
         recentlySearched = view.findViewById(R.id.recentlySearchedGames);
+        //connect the upcomingOnps4 recyclerview
+        upcomingOnPS4 = view.findViewById(R.id.upcomingPS4);
+        //connect the upcomingOnps4 recyclerview
+        upcomingOnPC = view.findViewById(R.id.upcomingPC);
+        //connect the upcomingOnps4 recyclerview
+        upcomingOnXBOX = view.findViewById(R.id.upcomingXBOX);
+
+
+        //connect the label to the recyclerview so that we can toggle if it is hidden or not
         recentlySearcheedGamesLabel = view.findViewById(R.id.row1title2_5);
 
         /**
@@ -215,6 +231,22 @@ public class HomeScreen extends Fragment {
         //set the adapter on desired recyclerView
         recentlySearched.setAdapter(customAdapterClass);
 
+        //connect the custom adapter class to the desired arraylists
+        customAdapterClass = new CustomHomeAdapterClass(upcomingPC,getContext(),fm);
+        //set the adapter on desired recyclerView
+        upcomingOnPC.setAdapter(customAdapterClass);
+
+        //connect the custom adapter class to the desired arraylists
+        customAdapterClass = new CustomHomeAdapterClass(upcomingPS4,getContext(),fm);
+        //set the adapter on desired recyclerView
+        upcomingOnPS4.setAdapter(customAdapterClass);
+
+        //connect the custom adapter class to the desired arraylists
+        customAdapterClass = new CustomHomeAdapterClass(upcomingXBOX,getContext(),fm);
+        //set the adapter on desired recyclerView
+        upcomingOnXBOX.setAdapter(customAdapterClass);
+
+
         //check to see if there is any objects inside our local database
         DatabaseHelper db = new DatabaseHelper(getContext());
         ArrayList<gameHome> dbTest = db.grabAllGames();
@@ -226,16 +258,15 @@ public class HomeScreen extends Fragment {
          * if it equates to true then it will add that data to that particular recyclerview
          */
 
+        //make a check here too see if Recently searched is empty or not
+        if (recentlySearchedList.isEmpty()){
+            recentlySearched.setVisibility(view.GONE);
+            recentlySearcheedGamesLabel.setVisibility(view.GONE);
+            System.out.println("RECENTLY SEARCHED IS EMPTY");
+        }
+
         //if the database is not empty, load objects from the DB into our recyclerviews
         if (!dbTest.isEmpty()){
-
-            //make a check here too see if Recently searched is empty or not
-            if (recentlySearchedList.isEmpty()){
-                recentlySearched.setVisibility(view.GONE);
-                recentlySearcheedGamesLabel.setVisibility(view.GONE);
-                System.out.println("RECENTLY SEARCHED IS EMPTY");
-            }
-
 
             if (!trendingGames.isEmpty()){
                 //On the inital load of the app AFTER it has been launched before to add data from API into the database.
@@ -263,7 +294,6 @@ public class HomeScreen extends Fragment {
                 //if 'trendingGames' is empty then this method will load localdata from the phone
                 apicommand.loadDataFromPopularLocal(getContext(),db,customAdapterClass,popularGamesPs4,dbTest,"popularGamesPs4",trendingGames,48);
             }
-
 
 
             if (!recentlySearchedList.isEmpty()) {
@@ -299,6 +329,33 @@ public class HomeScreen extends Fragment {
                 apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingGames,dbTest,"upcomingGames");
             }
 
+            if (!upcomingPC.isEmpty()){
+                //was having problems seeing data after it had been updated
+                upcomingPC = new ArrayList<>();
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingPC,dbTest,"upcomingOnPC");
+
+            }else {
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingPC,dbTest,"upcomingOnPC");
+            }
+
+            if (!upcomingPS4.isEmpty()){
+                //was having problems seeing data after it had been updated
+                upcomingPS4 = new ArrayList<>();
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingPS4,dbTest,"upcomingOnPS4");
+
+            }else {
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingPS4,dbTest,"upcomingOnPS4");
+            }
+
+            if (!upcomingXBOX.isEmpty()){
+                //was having problems seeing data after it had been updated
+                upcomingXBOX = new ArrayList<>();
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingXBOX,dbTest,"upcomingOnXBOX");
+
+            }else {
+                apicommand.loadDataFromLocal(getContext(),db,customAdapterClass,upcomingXBOX,dbTest,"upcomingOnXBOX");
+            }
+
             //make a check here too see if Recently searched is empty or not
             if (!recentlySearchedList.isEmpty()){
                 recentlySearched.setVisibility(view.VISIBLE);
@@ -309,15 +366,7 @@ public class HomeScreen extends Fragment {
         }
         db.close();
 
-        /**
-         * FOR TESTING PURPOSES ONLY
-         * -this will load dummy data inside the recyclerviews
-         */
-        //apicommand.InitialLoad(trendingGames,customAdapterClass);
-        //apicommand.InitialLoad(upcomingGames,customAdapterClass);
-        //apicommand.InitialLoad(popularGamesPs4,customAdapterClass);
-        //apicommand.InitialLoad(popularGamesXBOX,customAdapterClass);
-        //apicommand.InitialLoad(popularGamesPC,customAdapterClass);
+
         /**
          * This is where the action happens
          * Please check the params on the 'getData()' function
@@ -335,7 +384,7 @@ public class HomeScreen extends Fragment {
         }
         if (upcomingGames.isEmpty()){
             //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
-            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
+            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",upcomingPS4,upcomingXBOX,upcomingPC);
         }
 
         System.out.println("trendingGames SIZE: "+trendingGames.size());
@@ -353,9 +402,12 @@ public class HomeScreen extends Fragment {
         trending.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         recentlySearched.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         upcoming.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        popularOnPC.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         popularOnPs4.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         popularOnXBOX.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-        popularOnPC.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        upcomingOnPS4.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        upcomingOnPC.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        upcomingOnXBOX.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
         //return the view
         return view;
