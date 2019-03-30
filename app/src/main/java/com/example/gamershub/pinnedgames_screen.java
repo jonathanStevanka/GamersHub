@@ -4,9 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.gamershub.Database.DatabaseHelper;
+import com.example.gamershub.igdbAPI.APICOMMAND;
+import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
+import com.example.gamershub.objectPackage.CustomPinnedAdapterClass;
+import com.example.gamershub.objectPackage.gameHome;
+
+import java.util.ArrayList;
 
 
 /**
@@ -26,6 +37,23 @@ public class pinnedgames_screen extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    //Create a new instance of our APICOMMAND class
+    APICOMMAND apicommand = new APICOMMAND();
+
+    //Create a new RecyclerView so we can connect it
+    private RecyclerView pinnedGames;
+
+    //Create a new Arraylist so we can use it to hold the users pinned games
+    ArrayList<gameHome> pinnedGamesList = new ArrayList<>();
+
+    //create a fragment transaction
+    FragmentManager fm;
+
+    //Create a new CustomPinnedAdapterClass so we can re-use it throughout the code and recyclerviews if we decided to add more lateron
+    private CustomPinnedAdapterClass customPinnedAdapterClass;
+
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,13 +86,58 @@ public class pinnedgames_screen extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        fm = getActivity().getSupportFragmentManager();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pinnedgames_screen, container, false);
+        View view = inflater.inflate(R.layout.fragment_pinnedgames_screen, container, false);
+
+        pinnedGamesList = new ArrayList<>();
+
+        pinnedGames = view.findViewById(R.id.pinnedGamesRecyclerView);
+        pinnedGames.setNestedScrollingEnabled(false);
+        //check to see if there is any objects inside our local database
+        DatabaseHelper db = new DatabaseHelper(getContext());
+        ArrayList<gameHome> dbTest = db.grabAllGames();
+
+        //connect the custom adapter class to the desired arraylists
+        customPinnedAdapterClass = new CustomPinnedAdapterClass(pinnedGamesList,getContext(),fm);
+        //set the adapter on desired recyclerView
+        pinnedGames.setAdapter(customPinnedAdapterClass);
+
+        if (!dbTest.isEmpty()){
+            if (!pinnedGamesList.isEmpty()){
+                //was having problems seeing data after it had been updated
+                pinnedGamesList = new ArrayList<>();
+                apicommand.loadDataFromLocalPinnedGames(getContext(),db,customPinnedAdapterClass,pinnedGamesList,dbTest);
+            }else{
+                apicommand.loadDataFromLocalPinnedGames(getContext(),db,customPinnedAdapterClass,pinnedGamesList,dbTest);
+            }
+        }
+        db.close();
+        /**
+         * make a method here to check if the 'pinnedGamesList' is empty, if it is, we should search
+         * the local database to see if there is any pinned games inside the DB.
+         *
+         * if there is data inside the arraylist we should try and utilize our 'loadfromlocal' method
+         */
+
+//        if (!dbTest.isEmpty()){
+//            for (int i =0; i < dbTest.size(); i++){
+//                System.out.println("--------------------------------------------------------------");
+//                System.out.println("pinnedgames@oncreateview - Game Name: "+dbTest.get(i).getName());
+//                System.out.println("pinnedgames@oncreateview - pinned: "+dbTest.get(i).getIspinned());
+//                System.out.println("--------------------------------------------------------------");
+//            }
+//        }
+
+
+        //set the orientation of the list on load
+        pinnedGames.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,3 +1,5 @@
 Android wrapper for IGDB API: APACHE 2.0 - https://github.com/amitshekhariitbhu/Fast-Android-Networking
 API documenttion for IGDB API: - https://api-docs.igdb.com/#examples-12
 Picasso Image downloading and cache library: APACHE 2.0 - https://github.com/square/picasso
+DotsIndicator used inside the screenitemClickFragment: Apache 2.0 - https://github.com/tommybuonomo/dotsindicator
+CircleProgressBar used inside the screenitemClickFragment: Apache 2.0 - https://github.com/dinuscxj/CircleProgressBar      (specifys inside the README that the license is apache 2.0) screenshot has been taken for legal purposes)

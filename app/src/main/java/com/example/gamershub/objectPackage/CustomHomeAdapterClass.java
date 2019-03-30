@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapterClass.customAdap> {
 
+
     private ArrayList<gameHome> games;
     private Context context;
     //create a private fragment manager so we can utilize the fragmentransaction inside this class
@@ -31,7 +32,6 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
         this.context = context;
         this.fm = fm;
     }
-
 
 
     @NonNull
@@ -49,22 +49,10 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
     public void onBindViewHolder(@NonNull final customAdap viewHolder, final int i) {
         final gameHome game = games.get(i);
         viewHolder.name.setText(game.getName());
-        Picasso.get().load(game.getGameCoverURL()).into(viewHolder.gameCover);
-
+        Picasso.get().load(game.getGameCoverURL()).resize(290,390).into(viewHolder.gameCover);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                /**
-                 * FOR TESTING PURPOSES ONLY DELETE LATER
-                 */
-
-
-                /**
-                 * -------------------------------------------------------
-                 */
-
                 //create a fragmentTransaction and pass the data to another fragment
                 Bundle objectBundle = new Bundle();
                 //create a new game to be placed inside the bundle
@@ -75,7 +63,7 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
                     //gently place the 'gameobject' inside the bundle taking advantage of the easy to use
                     //'putserializable' method.... then all we have to do is make sure our 'gameHome' object
                     //implements serializable and that got rid of our other error here.
-                    objectBundle.putSerializable("game", gameForBundle);
+                    objectBundle.putParcelable("game", gameForBundle);
                 }
                 //create a new fragment transaction utilizing the FM we passed into the constructor earlier on
                 FragmentTransaction transaction = fm.beginTransaction();
@@ -102,6 +90,11 @@ public class CustomHomeAdapterClass extends RecyclerView.Adapter<CustomHomeAdapt
             }
         });
 
+    }
+
+    public void RemoveAllData(){
+        games.clear();
+        notifyDataSetChanged();
     }
 
     @Override

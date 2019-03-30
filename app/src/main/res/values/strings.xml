@@ -7,6 +7,8 @@
     <string name="title_gameTrade">Game Trader</string>
     <string name="title_settings">Settings</string>
 
+    <string name="removePinBtnText">Unpin this game</string>
+    <string name="addPinBtnText">Pin this game</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -14,21 +16,28 @@
     <!-- ALL CURRENT STRINGS FOR THE SEARCH METHODS -->
 
     <!-- working-->
-    <string name="search_trendingGames">fields name,popularity,cover,rating,summary,url,screenshots; where rating_count &gt; 225; sort rating desc; limit 10;</string>
-    <string name="search_screenShotTable">fields alpha_channel, animated, game, height, image_id, url, width; where game =</string>
+    <string name="search_trendingGames">fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline; where rating_count &gt; 225; sort rating desc; limit 25;</string>
+    <string name="search_screenShotTable">fields alpha_channel,animated,game,height,image_id,url,width; where game =</string>
+    <string name="search_upcomingGames">fields *; where date &gt; 1553467746; sort date asc; limit 25;</string>
+    <string name="search_pinnedGamesScreen"> fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline;</string>
 
 
 
-    <!-- testing-->
-    <string name="search_upcomingGames">fields id,game,human,m,platform; where date &gt; 1551648064; sort date asc;</string>
 
-    <!-- needs looking at-->
-    <string name="search_recentlyReleasedPS4games">fields id,game,human,m,platform; where date &lt; 1551648064; sort date desc; limit 25;</string>
 
-    <!-- not tested-->
-    <string name="search_upcomingGamesPS4">fields id,game,human,m,platform; where platform = 48 &amp; date &gt; 1551648064;</string>
-    <string name="search_upcomingGamesPC">fields id,game,human,m,platform; where platform = 49 &amp; date &gt; 1551648064;</string>
-    <string name="search_upcomingGamesXBOX">fields id,game,human,m,platform; where platform = 6 &amp; date &gt; 1551648064;</string>
 
+    <!-- not used-->
+    <string name="search_upcomingGamesPS4">fields id,game,human,m,platform; where platform = 48 &amp; date &gt; 1552916822; sort date asc; limit 20;</string>
+    <string name="search_upcomingGamesPC">fields id,game,human,m,platform; where platform = 49 &amp; date &gt; 1552916822;</string>
+    <string name="search_upcomingGamesXBOX">fields id,game,human,m,platform; where platform = 6 &amp; date &gt; 1552862789;</string>
+    <string name="search_recentlyReleasedPS4games">fields id,game,human,m,platform; where platform = 48 &amp; date &lt; 1552916822; sort date asc; limit 15;</string>
+
+
+
+
+
+
+    <!-- ERROR messages to be displayed if content is null -->
+    <string name="gameDoesNotHaveSummary">Does not have a summary available!</string>
 
 </resources>
