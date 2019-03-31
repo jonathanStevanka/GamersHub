@@ -15,6 +15,7 @@ import com.example.gamershub.HomeScreen;
 import com.example.gamershub.R;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.CustomPinnedAdapterClass;
+import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
 
 import org.json.JSONArray;
@@ -411,6 +412,66 @@ public class APICOMMAND {
 
                                             if (jsonGameObject.has("id")) {
                                                 game.setId(jsonGameObject.getInt("id"));
+
+
+                                                AndroidNetworking.post("https://api-v3.igdb.com/feeds/").addHeaders("user-key",BuildConfig.IGDBKey)
+                                                        .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                                                        .addStringBody("fields id,category,content,created_at,feed_likes_count,games,user; where games = "+jsonGameObject.getInt("id")+" & category = 5;")
+                                                        .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+
+                                                    @Override
+                                                    public void onResponse(JSONArray response) {
+
+                                                        ArrayList<commentObject> reviews = new ArrayList<>();
+                                                        JSONObject jsonObjectt = new JSONObject();
+                                                        commentObject review = null;
+
+                                                        for (int r=0; r<response.length();r++){
+
+                                                            try{
+                                                                jsonObjectt = response.getJSONObject(r);
+                                                                review = new commentObject();
+
+                                                                if (jsonObjectt.has("id")){
+                                                                    review.setCommentID(jsonObjectt.getInt("id"));
+                                                                }
+                                                                if (jsonObjectt.has("games")){
+
+                                                                }
+                                                                if (jsonObjectt.has("category")){
+                                                                    review.setCategory(jsonObjectt.getInt("category"));
+                                                                }
+                                                                if (jsonObjectt.has("content")){
+                                                                    review.setReviewContent(jsonObjectt.getString("content"));
+                                                                }
+                                                                if (jsonObjectt.has("created_at")){
+                                                                    review.setCreatedAt(jsonObjectt.getDouble("created_at"));
+                                                                }
+                                                                if (jsonObjectt.has("feed_likes_count")){
+                                                                    review.setReviewLikes(jsonObjectt.getDouble("feed_likes_count"));
+                                                                }
+                                                                if (jsonObjectt.has("user")){
+                                                                    review.setUserID(jsonObjectt.getInt("user"));
+                                                                }
+
+
+
+                                                            }catch (JSONException e){
+                                                                e.printStackTrace();
+                                                                e.getCause();
+                                                                e.getMessage();
+                                                            }
+
+                                                        }
+
+                                                    }
+
+                                                    @Override
+                                                    public void onError(ANError anError) {
+
+                                                    }
+                                                });
+
                                             }
                                             if (jsonGameObject.has("name")) {
                                                 game.setName(jsonGameObject.getString("name"));

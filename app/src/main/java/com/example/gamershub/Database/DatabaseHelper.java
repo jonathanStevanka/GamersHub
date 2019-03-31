@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
 
 import java.util.ArrayList;
@@ -19,15 +20,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DBVER);
     }
 
-    //create the db name
-    public static final String DATABASE_NAME = "GamersHub";
 
     //declare the version of the database
     public static final int DBVER = 1;
 
     //create our table names
+    public static final String DATABASE_NAME = "GamersHub";
     public static final String GAME_TABLE = "ALLGAMES";
-
+    public static final String USRREVIEW_TABLE = "userReview";
     /**
      * CREATE THE STRINGS THAT WILL REPRESENT OUR COLUMN
      */
@@ -80,6 +80,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     /**
+     * CREATE THE TABLE FOR REVIEW COMMENTS TO A SPECIFIC ITEM
+     */
+    //ID and gameID are borrowed from above declared psf's
+    public static final String CATEGORY_COLUMN = "category";
+    public static final String CONTENT_COLUMN = "content";
+    public static final String CREATEDAT_COLUMN = "created_at";
+    public static final String UPDATEDAT_COLUMN = "updated_at";
+    public static final String REVIEWLIKES_COLUMN = "feedLikes";
+    public static final String USER_COLUMN = "userID";
+
+
+
+    /**
      * Create the 'Create Table' querys
      */
     public static final String CREATE_GAME = "CREATE TABLE " +
@@ -91,6 +104,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
 
     public static final String CREATE_TOTAL_GAME_COUNT_TABLE = "CREATE TABLE " +  GAMECOUNT_TABLE  + "(" + COUNT_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT " + ")";
+
+    public static final String CREATE_USER_REVIEW_TABLE = "CREATE TABLE " + USRREVIEW_TABLE + "(" + GAMEID_COLUMN + " INTEGER, " + ID_COLUMN + " INTEGER, " +
+    CATEGORY_COLUMN + " INTEGER, " + CONTENT_COLUMN + " TEXT, " + CREATEDAT_COLUMN + " TEXT, " +  UPDATEDAT_COLUMN + " TEXT, " + REVIEWLIKES_COLUMN + " TEXT, " + USER_COLUMN + " TEXT "+")";
+
 
     /**
      * Create the CRUD methods
@@ -318,12 +335,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //delete
 
 
+    /**
+     * CREATE CRUD METHODS FOR COMMENT DB
+     */
+
+    public void addComment(commentObject comment){
+        //grab the current database on this phone
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues val = new ContentValues();
+        val.put(GAMEID_COLUMN,comment.getGameID());
+        val.put(ID_COLUMN,comment.getCommentID());
+        val.put(USER_COLUMN,comment.getUserID());
+        val.put(CATEGORY_COLUMN,comment.getCategory());
+        val.put(CONTENT_COLUMN,comment.getReviewContent());
+        val.put(CREATEDAT_COLUMN,comment.getCreatedAt());
+        val.put(UPDATEDAT_COLUMN,comment.getUpdatedAt());
+        val.put(REVIEWLIKES_COLUMN,comment.getReviewLikes());
+        db.insert(USRREVIEW_TABLE, null, val);
+        db.close();
+    }
+
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_GAME);
         db.execSQL(CREATE_TOTAL_GAME_COUNT_TABLE);
+        db.execSQL(CREATE_USER_REVIEW_TABLE);
     }
 
     @Override
