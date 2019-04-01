@@ -15,6 +15,7 @@ import com.example.gamershub.HomeScreen;
 import com.example.gamershub.R;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.CustomPinnedAdapterClass;
+import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
 
 import org.json.JSONArray;

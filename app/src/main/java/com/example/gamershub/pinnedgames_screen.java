@@ -15,6 +15,7 @@ import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.igdbAPI.APICOMMAND;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.CustomPinnedAdapterClass;
+import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
 
 import java.util.ArrayList;
@@ -96,9 +97,9 @@ public class pinnedgames_screen extends Fragment {
         View view = inflater.inflate(R.layout.fragment_pinnedgames_screen, container, false);
 
         pinnedGamesList = new ArrayList<>();
-
         pinnedGames = view.findViewById(R.id.pinnedGamesRecyclerView);
         pinnedGames.setNestedScrollingEnabled(false);
+
         //check to see if there is any objects inside our local database
         DatabaseHelper db = new DatabaseHelper(getContext());
         ArrayList<gameHome> dbTest = db.grabAllGames();
