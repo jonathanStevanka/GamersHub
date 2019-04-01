@@ -24,6 +24,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.igdbAPI.APICOMMAND;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
+import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
 
 import java.text.SimpleDateFormat;
@@ -81,6 +82,9 @@ public class HomeScreen extends Fragment {
     ArrayList<gameHome> upcomingPS4 = new ArrayList<>();
     ArrayList<gameHome> upcomingXBOX = new ArrayList<>();
     ArrayList<gameHome> upcomingPC = new ArrayList<>();
+
+    //testing arraylist for comments
+    ArrayList<commentObject> comments = new ArrayList<>();
 
     //create a fragment transaction
     FragmentManager fm;
@@ -363,6 +367,8 @@ public class HomeScreen extends Fragment {
                 System.out.println("RECENTLY SEARCHED IS NOT EMPTY");
             }
 
+            comments = db.grabAllComments();
+
         }
         db.close();
 
@@ -386,7 +392,7 @@ public class HomeScreen extends Fragment {
             //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
             apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",upcomingPS4,upcomingXBOX,upcomingPC);
         }
-
+        System.out.println("commentsDB SIZE: "+comments.size());
         System.out.println("trendingGames SIZE: "+trendingGames.size());
         System.out.println("recentlySearched SIZE: "+recentlySearchedList.size());
         System.out.println("upcomingGames SIZE: "+upcomingGames.size());

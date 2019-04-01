@@ -8,15 +8,15 @@ public class commentObject {
     private int userID;
     private int category;
     private String reviewContent;
-    private double createdAt;
-    private double updatedAt;
+    private String createdAt;
+    private String updatedAt;
     private double reviewLikes;
 
     public commentObject() {
 
     }
 
-    public commentObject(int gameID, int commentID, int userID, String reviewContent, float createdAt, double reviewLikes) {
+    public commentObject(int gameID, int commentID, int userID, String reviewContent, String createdAt, double reviewLikes) {
         this.gameID = gameID;
         this.commentID = commentID;
         this.userID = userID;
@@ -65,19 +65,19 @@ public class commentObject {
         this.reviewContent = reviewContent;
     }
 
-    public double getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public double getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(double updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public void setCreatedAt(double createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 

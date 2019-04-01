@@ -22,13 +22,16 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.objectPackage.CustomPinnedAdapterClass;
+import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import static java.text.DateFormat.getDateTimeInstance;
@@ -153,7 +156,7 @@ public class search_screen extends Fragment {
 
                         @Override
                         public void onResponse(JSONArray response) {
-                            DatabaseHelper db = new DatabaseHelper(getContext());
+                            final DatabaseHelper db = new DatabaseHelper(getContext());
                             //Instantiate a new JSONObject for the response information
                             JSONObject jsonGameObject = null;
                             JSONArray jsonScreenshotArray = null;
@@ -171,6 +174,7 @@ public class search_screen extends Fragment {
 
                                     if (jsonGameObject.has("id")){
                                         game.setId(jsonGameObject.getInt("id"));
+
                                     }
 
                                     game.setName(jsonGameObject.getString("name"));

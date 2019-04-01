@@ -109,8 +109,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     CATEGORY_COLUMN + " INTEGER, " + CONTENT_COLUMN + " TEXT, " + CREATEDAT_COLUMN + " TEXT, " +  UPDATEDAT_COLUMN + " TEXT, " + REVIEWLIKES_COLUMN + " TEXT, " + USER_COLUMN + " TEXT "+")";
 
 
+
+
+
+
+
+
     /**
-     * Create the CRUD methods
+     * Create the CRUD methods for the game table
      */
     //create
     public void addGame(gameHome game){
@@ -255,6 +261,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //delete
 
+
+
+
+
+
     /**
      *
      * Custom method's for data inside our LocalDatabase
@@ -335,10 +346,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //delete
 
 
+
+
+
+
+
+
+
+
     /**
      * CREATE CRUD METHODS FOR COMMENT DB
      */
 
+    //create
     public void addComment(commentObject comment){
         //grab the current database on this phone
         SQLiteDatabase db = this.getWritableDatabase();
@@ -354,6 +374,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(USRREVIEW_TABLE, null, val);
         db.close();
     }
+    //read
+    public ArrayList<commentObject> grabAllCommentsForGame(int gameID){
+        ArrayList<commentObject> comments = new ArrayList<>();
+        commentObject comment = null;
+        String query = "SELECT * FROM " + USRREVIEW_TABLE + " WHERE "+GAMEID_COLUMN+" = "+gameID+";";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor pointer = db.rawQuery(query, null);
+        if(pointer.moveToFirst()){
+            do{
+                comment = new commentObject();
+                comment.setGameID(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
+                comment.setUserID(pointer.getInt(pointer.getColumnIndex(USER_COLUMN)));
+                comment.setCategory(pointer.getInt(pointer.getColumnIndex(CATEGORY_COLUMN)));
+                comment.setCommentID(pointer.getInt(pointer.getColumnIndex(ID_COLUMN)));
+                comment.setCreatedAt(pointer.getString(pointer.getColumnIndex(CREATEDAT_COLUMN)));
+                comment.setUpdatedAt(pointer.getString(pointer.getColumnIndex(UPDATEDAT_COLUMN)));
+                comment.setReviewContent(pointer.getString(pointer.getColumnIndex(CONTENT_COLUMN)));
+                comment.setReviewLikes(pointer.getDouble(pointer.getColumnIndex(REVIEWLIKES_COLUMN)));
+                comments.add(comment);
+            }while(pointer.moveToNext());
+        }
+        pointer.close();
+        db.close();
+
+        return comments;
+    }
+
+    public ArrayList<commentObject> grabAllComments(){
+        ArrayList<commentObject> comments = new ArrayList<>();
+        commentObject comment = null;
+        String query = "SELECT * FROM " + USRREVIEW_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor pointer = db.rawQuery(query, null);
+        if(pointer.moveToFirst()){
+            do{
+                comment = new commentObject();
+                comment.setGameID(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
+                comment.setUserID(pointer.getInt(pointer.getColumnIndex(USER_COLUMN)));
+                comment.setCategory(pointer.getInt(pointer.getColumnIndex(CATEGORY_COLUMN)));
+                comment.setCommentID(pointer.getInt(pointer.getColumnIndex(ID_COLUMN)));
+                comment.setCreatedAt(pointer.getString(pointer.getColumnIndex(CREATEDAT_COLUMN)));
+                comment.setUpdatedAt(pointer.getString(pointer.getColumnIndex(UPDATEDAT_COLUMN)));
+                comment.setReviewContent(pointer.getString(pointer.getColumnIndex(CONTENT_COLUMN)));
+                comment.setReviewLikes(pointer.getDouble(pointer.getColumnIndex(REVIEWLIKES_COLUMN)));
+                comments.add(comment);
+            }while(pointer.moveToNext());
+        }
+        pointer.close();
+        db.close();
+
+        return comments;
+    }
+
+
+    //update
+
+
+
+    //delete
 
 
 

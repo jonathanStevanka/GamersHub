@@ -5,8 +5,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +19,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.igdbAPI.APICOMMAND;
+import com.example.gamershub.objectPackage.CustomCommentAdapterClass;
+import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
 import com.squareup.picasso.Picasso;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -65,7 +78,13 @@ public class home_screenitemCLICK extends Fragment {
 
     boolean isPinned;
 
+    RecyclerView commentRecyclerview;
 
+    ArrayList<commentObject> comments = null;
+    ArrayList<commentObject> testComments = null;
+
+    FragmentManager fm;
+    CustomCommentAdapterClass customCommentAdapterClass=null;
     public home_screenitemCLICK() {
         // Required empty public constructor
     }
@@ -95,6 +114,9 @@ public class home_screenitemCLICK extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        fm = getActivity().getSupportFragmentManager();
+
         //create a new bundle and get the arguments passed from the calling method
         Bundle game = getArguments();
         //grab the serializable out of the bundle that has our key
@@ -108,8 +130,19 @@ public class home_screenitemCLICK extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screenitem_click, container, false);
 
+        commentRecyclerview = view.findViewById(R.id.commentRecyclerView);
+
         //create a connection to our DatabaseHelper class
         final DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
+
+        comments = new ArrayList<>();
+        testComments = new ArrayList<>();
+
+        //connect the custom adapter class to the desired arraylists
+        customCommentAdapterClass = new CustomCommentAdapterClass(comments,getContext());
+        //set the adapter on desired recyclerView
+        commentRecyclerview.setAdapter(customCommentAdapterClass);
+        commentRecyclerview.setNestedScrollingEnabled(false);
 
 
 
@@ -156,6 +189,114 @@ public class home_screenitemCLICK extends Fragment {
         videoGameInitialRelease.setText(String.valueOf(gameHome.getReleaseDate()));
         videoGamePlatform.setText(String.valueOf(gameHome.getPlatformsTest()));
         videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
+
+
+        /**
+         * create a way to load comments in only for the currently selected item
+         * that way it will use less hits on the API and that way we can support more users on the end
+         * --------------------
+         * this will check the database first to see if it contains the comment ID and if it does it will grab that object instead
+         * if it does not it will add the current comment to thee database
+         * at the end it will update the comments recyclerview
+         */
+
+
+
+
+        if (gameHome.getId()!=0){
+            testComments = databaseHelper.grabAllCommentsForGame(gameHome.getId());
+            if (!testComments.isEmpty()){
+                commentObject currentComment = null;
+                for (int i=0;i<testComments.size();i++){
+                    currentComment = testComments.get(i);
+                    if (currentComment.getGameID()==gameHome.getId()){
+                        comments.add(currentComment);
+                        customCommentAdapterClass.notifyDataSetChanged();
+                    }
+                }
+            } else {
+
+                AndroidNetworking.post("https://api-v3.igdb.com/feeds/").addHeaders("user-key",BuildConfig.IGDBKey)
+                        .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                        .addStringBody("fields id,category,content,created_at,updated_at,feed_likes_count,games,user; where games = "+gameHome.getId()+" & category = 5;")
+                        .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        final DatabaseHelper db = new DatabaseHelper(getContext());
+                        ArrayList<commentObject> reviews = new ArrayList<>();
+                        JSONObject jsonObjectt = new JSONObject();
+                        commentObject review = null;
+
+                        for (int r=0; r<response.length();r++){
+
+                            try{
+                                jsonObjectt = response.getJSONObject(r);
+                                review = new commentObject();
+
+                                if (jsonObjectt.has("id")){
+                                    review.setCommentID(jsonObjectt.getInt("id"));
+                                }
+                                if (jsonObjectt.has("games")){
+                                    JSONArray gameArray = jsonObjectt.getJSONArray("games");
+                                    review.setGameID(gameArray.getInt(0));
+                                }
+                                if (jsonObjectt.has("category")){
+                                    review.setCategory(jsonObjectt.getInt("category"));
+                                }
+                                if (jsonObjectt.has("content")){
+                                    review.setReviewContent(jsonObjectt.getString("content"));
+                                }
+                                if (jsonObjectt.has("created_at")){
+                                    review.setCreatedAt(jsonObjectt.getString("created_at"));
+                                }
+                                if (jsonObjectt.has("updated_at")){
+                                    review.setUpdatedAt(jsonObjectt.getString("updated_at"));
+                                }
+                                if (jsonObjectt.has("feed_likes_count")){
+                                    review.setReviewLikes(jsonObjectt.getDouble("feed_likes_count"));
+                                }
+                                if (jsonObjectt.has("user")){
+                                    review.setUserID(jsonObjectt.getInt("user"));
+                                }
+
+                                System.out.println("-----------------------");
+                                System.out.println("REVIEW ID: "+review.getCommentID());
+                                System.out.println("GAME ID: "+review.getGameID());
+                                System.out.println("CATEGORY ID: "+review.getCategory());
+                                System.out.println("USER ID: "+review.getUserID());
+                                System.out.println("CONTENT: "+review.getReviewContent());
+                                System.out.println("CREATED AT: "+review.getCreatedAt());
+                                System.out.println("UPDATED AT: "+review.getUpdatedAt());
+                                System.out.println("REVIEW LIKES: "+review.getReviewLikes());
+                                System.out.println("-----------------------");
+
+                                comments.add(review);
+                                customCommentAdapterClass.notifyDataSetChanged();
+                                db.addComment(review);
+                                System.out.println("comment was added");
+
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                                e.getCause();
+                                e.getMessage();
+                            }
+                            db.close();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
+            }
+        }
+
+
+
+
 
 
 
@@ -249,6 +390,7 @@ public class home_screenitemCLICK extends Fragment {
             totalRating.setProgress(totRating.intValue());
         }
 
+        commentRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
 
 
         return view;

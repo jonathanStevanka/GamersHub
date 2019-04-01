@@ -1,0 +1,67 @@
+package com.example.gamershub.objectPackage;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.gamershub.R;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+public class CustomCommentAdapterClass extends RecyclerView.Adapter<CustomCommentAdapterClass.customAdap> {
+
+    private ArrayList<commentObject> comments;
+    private Context context;
+
+    public CustomCommentAdapterClass(@NonNull ArrayList<commentObject> comments,Context context){
+        this.comments = comments;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public customAdap onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        final View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.commentlayout,viewGroup,false);
+        final customAdap customAdap = new customAdap(view);
+
+
+        return customAdap;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull customAdap viewHolder, int i) {
+        commentObject comment = comments.get(i);
+        Date createdDate = null;
+        createdDate = new Date((long) Long.valueOf(comment.getCreatedAt())*1000);
+        viewHolder.createdAT.setText(createdDate.toString());
+        viewHolder.userName.setText(String.valueOf(comment.getUserID()));
+        viewHolder.reviewContent.setText(comment.getReviewContent());
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return comments.size();
+    }
+
+    class customAdap extends RecyclerView.ViewHolder{
+        protected TextView userName;
+        protected TextView createdAT;
+        protected TextView reviewContent;
+        protected ImageView UserImage;
+
+        public customAdap(View view){
+            super(view);
+            this.userName = view.findViewById(R.id.userName);
+            this.UserImage = view.findViewById(R.id.userCover);
+            this.createdAT = view.findViewById(R.id.postedAt);
+            this.reviewContent = view.findViewById(R.id.reviewContent);
+        }
+    }
+}
