@@ -10,23 +10,41 @@ import java.util.Arrays;
 //make sure this class implements 'Parcelable'
 public class gameHome implements Parcelable {
 
+    //create a placeholder for the id that this game represents
     private int id;
+    //create a placeholder for the localDBID that this game is linked too
     private int localDBID;
+    //create a placeholder for the name of this game
     private String name;
+    //create a placeholder for the description of this game
     private String description;
+    //create a placeholder for the summary of this game
     private String summary;
+    //create a placeholder for the websiteURL of this game
     private String websiteUrl;
+    //create a placeholder for the coverImageURL of this game
     private String imageViewUrl;
+    //create a placeholder for the rating of this game
     private Double rating;
+    //create a placeholder for the aggervatedRating of this game
     private Double aggervatedRating;
+    //create a placeholder for the totalRating of this game
     private Double totalRating;
+    //create a placeholder for the popularity of this game
     private Double popularity;
+    //create a placeholder for the price of this game
     private Double price;
+    //create a placeholder for the gameCover of this game
     private int gameCover;
+    //create a placeholder for the different platforms of this game
     private String platformsTest;
+    //create a placeholder for the release date of this game
     private String releaseDate;
+    //create a placeholder for the gameCoverURL of this game
     private String gameCoverURL;
+    //create a placeholder for the screenshot's from this game
     private String[] gameScreenshots;
+    //create a placeholder for the the extended URL from a link
     private String gameScreenshotExtendedURL;
     private String timestamp;
     private String ispinned;
