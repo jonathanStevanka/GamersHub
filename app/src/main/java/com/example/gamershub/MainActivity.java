@@ -53,10 +53,6 @@ search_screen.OnFragmentInteractionListener{
                     transaction.commit();
                     return true;
 
-                case R.id.navigation_gameTrade:
-
-                    return true;
-
                 case R.id.navigation_settings:
 
                     return true;

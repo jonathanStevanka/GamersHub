@@ -322,30 +322,6 @@ public class APICOMMAND {
 
             if (localArraylist.get(i).getIspinned().contains("yes") && !arrayList.contains(localArraylist.get(i))){
 
-//                System.out.println("------------------------------------");
-//                System.out.println("INFORMATION FOR GAME");
-//
-//                System.out.println("LOCAL DBID: "+localArraylist.get(i).getLocalDBID());
-//                System.out.println("ID: "+localArraylist.get(i).getId());
-//                System.out.println("NAME: "+localArraylist.get(i).getName());
-//                System.out.println("DESCRIPTION: "+localArraylist.get(i).getDescription());
-//                System.out.println("SUMMARY: "+localArraylist.get(i).getSummary());
-//                System.out.println("IGDB-RATING: "+localArraylist.get(i).getRating());
-//                System.out.println("aggervated-RATING: "+localArraylist.get(i).getAggervatedRating());
-//                System.out.println("Total-RATING: "+localArraylist.get(i).getTotalRating());
-//                System.out.println("IMAGEURL: "+localArraylist.get(i).getImageViewUrl());
-//                System.out.println("PLATFORM: "+localArraylist.get(i).getPlatformsTest());
-//                System.out.println("WEBURL: "+localArraylist.get(i).getWebsiteUrl());
-//                System.out.println("COVER: "+localArraylist.get(i).getGameCover());
-//                System.out.println("RELEASEDATE: "+localArraylist.get(i).getReleaseDate());
-//                System.out.println("COVERURL: "+localArraylist.get(i).getGameCoverURL());
-//                System.out.println("SCREENSHOTURL'S: "+localArraylist.get(i).getGameScreenshotExtendedURL());
-//                System.out.println("RECYCLERVIEWDESTINATION: "+localArraylist.get(i).getRecyclerviewTopic());
-//                System.out.println("GAME PINNED BY USER: "+localArraylist.get(i).getIspinned());
-//                System.out.println("TIME OF DATA ADDED TO SYSTEM: "+localArraylist.get(i).getTimestamp());
-//                System.out.println("TOPIC: "+localArraylist.get(i).getRecyclerviewTopic());
-//                System.out.println("------------------------------------");
-
                 if (!localArraylist.get(i).getRecyclerviewTopic().contentEquals("upcomingGames")){
                     arrayList.add(localArraylist.get(i));
                 }
