@@ -1,5 +1,6 @@
 package com.example.gamershub;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -53,12 +54,9 @@ search_screen.OnFragmentInteractionListener{
                     transaction.commit();
                     return true;
 
-                case R.id.navigation_gameTrade:
-
-                    return true;
-
                 case R.id.navigation_settings:
-
+                    Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
+                    startActivity(intent);
                     return true;
             }
             return false;

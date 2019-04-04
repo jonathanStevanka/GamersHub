@@ -256,6 +256,8 @@ public class APICOMMAND {
      * THE BELOW METHODS WILL FIND DATA LOCALLY STORED ON THE PHONE AND UPDATE THE RECYCLERVIEWS WHEN NECCESARY
      */
 
+
+    //this method will load data in directly in from the database
     public void loadDataFromLocal(final Context context,DatabaseHelper db, final  CustomHomeAdapterClass customHomeAdapterClass,final ArrayList<gameHome> arrayList,final ArrayList<gameHome> localArraylist,String destination){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
@@ -278,7 +280,7 @@ public class APICOMMAND {
         db.close();
     }
 
-
+    //this method will load data only where the games are in the popular category
     public void loadDataFromPopularLocal(final Context context,DatabaseHelper db, final  CustomHomeAdapterClass customHomeAdapterClass,final ArrayList<gameHome> arrayList,final ArrayList<gameHome> localArraylist,String destination,final ArrayList<gameHome> trendingGames,int gamePlatform){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
@@ -311,7 +313,7 @@ public class APICOMMAND {
         db.close();
     }
 
-
+    //this method will load data only where the pinned column is equal to yes
     public void loadDataFromLocalPinnedGames(final Context context, DatabaseHelper db, final CustomPinnedAdapterClass customHomeAdapterClass, final ArrayList<gameHome> arrayList, final ArrayList<gameHome> localArraylist){
 
 
@@ -319,30 +321,6 @@ public class APICOMMAND {
 
 
             if (localArraylist.get(i).getIspinned().contains("yes") && !arrayList.contains(localArraylist.get(i))){
-
-//                System.out.println("------------------------------------");
-//                System.out.println("INFORMATION FOR GAME");
-//
-//                System.out.println("LOCAL DBID: "+localArraylist.get(i).getLocalDBID());
-//                System.out.println("ID: "+localArraylist.get(i).getId());
-//                System.out.println("NAME: "+localArraylist.get(i).getName());
-//                System.out.println("DESCRIPTION: "+localArraylist.get(i).getDescription());
-//                System.out.println("SUMMARY: "+localArraylist.get(i).getSummary());
-//                System.out.println("IGDB-RATING: "+localArraylist.get(i).getRating());
-//                System.out.println("aggervated-RATING: "+localArraylist.get(i).getAggervatedRating());
-//                System.out.println("Total-RATING: "+localArraylist.get(i).getTotalRating());
-//                System.out.println("IMAGEURL: "+localArraylist.get(i).getImageViewUrl());
-//                System.out.println("PLATFORM: "+localArraylist.get(i).getPlatformsTest());
-//                System.out.println("WEBURL: "+localArraylist.get(i).getWebsiteUrl());
-//                System.out.println("COVER: "+localArraylist.get(i).getGameCover());
-//                System.out.println("RELEASEDATE: "+localArraylist.get(i).getReleaseDate());
-//                System.out.println("COVERURL: "+localArraylist.get(i).getGameCoverURL());
-//                System.out.println("SCREENSHOTURL'S: "+localArraylist.get(i).getGameScreenshotExtendedURL());
-//                System.out.println("RECYCLERVIEWDESTINATION: "+localArraylist.get(i).getRecyclerviewTopic());
-//                System.out.println("GAME PINNED BY USER: "+localArraylist.get(i).getIspinned());
-//                System.out.println("TIME OF DATA ADDED TO SYSTEM: "+localArraylist.get(i).getTimestamp());
-//                System.out.println("TOPIC: "+localArraylist.get(i).getRecyclerviewTopic());
-//                System.out.println("------------------------------------");
 
                 if (!localArraylist.get(i).getRecyclerviewTopic().contentEquals("upcomingGames")){
                     arrayList.add(localArraylist.get(i));
@@ -358,7 +336,7 @@ public class APICOMMAND {
      * THE METHOD BELOW IS FOR THE INITIAL LAUNCH OF THE DEVICE, IT WILL PULL FROM MANY DIFFERENT CATEGORIES AND FILL RESPECTIVELY
      */
 
-
+    //this method loads all the information directly in from the database
     public void getData(final Context context, final ArrayList<gameHome> arrayList, final CustomHomeAdapterClass customHomeAdapterClass, String search, final String url, final String desiredPlatform, final String destination,final ArrayList<gameHome> popularOnPS4,final ArrayList<gameHome> popularOnXBOX,final ArrayList<gameHome> popularOnPC){
 
         final ProgressDialog progressDialog = new ProgressDialog(context);

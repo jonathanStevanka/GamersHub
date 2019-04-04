@@ -20,16 +20,26 @@
             android:orientation="vertical">
 
 
-            <EditText
-                android:id="@+id/searchBar"
-                android:layout_width="0dp"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/searchBarHolderPinned"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:hint="Search Pinned Games"
-                android:inputType="text"
+                android:textColorHint="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/searchBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:textColor="@color/colorAccent"
+                    tools:layout_editor_absoluteX="182dp"
+                    tools:layout_editor_absoluteY="63dp" />
+            </android.support.design.widget.TextInputLayout>
 
 
             <Button
@@ -37,13 +47,15 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/button_layout"
-                android:text="Search"
+                android:text="Search for pinned game"
+                android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+                app:layout_constraintTop_toBottomOf="@+id/searchBarHolderPinned" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/pinnedGamesRecyclerView"
