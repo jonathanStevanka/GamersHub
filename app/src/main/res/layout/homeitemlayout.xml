@@ -34,7 +34,7 @@
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/montextralightdemo"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary_Text_Color"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
