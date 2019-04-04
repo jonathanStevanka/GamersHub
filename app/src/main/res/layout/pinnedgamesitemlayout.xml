@@ -64,7 +64,7 @@
             app:progress_start_degree="-90"
             app:progress_stroke_cap="round"
             app:progress_stroke_width="3dp"
-            app:progress_text_color="@android:color/white"
+            app:progress_text_color="@color/colorPrimary_Text_Color"
             app:progress_text_size="16dp"
             app:style="solid_line" />
 
@@ -90,7 +90,7 @@
             app:progress_start_degree="-90"
             app:progress_stroke_cap="round"
             app:progress_stroke_width="3dp"
-            app:progress_text_color="@android:color/white"
+            app:progress_text_color="@color/colorPrimary_Text_Color"
             app:progress_text_size="16dp"
             app:style="solid_line" />
 
@@ -116,7 +116,7 @@
             app:progress_start_degree="-90"
             app:progress_stroke_cap="round"
             app:progress_stroke_width="3dp"
-            app:progress_text_color="@android:color/white"
+            app:progress_text_color="@color/colorPrimary_Text_Color"
             app:progress_text_size="16dp"
             app:style="solid_line" />
 
@@ -129,7 +129,7 @@
             android:layout_marginEnd="2dp"
             android:text="User rating"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary_Text_Color"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/textView2"
             app:layout_constraintStart_toEndOf="@+id/gameImagePinned"
@@ -144,7 +144,7 @@
             android:layout_marginEnd="2dp"
             android:text="Critics"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary_Text_Color"
             app:layout_constraintEnd_toStartOf="@+id/textView3"
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/ratingPinned" />
@@ -158,7 +158,7 @@
             android:layout_marginEnd="2dp"
             android:text="Total rating"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary_Text_Color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/totalRatingPinned" />
@@ -173,7 +173,7 @@
             android:text="Click to view more"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary_Text_Color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/gameImagePinned"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />

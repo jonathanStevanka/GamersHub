@@ -9,4 +9,5 @@
 
     <!--CREATE THE DIMENS FOR THE ITEMCLICK SCREEN-->
     <dimen name="itemClick_gameTitleSize">24sp</dimen>
+    <dimen name="itemClick_gameTextSize">16sp</dimen>
 </resources>

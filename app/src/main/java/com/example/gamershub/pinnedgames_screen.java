@@ -3,6 +3,7 @@ package com.example.gamershub;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,6 +52,8 @@ public class pinnedgames_screen extends Fragment {
     //create a fragment transaction
     FragmentManager fm;
 
+    private TextInputLayout searchBarHolder;
+
     //Create a new CustomPinnedAdapterClass so we can re-use it throughout the code and recyclerviews if we decided to add more lateron
     private CustomPinnedAdapterClass customPinnedAdapterClass;
 
@@ -95,6 +98,8 @@ public class pinnedgames_screen extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pinnedgames_screen, container, false);
+
+        searchBarHolder = view.findViewById(R.id.searchBarHolderPinned);
 
         pinnedGamesList = new ArrayList<>();
         pinnedGames = view.findViewById(R.id.pinnedGamesRecyclerView);
