@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="150dp"
-                android:layout_marginTop="47dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="151dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
                 android:id="@+id/videoGameName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/montextralightdemo"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
@@ -50,8 +50,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/montextralightdemo"
                 android:text="User rating"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/itemClick_gameTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rating" />
 
@@ -62,9 +64,11 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="46dp"
+                android:fontFamily="@font/montextralightdemo"
                 android:text="Critic rating"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/itemClick_gameTextSize"
                 app:layout_constraintEnd_toStartOf="@+id/totalReviewLabel"
                 app:layout_constraintStart_toEndOf="@+id/ratingLabel"
                 app:layout_constraintTop_toBottomOf="@+id/ratingAggervated" />
@@ -74,9 +78,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="27dp"
+                android:layout_marginEnd="23dp"
+                android:fontFamily="@font/montextralightdemo"
                 android:text="Total Rating"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/itemClick_gameTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/totalRating" />
 
@@ -85,7 +91,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/videoGameName"
@@ -107,7 +113,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="8dp"
 
                 app:drawBackgroundOutsideProgress="true"
@@ -132,7 +138,7 @@
                 android:id="@+id/totalRating"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="40dp"
 
                 app:drawBackgroundOutsideProgress="true"

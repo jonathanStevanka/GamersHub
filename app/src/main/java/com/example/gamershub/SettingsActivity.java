@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -182,13 +183,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
-                    .withAboutVersionShown(true)
-                    .withAboutDescription("This is a small sample which can be set in the " +
-                            "about my app description file.<br />" +
-                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
-
-            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
+//            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
+//                    .withAboutVersionShown(true)
+//                    .withAboutDescription("This is a small sample which can be set in the " +
+//                            "about my app description file.<br />" +
+//                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
+//
+//            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
 
         }
 
@@ -220,12 +221,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);
 
-            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
-                    .withAboutVersionShown(true)
-                    .withAboutDescription("This is a small sample which can be set in the " +
-                            "about my app description file.<br />" +
-                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
-            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
+//            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
+//                    .withAboutVersionShown(true)
+//                    .withAboutDescription("This is a small sample which can be set in the " +
+//                            "about my app description file.<br />" +
+//                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
+//            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
 
         }
 
@@ -259,12 +260,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
 
-            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
-                    .withAboutVersionShown(true)
-                    .withAboutDescription("This is a small sample which can be set in the " +
-                            "about my app description file.<br />" +
-                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
-            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
+//            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
+//                    .withAboutVersionShown(true)
+//                    .withAboutDescription("This is a small sample which can be set in the " +
+//                            "about my app description file.<br />" +
+//                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
+//            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
 
         }
 
