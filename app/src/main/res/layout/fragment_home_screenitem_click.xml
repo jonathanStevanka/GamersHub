@@ -164,7 +164,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/descriptionbox_layout"
-                android:fontFamily="@font/montheavydemo"
+                android:fontFamily="@font/open_sans_bold"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
@@ -173,6 +173,7 @@
                 android:textSize="@dimen/itemClick_gameTitleSize"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addToPinnedGamesBTN" />
 
@@ -183,7 +184,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimary"
-                android:fontFamily="@font/montheavydemo"
+                android:fontFamily="@font/open_sans"
                 android:padding="10dp"
                 android:text="TextView"
                 android:textColor="@color/colorPrimary_Text_Color"
@@ -200,7 +201,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimary"
-                android:fontFamily="@font/montheavydemo"
+                android:fontFamily="@font/open_sans_bold"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
@@ -219,7 +220,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimary"
-                android:fontFamily="@font/montheavydemo"
+                android:fontFamily="@font/open_sans"
                 android:padding="10dp"
                 android:text="TextView"
                 android:textAlignment="textStart"
@@ -277,7 +278,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimary"
-                android:fontFamily="@font/montheavydemo"
+                android:fontFamily="@font/open_sans"
                 android:padding="10dp"
                 android:text="TextView"
                 android:textColor="@color/colorPrimary_Text_Color"
@@ -294,7 +295,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimary"
-                android:fontFamily="@font/montheavydemo"
+                android:fontFamily="@font/open_sans_bold"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
@@ -307,45 +308,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/videoGameSummary" />
 
             <TextView
-                android:id="@+id/videoGameWebURL"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@color/colorPrimary"
-                android:fontFamily="@font/montheavydemo"
-                android:padding="10dp"
-                android:text="TextView"
-                android:textColor="@color/colorPrimary_Text_Color"
-                android:textSize="@dimen/itemClick_gameTextSize"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/videoGamePlatform" />
-
-            <TextView
-                android:id="@+id/videoGameCover"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@color/colorPrimary"
-                android:fontFamily="@font/montheavydemo"
-                android:padding="10dp"
-                android:text="TextView"
-                android:textColor="@color/colorPrimary_Text_Color"
-                android:textSize="@dimen/itemClick_gameTextSize"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/videoGameWebURL" />
-
-            <TextView
                 android:id="@+id/gameLabelReleaseDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimary"
-                android:fontFamily="@font/montheavydemo"
+                android:fontFamily="@font/open_sans_bold"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
@@ -355,7 +324,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/videoGameCover" />
+                app:layout_constraintTop_toBottomOf="@+id/videoGamePlatform" />
 
             <TextView
                 android:id="@+id/videoGameInitialReleaseDate"
@@ -364,7 +333,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/colorPrimary"
-                android:fontFamily="@font/montheavydemo"
+                android:fontFamily="@font/open_sans"
                 android:padding="10dp"
                 android:text="TextView"
                 android:textColor="@color/colorPrimary_Text_Color"
