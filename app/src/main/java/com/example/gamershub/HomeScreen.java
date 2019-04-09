@@ -272,6 +272,10 @@ public class HomeScreen extends Fragment {
         //if the database is not empty, load objects from the DB into our recyclerviews
         if (!dbTest.isEmpty()){
 
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Loading locally saved data please wait...");
+            progressDialog.show();
+
             if (!trendingGames.isEmpty()){
                 //On the inital load of the app AFTER it has been launched before to add data from API into the database.
                 //this should always be FALSE.
@@ -368,7 +372,10 @@ public class HomeScreen extends Fragment {
             }
 
             comments = db.grabAllComments();
+            if (!dbTest.isEmpty()){
+                progressDialog.dismiss();
 
+            }
         }
         db.close();
 
