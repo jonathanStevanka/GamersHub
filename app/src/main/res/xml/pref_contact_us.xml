@@ -1,0 +1,20 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="Quick Connect">
+
+        <Preference
+            android:key="reportBug"
+            android:title="Report a bug"
+            android:summary="Report a bug found inside the software"
+            />
+
+        <Preference
+            android:key="businessInquire"
+            android:title="Buissness Inquires"
+            android:summary="Shoot us an email"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

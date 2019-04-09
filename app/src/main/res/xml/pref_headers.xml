@@ -5,16 +5,32 @@
     <header
         android:fragment="com.example.gamershub.SettingsActivity$GeneralPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/pref_header_general" />
+        android:title="@string/pref_header_general"
+        android:summary="Manages the General options"/>
 
     <header
         android:fragment="com.example.gamershub.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_header_notifications" />
+        android:title="@string/pref_header_notifications"
+        android:summary="Manages the notifications you will receive from this application"/>
 
     <header
         android:fragment="com.example.gamershub.SettingsActivity$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
-        android:title="@string/pref_header_data_sync" />
+        android:title="@string/pref_header_data_sync"
+        android:summary="Manages the Data for this application"/>
 
+    <header
+        android:fragment="com.example.gamershub.SettingsActivity$LibsPreferenceFragment"
+        android:icon="@drawable/ic_library_books_black_24dp"
+        android:title="Libraries"
+        android:summary="View the current Libraries used inside this application"
+        />
+
+    <header
+        android:fragment="com.example.gamershub.SettingsActivity$ContactUsPreferenceFragment"
+        android:icon="@drawable/ic_contact_mail_black_24dp"
+        android:title="Contact us"
+        android:summary="Contact us or send feed back about the application"
+        />
 </preference-headers>
