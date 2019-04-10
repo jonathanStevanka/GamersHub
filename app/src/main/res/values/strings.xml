@@ -33,6 +33,13 @@
     <string name="gameDoesNotHaveSummary">Does not have a summary available!</string>
     <string name="title_activity_settings">Settings</string>
 
+
+
+
+
+
+
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
@@ -104,5 +111,58 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+
+    <!-- CREATE LIB INFO FOR 'FASTANDROIDNETWORKING'-->
+
+    <string name="define_FastAndroidNetworking"></string>
+    <string name="library_FastAndroidNetworking_author">Amit Shekhar</string>
+    <string name="library_FastAndroidNetworking_authorWebsite"></string>
+    <string name="library_FastAndroidNetworking_libraryName">Fast Android Networking</string>
+    <string name="library_FastAndroidNetworking_libraryDescription">Fast Android Networking Library is a powerful library for doing any type of networking in Android applications which is made on top of OkHttp Networking Layer.</string>
+    <string name="library_FastAndroidNetworking_libraryVersion">1.0.2</string>
+    <string name="library_FastAndroidNetworking_libraryWebsite">https://github.com/amitshekhariitbhu/Fast-Android-Networking</string>
+    <!-- Possible values right now: apache_2_0, mit, bsd_2, bsd_3 -->
+    <string name="library_FastAndroidNetworking_licenseId">apache_2_0</string>
+    <!-- you still can define the license within your library definition, but it is recommend to use the id -->
+    <!-- possible fields for a custom license: *_licenseVersion, *_licenseLink, *_licenseContent -->
+    <string name="library_FastAndroidNetworking_isOpenSource">true</string>
+    <string name="library_FastAndroidNetworking_repositoryLink">https://github.com/amitshekhariitbhu/Fast-Android-Networking</string>
+
+
+
+    <!-- CREATE LIB INFO FOR 'dotsindicator'-->
+
+    <string name="define_dotsindicator"></string>
+    <string name="library_dotsindicator_author">Tommy Buonomo</string>
+    <string name="library_dotsindicator_authorWebsite"></string>
+    <string name="library_dotsindicator_libraryName">DotsIndicator</string>
+    <string name="library_dotsindicator_libraryDescription">This library makes it possible to represent View Pager Dots Indicator with 3 different awesome styles !</string>
+    <string name="library_dotsindicator_libraryVersion">3.0.3</string>
+    <string name="library_dotsindicator_libraryWebsite">https://github.com/tommybuonomo/dotsindicator</string>
+    <!-- Possible values right now: apache_2_0, mit, bsd_2, bsd_3 -->
+    <string name="library_dotsindicator_licenseId">apache_2_0</string>
+    <!-- you still can define the license within your library definition, but it is recommend to use the id -->
+    <!-- possible fields for a custom license: *_licenseVersion, *_licenseLink, *_licenseContent -->
+    <string name="library_dotsindicator_isOpenSource">true</string>
+    <string name="library_dotsindicator_repositoryLink">https://github.com/tommybuonomo/dotsindicator</string>
+
+
+    <!-- CREATE LIB INFO FOR 'CircleProgressBar'-->
+
+    <string name="define_CircleProgressBar"></string>
+    <string name="library_CircleProgressBar_author">dinuscxj</string>
+    <string name="library_CircleProgressBar_authorWebsite"></string>
+    <string name="library_CircleProgressBar_libraryName">CircleProgressBar</string>
+    <string name="library_CircleProgressBar_libraryDescription">A circular android ProgressBar library which extends View, and the usage same as ProgressBar, It has solid,line and solid_line three styles. Besides, progress value can be freely customized.</string>
+    <string name="library_CircleProgressBar_libraryVersion">1.0.0</string>
+    <string name="library_CircleProgressBar_libraryWebsite">https://github.com/dinuscxj/CircleProgressBar</string>
+    <!-- Possible values right now: apache_2_0, mit, bsd_2, bsd_3 -->
+    <string name="library_CircleProgressBar_licenseId">apache_2_0</string>
+    <!-- you still can define the license within your library definition, but it is recommend to use the id -->
+    <!-- possible fields for a custom license: *_licenseVersion, *_licenseLink, *_licenseContent -->
+    <string name="library_CircleProgressBar_isOpenSource">true</string>
+    <string name="library_CircleProgressBar_repositoryLink">https://github.com/dinuscxj/CircleProgressBar</string>
+
 
 </resources>

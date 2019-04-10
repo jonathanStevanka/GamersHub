@@ -5,7 +5,8 @@
     android:id="@+id/cardView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp">
 
@@ -32,10 +33,10 @@
             android:layout_height="50dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="4dp"
-            android:fontFamily="@font/montextralightdemo"
+            android:fontFamily="@font/open_sans"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary_Text_Color"
-            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

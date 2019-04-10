@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -328,10 +329,36 @@ public class search_screen extends Fragment {
     }
 
     public void getTotalGameCount(){
-
         DatabaseHelper db = new DatabaseHelper(getContext());
+        final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
+
+
+
+
         String totalGameCount = db.grabGameCount();
         if (totalGameCount!=null){
+
+            //testing if the date is different or not
+            try {
+                Date gameCountTimestamp = getDateTimeInstance().parse(db.grabGameCountDate());
+                Date currentDateTimeStampDate = getDateTimeInstance().parse(currentDateTimeStamp);
+                //System.out.println("Game timestamp: "+gameCountTimestamp.toString());
+                //System.out.println("Current timestamp: "+currentDateTimeStamp.toString());
+                if (gameCountTimestamp.getDate() != currentDateTimeStampDate.getDate()){
+                    System.out.println("search_screen-LINE347: GAME TIMESTAMP IS OLDER THAN CURRENT TIMESTAMP....UPDATING...");
+                    String count = db.grabGameCount();
+                    //place update count method here
+                    updateTotalGameCountDate();
+                }else{
+                    System.out.println("search_screen-LINE345: GAME TIMESTAMP IS THE SAME AS THE CURRENT TIMESTAMP....ABORT UPDATE...");
+                }
+                totalGameCount = db.grabGameCount();
+                searchBarHolder.setHint("Search "+totalGameCount+" Games");
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            //System.out.println("GAMECOUNTPOSTDATE: "+db.grabGameCountDate());
             searchBarHolder.setHint("Search "+totalGameCount+" Games");
             db.close();
         }else{
@@ -354,6 +381,7 @@ public class search_screen extends Fragment {
                             e.printStackTrace();
                         }
                     }
+
                     if (totalGames!=null){
                         db.addGameCount(totalGames);
                         getTotalGameCount();
@@ -371,6 +399,49 @@ public class search_screen extends Fragment {
 
             });
         }
+
+    }
+
+    public void updateTotalGameCountDate(){
+
+        AndroidNetworking.post("https://api-v3.igdb.com/games/count").addHeaders("user-key",BuildConfig.IGDBKey)
+                .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                .setPriority(Priority.LOW).build().getAsJSONObject(new JSONObjectRequestListener() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONObject jsonObject = null;
+                String totalGames=null;
+                DatabaseHelper db = new DatabaseHelper(getContext());
+                if (response!=null){
+                    jsonObject = response;
+                    try {
+                        totalGames = jsonObject.getString("count");
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                //make method to update the current value inside the database instead of adding a new row
+                if (totalGames!=null){
+                    db.addGameCount(totalGames);
+                    db.updateGameCount(totalGames);
+                }
+
+                db.close();
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                anError.getErrorCode();
+                anError.getErrorBody();
+                anError.getErrorDetail();
+                anError.getResponse();
+            }
+
+
+        });
 
     }
 }

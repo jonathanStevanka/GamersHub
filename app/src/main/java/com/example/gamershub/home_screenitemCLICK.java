@@ -37,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -67,8 +68,6 @@ public class home_screenitemCLICK extends Fragment {
     private TextView videoGameDescription;
     private TextView videoGameSummary;
     private TextView videoGamePlatform;
-    private TextView videoGameWebUrl;
-    private TextView videoGameCover;
     private TextView videoGameInitialRelease;
     //onscreenLabels
     private TextView gameSummaryLabel;
@@ -161,10 +160,8 @@ public class home_screenitemCLICK extends Fragment {
         videoGameTitle = view.findViewById(R.id.videoGameName);
         videoGameDescription = view.findViewById(R.id.videoGameDescription);
         videoGameSummary = view.findViewById(R.id.videoGameSummary);
-        videoGameCover = view.findViewById(R.id.videoGameCover);
         videoGameInitialRelease = view.findViewById(R.id.videoGameInitialReleaseDate);
         videoGamePlatform = view.findViewById(R.id.videoGamePlatform);
-        videoGameWebUrl = view.findViewById(R.id.videoGameWebURL);
 
         //connect the labels
         gameDescriptionLabel = view.findViewById(R.id.gameLabelDescription);
@@ -185,10 +182,29 @@ public class home_screenitemCLICK extends Fragment {
             videoGameSummary.setText(String.valueOf(gameHome.getSummary()));
         }
 
-        videoGameCover.setText(String.valueOf(String.valueOf(gameHome.getGameCover())));
         videoGameInitialRelease.setText(String.valueOf(gameHome.getReleaseDate()));
-        videoGamePlatform.setText(String.valueOf(gameHome.getPlatformsTest()));
-        videoGameWebUrl.setText(String.valueOf(gameHome.getWebsiteUrl()));
+
+        String[] platforms = gameHome.getPlatformsTest().replace("[","").replace("]","").split(",");
+        String platformFinalString = "";
+        for (int i=0; i<platforms.length;i++){
+
+            if (Integer.valueOf(platforms[i])==6){
+                platformFinalString += "* PC \n";
+            }
+
+            if (Integer.valueOf(platforms[i])==49){
+                platformFinalString += "* XBOX ONE \n";
+            }
+
+            if (Integer.valueOf(platforms[i])==48){
+                platformFinalString += "* PS4 \n";
+            }
+        }
+        videoGamePlatform.setText(platformFinalString);
+
+
+
+
 
 
         /**
@@ -324,7 +340,9 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
         System.out.println("TOPIC: "+gameHome.getRecyclerviewTopic());
         System.out.println("------------------------------------");
-        //System.out.println("SCREENSHOT LENGTH: "+gameHome.getGameScreenshotExtendedURL());
+
+
+
 
 
 
