@@ -192,11 +192,11 @@ public class home_screenitemCLICK extends Fragment {
                 platformFinalString += "* PC \n";
             }
 
-            if (Integer.valueOf(platforms[i])==48){
+            if (Integer.valueOf(platforms[i])==49){
                 platformFinalString += "* XBOX ONE \n";
             }
 
-            if (Integer.valueOf(platforms[i])==49){
+            if (Integer.valueOf(platforms[i])==48){
                 platformFinalString += "* PS4 \n";
             }
         }

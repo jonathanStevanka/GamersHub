@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.example.gamershub.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class CustomCommentAdapterClass extends RecyclerView.Adapter<CustomCommentAdapterClass.customAdap> {
 
@@ -40,13 +42,14 @@ public class CustomCommentAdapterClass extends RecyclerView.Adapter<CustomCommen
     @Override
     public void onBindViewHolder(@NonNull customAdap viewHolder, int i) {
         commentObject comment = comments.get(i);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy, HH:mm:ss");
         Date createdDate = null;
-        createdDate = new Date((long) Long.valueOf(comment.getCreatedAt())*1000);
-        viewHolder.createdAT.setText(createdDate.toString());
-        viewHolder.userName.setText(String.valueOf(comment.getUserID()));
+        createdDate = new Date(TimeUnit.MILLISECONDS.convert(Long.valueOf(comment.getCreatedAt()),TimeUnit.SECONDS));
+        //System.out.println("UNIX: "+createdDate.toLocaleString());
+        viewHolder.createdAT.setText(createdDate.toLocaleString());
+        viewHolder.userName.setText(String.valueOf("Posted by: "+comment.getUserID()));
         viewHolder.reviewContent.setText(comment.getReviewContent());
         viewHolder.feedLikes.setText(String.valueOf(comment.getReviewLikes()));
-
     }
 
     @Override

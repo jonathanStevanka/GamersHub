@@ -257,7 +257,7 @@ public class HomeScreen extends Fragment {
         DatabaseHelper db = new DatabaseHelper(getContext());
         ArrayList<gameHome> dbTest = db.grabAllGames();
 
-        System.out.println("DATABASE SIZE: "+dbTest.size());
+        //System.out.println("DATABASE SIZE: "+dbTest.size());
         /**
          * create the methods to load in data into each individual recyclerview where the destination column in the DB
          * matches the one that is in gameHome.getTopic() method.
@@ -268,7 +268,7 @@ public class HomeScreen extends Fragment {
         if (recentlySearchedList.isEmpty()){
             recentlySearched.setVisibility(view.GONE);
             recentlySearcheedGamesLabel.setVisibility(view.GONE);
-            System.out.println("RECENTLY SEARCHED IS EMPTY");
+            //System.out.println("RECENTLY SEARCHED IS EMPTY");
         }
 
         //if the database is not empty, load objects from the DB into our recyclerviews
@@ -366,7 +366,7 @@ public class HomeScreen extends Fragment {
             if (!recentlySearchedList.isEmpty()){
                 recentlySearched.setVisibility(view.VISIBLE);
                 recentlySearcheedGamesLabel.setVisibility(view.VISIBLE);
-                System.out.println("RECENTLY SEARCHED IS NOT EMPTY");
+                //System.out.println("RECENTLY SEARCHED IS NOT EMPTY");
             }
 
             comments = db.grabAllComments();
@@ -393,13 +393,13 @@ public class HomeScreen extends Fragment {
             //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
             apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",upcomingPS4,upcomingXBOX,upcomingPC);
         }
-        System.out.println("commentsDB SIZE: "+comments.size());
-        System.out.println("trendingGames SIZE: "+trendingGames.size());
-        System.out.println("recentlySearched SIZE: "+recentlySearchedList.size());
-        System.out.println("upcomingGames SIZE: "+upcomingGames.size());
-        System.out.println("popularGamesPs4 SIZE: "+popularGamesPs4.size());
-        System.out.println("popularGamesXBOX SIZE: "+popularGamesXBOX.size());
-        System.out.println("popularGamesPC SIZE: "+popularGamesPC.size());
+//        System.out.println("commentsDB SIZE: "+comments.size());
+//        System.out.println("trendingGames SIZE: "+trendingGames.size());
+//        System.out.println("recentlySearched SIZE: "+recentlySearchedList.size());
+//        System.out.println("upcomingGames SIZE: "+upcomingGames.size());
+//        System.out.println("popularGamesPs4 SIZE: "+popularGamesPs4.size());
+//        System.out.println("popularGamesXBOX SIZE: "+popularGamesXBOX.size());
+//        System.out.println("popularGamesPC SIZE: "+popularGamesPC.size());
 
         //working
         //System.out.println("test1");
