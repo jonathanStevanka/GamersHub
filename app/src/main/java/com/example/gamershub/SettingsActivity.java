@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -139,6 +140,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -164,6 +175,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
+                || LibsPreferenceFragment.class.getName().equals(fragmentName)
+                || ContactUsPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName);
     }
 
@@ -182,8 +195,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            LibsFragment frag = new LibsBuilder().fragment();
-            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
+//            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
+//                    .withAboutVersionShown(true)
+//                    .withAboutDescription("This is a small sample which can be set in the " +
+//                            "about my app description file.<br />" +
+//                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
+//
+//            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
 
         }
 
@@ -215,8 +233,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);
 
-            LibsFragment frag = new LibsBuilder().fragment();
-            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
+//            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
+//                    .withAboutVersionShown(true)
+//                    .withAboutDescription("This is a small sample which can be set in the " +
+//                            "about my app description file.<br />" +
+//                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
+//            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
 
         }
 
@@ -250,10 +272,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
 
-            LibsFragment frag = new LibsBuilder().fragment();
-            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
+//            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
+//                    .withAboutVersionShown(true)
+//                    .withAboutDescription("This is a small sample which can be set in the " +
+//                            "about my app description file.<br />" +
+//                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
+//            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
 
-            //bindPreferenceSummaryToValue(findPreference("sync_frequency"));
         }
 
         @Override
@@ -266,4 +291,112 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+
+
+
+
+
+    /**
+     * FILL IN LATER
+     */
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class LibsPreferenceFragment extends PreferenceFragment {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
+                    .withAboutVersionShown(true)
+                    .withAboutDescription("This is a small sample which can be set in the " +
+                            "about my app description file.<br />" +
+                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
+            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
+
+
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+
+    /**
+     * FILL IN LATER
+     */
+
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class ContactUsPreferenceFragment extends PreferenceFragment {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_contact_us);
+            setHasOptionsMenu(true);
+
+            final String[] address = {"gamersHubSupport@gmail.com"};
+            Preference reportBug = findPreference("reportBug");
+            Preference buissnessInquire = findPreference("businessInquire");
+
+
+
+            reportBug.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("mailto:"));
+                    intent.putExtra(Intent.EXTRA_EMAIL,address);
+
+                    if(intent.resolveActivity(getActivity().getPackageManager()) != null)
+                    {
+                        startActivity(intent);
+                        return  true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            });
+
+
+            buissnessInquire.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("mailto:"));
+                    intent.putExtra(Intent.EXTRA_EMAIL,address);
+
+                    if(intent.resolveActivity(getActivity().getPackageManager()) != null)
+                    {
+                        startActivity(intent);
+                        return  true;
+                    }
+                    else
+                    {
+                        return false;
+                    }                }
+            });
+
+
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 }

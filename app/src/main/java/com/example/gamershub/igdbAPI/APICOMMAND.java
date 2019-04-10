@@ -271,11 +271,11 @@ public class APICOMMAND {
 //            System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i).getId() + " TIME DATA WAS ADDED TO DEVICE: "+localArraylist.get(i).getTimestamp());
 //            System.out.println("APICOMMAND@loadDataFromLocal: "+localArraylist.get(i).getRecyclerviewTopic()+ " TIME DATA WAS ADDED TO DEVICE: "+localArraylist.get(i).getTimestamp());
 
-            if (localArraylist.get(i).getRecyclerviewTopic().contentEquals(destination)){
+            if (localArraylist.get(i).getRecyclerviewTopic().contentEquals(destination) && localArraylist.get(i).getGameCoverURL()!=null){
                 arrayList.add(localArraylist.get(i));
             }
+            customHomeAdapterClass.notifyDataSetChanged();
         }
-        customHomeAdapterClass.notifyDataSetChanged();
         progressDialog.dismiss();
         db.close();
     }
@@ -305,9 +305,9 @@ public class APICOMMAND {
                 }
             }
             //System.out.println("------------------------------");
+            customHomeAdapterClass.notifyDataSetChanged();
         }
 
-        customHomeAdapterClass.notifyDataSetChanged();
         progressDialog.dismiss();
         Collections.shuffle(arrayList);
         db.close();
@@ -326,9 +326,8 @@ public class APICOMMAND {
                     arrayList.add(localArraylist.get(i));
                 }
             }
-
+            customHomeAdapterClass.notifyDataSetChanged();
         }
-        customHomeAdapterClass.notifyDataSetChanged();
         db.close();
     }
 

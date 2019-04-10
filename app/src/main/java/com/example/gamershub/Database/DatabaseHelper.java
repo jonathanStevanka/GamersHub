@@ -302,7 +302,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //CRUD methods for the game count table
+    /**
+     *
+     * crud methods for inside our database for game count table
+     */
 
     //create
     public void addGameCount(String gameCount){
@@ -338,8 +341,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return totalGameCount;
     }
 
-    //update
+    public String grabGameCountDate(){
+        String gameCountPostDate = null;
+        String gameTotalCount = grabGameCount();
+        String query = "SELECT * FROM " + GAMECOUNT_TABLE + " WHERE " + COUNT_COLUMN +" = "+gameTotalCount+";";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor pointer = db.rawQuery(query, null);
+        if(pointer.moveToFirst()){
+            do{
+                gameCountPostDate = pointer.getString(pointer.getColumnIndex(TIMESTAMP_COLUMN));
+            }while(pointer.moveToNext());
+        }
+        pointer.close();
+        db.close();
 
+        return gameCountPostDate;
+    }
+
+    //update
+    public void updateGameCount(String gameCount){
+        final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
+        String previousGameCount = null;
+        previousGameCount = grabGameCount();
+        String totalGameCount = null;
+        if (gameCount!=null){
+            totalGameCount = String.valueOf(gameCount);
+        }
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COUNT_COLUMN,totalGameCount);
+        values.put(TIMESTAMP_COLUMN,currentDateTimeStamp);
+        db.update(GAMECOUNT_TABLE, values, COUNT_COLUMN + "=?",new String[]{totalGameCount});
+    }
 
 
 

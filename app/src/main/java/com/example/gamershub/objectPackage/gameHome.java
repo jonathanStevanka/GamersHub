@@ -34,6 +34,10 @@ public class gameHome implements Parcelable {
     private Double popularity;
     //create a placeholder for the price of this game
     private Double price;
+    //create a placeholder to store the updated at date
+    private String updated_at;
+    //create a placeholder to store the created at date
+    private String created_at;
     //create a placeholder for the gameCover of this game
     private int gameCover;
     //create a placeholder for the different platforms of this game
@@ -418,6 +422,22 @@ public class gameHome implements Parcelable {
         goingOut.writeString(this.recyclerviewTopic);
         goingOut.writeDouble(this.height);
         goingOut.writeDouble(this.width);
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
     protected gameHome(Parcel comingIN) {

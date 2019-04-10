@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.igdbAPI.APICOMMAND;
@@ -48,11 +49,16 @@ public class pinnedgames_screen extends Fragment {
 
     //Create a new Arraylist so we can use it to hold the users pinned games
     ArrayList<gameHome> pinnedGamesList = new ArrayList<>();
-
+    //Create a new Arraylist so that we can search our pinnedGamesList to see if we have a specific game
+    ArrayList<gameHome> searchGamesList = new ArrayList<>();
     //create a fragment transaction
     FragmentManager fm;
 
+    //create a wrap for our text input
     private TextInputLayout searchBarHolder;
+
+    //create a button so we can utilize the onclicklistiener
+    private Button searchBtn;
 
     //Create a new CustomPinnedAdapterClass so we can re-use it throughout the code and recyclerviews if we decided to add more lateron
     private CustomPinnedAdapterClass customPinnedAdapterClass;
@@ -100,8 +106,11 @@ public class pinnedgames_screen extends Fragment {
         View view = inflater.inflate(R.layout.fragment_pinnedgames_screen, container, false);
 
         searchBarHolder = view.findViewById(R.id.searchBarHolderPinned);
+        searchBtn = view.findViewById(R.id.searchBtn);
 
         pinnedGamesList = new ArrayList<>();
+        searchGamesList = new ArrayList<>();
+
         pinnedGames = view.findViewById(R.id.pinnedGamesRecyclerView);
         pinnedGames.setNestedScrollingEnabled(false);
 
@@ -124,21 +133,32 @@ public class pinnedgames_screen extends Fragment {
             }
         }
         db.close();
-        /**
-         * make a method here to check if the 'pinnedGamesList' is empty, if it is, we should search
-         * the local database to see if there is any pinned games inside the DB.
-         *
-         * if there is data inside the arraylist we should try and utilize our 'loadfromlocal' method
-         */
 
-//        if (!dbTest.isEmpty()){
-//            for (int i =0; i < dbTest.size(); i++){
-//                System.out.println("--------------------------------------------------------------");
-//                System.out.println("pinnedgames@oncreateview - Game Name: "+dbTest.get(i).getName());
-//                System.out.println("pinnedgames@oncreateview - pinned: "+dbTest.get(i).getIspinned());
-//                System.out.println("--------------------------------------------------------------");
-//            }
-//        }
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchGamesList = new ArrayList<>();
+                String searchQuery = null;
+                if (searchBarHolder.getEditText().getText()!=null){
+                    //System.out.println(searchBarHolder.getEditText().getText());
+                    if (!pinnedGamesList.isEmpty()){
+                        for (int i=0; i<pinnedGamesList.size();i++){
+                            //System.out.println(pinnedGamesList.get(i).getName());
+                            if (pinnedGamesList.get(i).getName().toLowerCase().contains(String.valueOf(searchBarHolder.getEditText().getText()).toLowerCase())){
+                                //System.out.println("WE GOT A MATCH BOI");
+                                searchGamesList.add(pinnedGamesList.get(i));
+                            }
+                            if (i == pinnedGamesList.size() - 1){
+                                customPinnedAdapterClass = new CustomPinnedAdapterClass(searchGamesList,getContext(),fm);
+                                pinnedGames.setAdapter(customPinnedAdapterClass);
+                                customPinnedAdapterClass.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
 
         //set the orientation of the list on load
