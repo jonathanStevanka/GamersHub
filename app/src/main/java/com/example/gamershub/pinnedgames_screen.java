@@ -8,10 +8,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.igdbAPI.APICOMMAND;
@@ -56,6 +59,9 @@ public class pinnedgames_screen extends Fragment {
 
     //create a wrap for our text input
     private TextInputLayout searchBarHolder;
+
+    //create a edittext for the searchBox itself
+    private EditText searchBox;
 
     //create a button so we can utilize the onclicklistiener
     private Button searchBtn;
@@ -107,7 +113,7 @@ public class pinnedgames_screen extends Fragment {
 
         searchBarHolder = view.findViewById(R.id.searchBarHolderPinned);
         searchBtn = view.findViewById(R.id.searchBtn);
-
+        searchBox = view.findViewById(R.id.searchBar);
         pinnedGamesList = new ArrayList<>();
         searchGamesList = new ArrayList<>();
 
@@ -135,6 +141,30 @@ public class pinnedgames_screen extends Fragment {
         db.close();
 
 
+
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String box = null;
+                box = String.valueOf(s);
+                if (String.valueOf(s).isEmpty()){
+                    customPinnedAdapterClass = new CustomPinnedAdapterClass(pinnedGamesList,getContext(),fm);
+                    pinnedGames.setAdapter(customPinnedAdapterClass);
+                    customPinnedAdapterClass.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,7 +175,7 @@ public class pinnedgames_screen extends Fragment {
                     if (!pinnedGamesList.isEmpty()){
                         for (int i=0; i<pinnedGamesList.size();i++){
                             //System.out.println(pinnedGamesList.get(i).getName());
-                            if (pinnedGamesList.get(i).getName().toLowerCase().contains(String.valueOf(searchBarHolder.getEditText().getText()).toLowerCase())){
+                            if (pinnedGamesList.get(i).getName().toLowerCase().contains(String.valueOf(searchBarHolder.getEditText().getText()).toLowerCase().trim())){
                                 //System.out.println("WE GOT A MATCH BOI");
                                 searchGamesList.add(pinnedGamesList.get(i));
                             }
