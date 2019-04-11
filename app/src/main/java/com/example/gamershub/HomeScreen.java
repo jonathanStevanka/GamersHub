@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,11 +22,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.example.gamershub.Database.DatabaseHelper;
 import com.example.gamershub.igdbAPI.APICOMMAND;
 import com.example.gamershub.objectPackage.CustomHomeAdapterClass;
 import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
+
+import org.json.JSONArray;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,6 +94,9 @@ public class HomeScreen extends Fragment {
 
     //create a fragment transaction
     FragmentManager fm;
+
+    //gesturecontrols
+    SwipeRefreshLayout homeRefreshLayout;
 
     //Create an instance of our 'CustomHomeAdapterClass'
     private CustomHomeAdapterClass customAdapterClass;
@@ -253,6 +262,57 @@ public class HomeScreen extends Fragment {
         upcomingOnXBOX.setAdapter(customAdapterClass);
 
 
+        //add a swipe gesture to this fragment
+        homeRefreshLayout = view.findViewById(R.id.refreshLayoutContainer);
+
+        homeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                /**
+                 * this OnRefreshListener will update all games on the homescreen and insert accordingly.
+                 */
+                if (!trendingGames.isEmpty()){
+                    int[] usedID = new int[trendingGames.size()];
+                    int counter = 0;
+                    for (int i=0; i<trendingGames.size();i++){
+                        System.out.println(trendingGames.get(i).getId());
+                        counter++;
+                        usedID[i] = trendingGames.get(i).getId();
+                        if (counter==10){
+                            System.out.println("JSON REQUEST FIRED");
+                            counter=0;
+
+                            AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
+                                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+                                    .addStringBody("")
+                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+
+                                @Override
+                                public void onResponse(JSONArray response) {
+
+                                }
+
+                                @Override
+                                public void onError(ANError anError) {
+
+                                }
+                            });
+
+                        }
+
+                    }
+                    homeRefreshLayout.setRefreshing(false);
+                }else{
+                    //this will hide the refreshbar
+                    homeRefreshLayout.setRefreshing(false);
+                }
+
+
+            }
+        });
+
+
         //check to see if there is any objects inside our local database
         DatabaseHelper db = new DatabaseHelper(getContext());
         ArrayList<gameHome> dbTest = db.grabAllGames();
@@ -393,16 +453,6 @@ public class HomeScreen extends Fragment {
             //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
             apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",upcomingPS4,upcomingXBOX,upcomingPC);
         }
-//        System.out.println("commentsDB SIZE: "+comments.size());
-//        System.out.println("trendingGames SIZE: "+trendingGames.size());
-//        System.out.println("recentlySearched SIZE: "+recentlySearchedList.size());
-//        System.out.println("upcomingGames SIZE: "+upcomingGames.size());
-//        System.out.println("popularGamesPs4 SIZE: "+popularGamesPs4.size());
-//        System.out.println("popularGamesXBOX SIZE: "+popularGamesXBOX.size());
-//        System.out.println("popularGamesPC SIZE: "+popularGamesPC.size());
-
-        //working
-        //System.out.println("test1");
 
 
         //set the layoutManager on all recyclerViews and set them to horizontal
