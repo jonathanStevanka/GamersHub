@@ -33,9 +33,12 @@ import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 
@@ -187,7 +190,7 @@ public class HomeScreen extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
 
@@ -390,6 +393,27 @@ public class HomeScreen extends Fragment {
         db.close();
 
 
+        /**
+         * This is where the action happens
+         * Please check the params on the 'getData()' function
+         * The getData() method will grab the data and programmatically add it to each recyclerview inside the application.
+         *
+         * WE SHOULD ALSO BE CHECKING TO SEE IF THERE IS ANY SAVED DATA ON THE DEVICE, IF THERE IS
+         * PULL IT IN INSTEAD OF USING OUR API TO PULL REQUESTS
+         * SHOULD HELP ON KEEPING THE API PULLS DOWN
+         */
+
+
+        if (trendingGames.isEmpty()){
+            //apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
+            apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
+        }
+        if (upcomingGames.isEmpty()){
+            //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
+            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",upcomingPS4,upcomingXBOX,upcomingPC);
+        }
+
+
         homeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -397,41 +421,74 @@ public class HomeScreen extends Fragment {
                  * this OnRefreshListener will update all games on the homescreen and insert accordingly.
                  */
                 if (!trendingGames.isEmpty()){
-                    int[] usedID = new int[trendingGames.size()];
+                    String[] usedID = new String[trendingGames.size()];
+                    String[] currentID = new String[10];
                     int counter = 0;
                     for (int i=0; i<trendingGames.size();i++){
                         System.out.println(trendingGames.get(i).getId());
+                        currentID[counter] = String.valueOf(trendingGames.get(i).getId());
                         counter++;
-                        usedID[i] = trendingGames.get(i).getId();
+                        usedID[i] = String.valueOf(trendingGames.get(i).getId());
                         if (counter==10){
                             System.out.println("JSON REQUEST FIRED");
                             counter=0;
 
+                            System.out.println(Arrays.toString(usedID));
+                            System.out.println(Arrays.toString(currentID));
+
+                            String cleanedCurrentID = Arrays.toString(currentID);
+                            cleanedCurrentID = cleanedCurrentID.substring(1,cleanedCurrentID.length()-1).replace(" ","").trim();
+
+                            System.out.println(cleanedCurrentID);
+
+                            currentID = new String[10];
+
+
+
+                            System.out.println(getString(R.string.update_allGames) +" where id = ("+cleanedCurrentID+");");
+
 //                            AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
 //                                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-//                                    .addStringBody("")
+//                                    .addStringBody(getString(R.string.update_allGames)+" where id = ("+cleanedCurrentID+");")
 //                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 //
 //                                @Override
 //                                public void onResponse(JSONArray response) {
-//
+//                                    JSONObject jsonObject = null;
+//                                    if (response!=null){
+//                                        for (int i=0; i<response.length();i++){
+//                                            try{
+//                                                jsonObject = response.getJSONObject(i);
+//                                            }catch (JSONException e){
+//                                                e.printStackTrace();
+//                                                e.getCause();
+//                                                e.getMessage();
+//                                                e.getStackTrace();
+//                                            }
+//                                        }
+//                                    }
 //                                }
 //
 //                                @Override
 //                                public void onError(ANError anError) {
-//
+//                                    anError.getResponse();
+//                                    anError.getErrorBody();
+//                                    anError.getErrorCode();
+//                                    anError.getErrorDetail();
 //                                }
 //                            });
 
                         }
 
                     }
+
+
+
                     homeRefreshLayout.setRefreshing(false);
                 }else{
                     //this will hide the refreshbar
                     homeRefreshLayout.setRefreshing(false);
                 }
-
 
             }
         });
@@ -639,25 +696,7 @@ public class HomeScreen extends Fragment {
 
 
 
-        /**
-         * This is where the action happens
-         * Please check the params on the 'getData()' function
-         * The getData() method will grab the data and programmatically add it to each recyclerview inside the application.
-         *
-         * WE SHOULD ALSO BE CHECKING TO SEE IF THERE IS ANY SAVED DATA ON THE DEVICE, IF THERE IS
-         * PULL IT IN INSTEAD OF USING OUR API TO PULL REQUESTS
-         * SHOULD HELP ON KEEPING THE API PULLS DOWN
-         */
 
-
-        if (trendingGames.isEmpty()){
-            //apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
-            apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
-        }
-        if (upcomingGames.isEmpty()){
-            //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
-            apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",upcomingPS4,upcomingXBOX,upcomingPC);
-        }
 
 
         //set the layoutManager on all recyclerViews and set them to horizontal

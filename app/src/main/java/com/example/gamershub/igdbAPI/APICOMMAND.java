@@ -396,9 +396,14 @@ public class APICOMMAND {
                                             if (jsonGameObject.has("platforms")) {
                                                 game.setPlatformsTest(jsonGameObject.getString("platforms"));
                                             }
+                                            if (jsonGameObject.has("created_at")){
+                                                game.setCreated_at(jsonGameObject.getString("created_at"));
+                                            }
+                                            if (jsonGameObject.has("updated_at")){
+                                                game.setUpdated_at(jsonGameObject.getString("updated_at"));
+                                            }
                                             //popularity goes here
                                             if (jsonGameObject.has("rating")) {
-                                                //double gameRating = jsonGameObject.getDouble("rating");
                                                 game.setRating(jsonGameObject.getDouble("rating"));
                                             }
                                             if (jsonGameObject.has("release_dates")) {
@@ -520,7 +525,7 @@ public class APICOMMAND {
 
                                     AndroidNetworking.post("https://api-v3.igdb.com/games").addHeaders("user-key",BuildConfig.IGDBKey)
                                             .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                            .addStringBody("fields id,name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline; where id = "+game.getId()+";")
+                                            .addStringBody("fields id,name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline,updated_at,created_at; where id = "+game.getId()+";")
                                             .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                         @Override
@@ -540,6 +545,12 @@ public class APICOMMAND {
 
                                                     //popularity goes here
 
+                                                    if (jsonInnerGame.has("created_at")){
+                                                        game.setCreated_at(String.valueOf(jsonInnerGame.getInt("created_at")));
+                                                    }
+                                                    if (jsonInnerGame.has("updated_at")){
+                                                        game.setUpdated_at(String.valueOf(jsonInnerGame.getInt("updated_at")));
+                                                    }
                                                     if (jsonInnerGame.has("rating")) {
                                                         //double gameRating = jsonGameObject.getDouble("rating");
                                                         game.setRating(jsonInnerGame.getDouble("rating"));

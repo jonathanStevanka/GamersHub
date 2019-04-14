@@ -329,10 +329,14 @@ public class search_screen extends Fragment {
 
             //testing if the date is different or not
             try {
+                //create a string that represents the current time
                 final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
+
                 Date gameCountTimestamp = getDateTimeInstance().parse(db.grabGameCountDate());
                 final String pastDateTimeStamp = getDateTimeInstance().format(gameCountTimestamp);
+
                 Date currentDateTimeStampDate = getDateTimeInstance().parse(currentDateTimeStamp);
+
                 System.out.println("Game timestamp: "+pastDateTimeStamp);
                 System.out.println("Current timestamp: "+currentDateTimeStamp);
                 if (gameCountTimestamp.getDate() != currentDateTimeStampDate.getDate()){

@@ -336,6 +336,8 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("COVERURL: "+gameHome.getGameCoverURL());
         System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
         System.out.println("RECYCLERVIEWDESTINATION: "+gameHome.getRecyclerviewTopic());
+        System.out.println("CREATED_AT: "+gameHome.getCreated_at());
+        System.out.println("UPDATED_AT: "+gameHome.getUpdated_at());
         System.out.println("GAME PINNED BY USER: "+gameHome.getIspinned());
         System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
         System.out.println("TOPIC: "+gameHome.getRecyclerviewTopic());

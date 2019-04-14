@@ -68,7 +68,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PINNED_COLUMN = "pinned";
     //the topic column will represent the recyclerview this data should belong too if it gets loaded in
     public static final String TOPIC_COLUMN = "topic";
+    //the storyline for this game
     public static final String STORYLINE_COLUMN = "storyline";
+    //create a connection for the created at variable for this game
+    public static final String CREATED_AT_COLUMN = "created_at";
+    //create a connection for the created at variable for this game
+    public static final String UPDATED_AT_COLUMN = "updated_at";
 
 
     /**
@@ -101,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + STORYLINE_COLUMN + " TEXT, " + PRICE_COLUMN + " DOUBLE, " + WEBURL_COLUMN + " TEXT, " + IMAGEURL_COLUMN + " TEXT, " + RATING_COLUMN + " DOUBLE," +
             AGGERRATING_COLUMN + " DOUBLE," + TOTALRATING_COLUMN + " DOUBLE, " + COVERID_COLUMN + " INTEGER, " + PLATFORM_COLUMN
             + " TEXT, " + RELEASE_DATE_COLUMN + " TEXT, " + PINNED_COLUMN + " VARCHAR, " + SCREENSHOTURL_COLUMN + " TEXT, "+ TOPIC_COLUMN + " TEXT, "
-            + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT "+ ")";
+            + COVERURL_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT, "+ CREATED_AT_COLUMN + " TEXT, " + UPDATED_AT_COLUMN + " TEXT " + ")";
 
     public static final String CREATE_TOTAL_GAME_COUNT_TABLE = "CREATE TABLE " +  GAMECOUNT_TABLE  + "(" + COUNT_COLUMN + " TEXT, " + TIMESTAMP_COLUMN + " TEXT " + ")";
 
@@ -141,6 +146,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put(PINNED_COLUMN,game.getIspinned());
         val.put(TIMESTAMP_COLUMN, game.getTimestamp());
         val.put(TOPIC_COLUMN, game.getRecyclerviewTopic());
+        val.put(CREATED_AT_COLUMN, game.getCreated_at());
+        val.put(UPDATED_AT_COLUMN, game.getUpdated_at());
         db.insert(GAME_TABLE, null, val);
         db.close();
     }
@@ -173,6 +180,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 game.setIspinned(pointer.getString(pointer.getColumnIndex(PINNED_COLUMN)));
                 game.setTimestamp(pointer.getString(pointer.getColumnIndex(TIMESTAMP_COLUMN)));
                 game.setRecyclerviewTopic(pointer.getString(pointer.getColumnIndex(TOPIC_COLUMN)));
+                game.setCreated_at(pointer.getString(pointer.getColumnIndex(CREATED_AT_COLUMN)));
+                game.setUpdated_at(pointer.getString(pointer.getColumnIndex(UPDATED_AT_COLUMN)));
                 allGames.add(game);
             }while(pointer.moveToNext());
         }
@@ -207,6 +216,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 game.setIspinned(pointer.getString(pointer.getColumnIndex(PINNED_COLUMN)));
                 game.setTimestamp(pointer.getString(pointer.getColumnIndex(TIMESTAMP_COLUMN)));
                 game.setRecyclerviewTopic(pointer.getString(pointer.getColumnIndex(TOPIC_COLUMN)));
+                game.setCreated_at(pointer.getString(pointer.getColumnIndex(CREATED_AT_COLUMN)));
+                game.setUpdated_at(pointer.getString(pointer.getColumnIndex(UPDATED_AT_COLUMN)));
             }while(pointer.moveToNext());
         }
         pointer.close();
@@ -243,6 +254,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 game.setIspinned(pointer.getString(pointer.getColumnIndex(PINNED_COLUMN)));
                 game.setTimestamp(pointer.getString(pointer.getColumnIndex(TIMESTAMP_COLUMN)));
                 game.setRecyclerviewTopic(pointer.getString(pointer.getColumnIndex(TOPIC_COLUMN)));
+                game.setCreated_at(pointer.getString(pointer.getColumnIndex(CREATED_AT_COLUMN)));
+                game.setUpdated_at(pointer.getString(pointer.getColumnIndex(UPDATED_AT_COLUMN)));
                 if (allGames.contains(game)){
 
                 }else{
@@ -379,15 +392,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //delete
 
-
-
-
-
-
-
-
-
-
     /**
      * CREATE CRUD METHODS FOR COMMENT DB
      */
@@ -434,7 +438,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return comments;
     }
-
     public ArrayList<commentObject> grabAllComments(){
         ArrayList<commentObject> comments = new ArrayList<>();
         commentObject comment = null;
@@ -461,12 +464,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return comments;
     }
 
-
     //update
 
 
-
     //delete
+
+
+
+
 
 
 
