@@ -45,7 +45,7 @@
         <com.dinuscxj.progressbar.CircleProgressBar
             android:id="@+id/ratingPinned"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
 
             android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
@@ -71,7 +71,7 @@
         <com.dinuscxj.progressbar.CircleProgressBar
             android:id="@+id/ratingAggervatedPinned"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
 
             android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
@@ -97,7 +97,7 @@
         <com.dinuscxj.progressbar.CircleProgressBar
             android:id="@+id/totalRatingPinned"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
 
             android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"

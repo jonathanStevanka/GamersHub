@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -265,7 +266,7 @@ public class HomeScreen extends Fragment {
 
         //add a swipe gesture to this fragment
         homeRefreshLayout = view.findViewById(R.id.refreshLayoutContainer);
-        homeRefreshLayout.setDistanceToTriggerSync(800);
+        homeRefreshLayout.setDistanceToTriggerSync(200);
 
 
         //check to see if there is any objects inside our local database
@@ -434,6 +435,207 @@ public class HomeScreen extends Fragment {
 
             }
         });
+
+
+
+        trending.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+
+
+
+        recentlySearched.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+        popularOnPs4.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+        popularOnXBOX.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+
+        popularOnPC.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+
+
+
+
 
 
 

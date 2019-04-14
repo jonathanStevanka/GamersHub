@@ -324,24 +324,24 @@ public class search_screen extends Fragment {
 
     public void getTotalGameCount(){
         DatabaseHelper db = new DatabaseHelper(getContext());
-        final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
-
         String totalGameCount = db.grabGameCount();
         if (totalGameCount!=null){
 
             //testing if the date is different or not
             try {
+                final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
                 Date gameCountTimestamp = getDateTimeInstance().parse(db.grabGameCountDate());
+                final String pastDateTimeStamp = getDateTimeInstance().format(gameCountTimestamp);
                 Date currentDateTimeStampDate = getDateTimeInstance().parse(currentDateTimeStamp);
-                //System.out.println("Game timestamp: "+gameCountTimestamp.toString());
-                //System.out.println("Current timestamp: "+currentDateTimeStamp.toString());
+                System.out.println("Game timestamp: "+pastDateTimeStamp);
+                System.out.println("Current timestamp: "+currentDateTimeStamp);
                 if (gameCountTimestamp.getDate() != currentDateTimeStampDate.getDate()){
-                    System.out.println("search_screen-LINE347: GAME TIMESTAMP IS OLDER THAN CURRENT TIMESTAMP....UPDATING...");
+                    System.out.println("search_screen-LINE347: GAME TIMESTAMP IS OLDER THAN 24HRS....UPDATING TIMESTAMP...");
                     String count = db.grabGameCount();
                     //place update count method here
                     updateTotalGameCountDate();
                 }else{
-                    System.out.println("search_screen-LINE345: GAME TIMESTAMP IS THE SAME AS THE CURRENT TIMESTAMP....ABORT UPDATE...");
+                    System.out.println("search_screen-LINE345: GAME TIMESTAMP IS WITHIN 24HRS AS THE CURRENT TIMESTAMP....ABORT UPDATE...");
                 }
                 totalGameCount = db.grabGameCount();
                 searchBarHolder.setHint("Search "+totalGameCount+" Games");
