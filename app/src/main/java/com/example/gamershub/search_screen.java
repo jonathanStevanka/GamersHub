@@ -182,7 +182,6 @@ public class search_screen extends Fragment {
                                         game.setId(jsonGameObject.getInt("id"));
 
                                     }
-
                                     game.setName(jsonGameObject.getString("name"));
                                     if (jsonGameObject.has("platforms")){
                                         game.setPlatformsTest(jsonGameObject.getString("platforms"));
@@ -192,13 +191,11 @@ public class search_screen extends Fragment {
                                         //double gameRating = jsonGameObject.getDouble("rating");
                                         game.setRating(jsonGameObject.getDouble("rating"));
                                     }
-
                                     if (jsonGameObject.has("release_dates")){
                                         jsonReleaseObject = jsonGameObject.getJSONArray("release_dates");
                                         String releaseDate = jsonReleaseObject.getJSONObject(0).getString("human");
                                         game.setReleaseDate(releaseDate);
                                     }
-
                                     if (jsonGameObject.has("cover")){
                                         jsonCoverObject = jsonGameObject.getJSONObject("cover");
                                         game.setGameCover(jsonCoverObject.getInt("id"));
@@ -231,8 +228,6 @@ public class search_screen extends Fragment {
                                     }
                                     game.setIspinned("no");
                                     game.setRecyclerviewTopic("searchGamesScreen");
-
-
                                     System.out.println("----------------------------------------------------");
                                     System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME ID - "+game.getId());
                                     System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME NAME - "+game.getName());
@@ -246,7 +241,6 @@ public class search_screen extends Fragment {
                                     System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SUMMARY - "+game.getSummary());
                                     System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME WEBURL - "+game.getWebsiteUrl());
                                     System.out.println("----------------------------------------------------");
-
                                     searchedGames.add(game);
                                     customPinnedAdapterClass.notifyDataSetChanged();
                                 }
@@ -331,9 +325,6 @@ public class search_screen extends Fragment {
     public void getTotalGameCount(){
         DatabaseHelper db = new DatabaseHelper(getContext());
         final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
-
-
-
 
         String totalGameCount = db.grabGameCount();
         if (totalGameCount!=null){

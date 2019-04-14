@@ -101,6 +101,7 @@ public class HomeScreen extends Fragment {
     //Create an instance of our 'CustomHomeAdapterClass'
     private CustomHomeAdapterClass customAdapterClass;
 
+
     //----------------------------------------------------
     public HomeScreen() {
         // Required empty public constructor
@@ -264,53 +265,7 @@ public class HomeScreen extends Fragment {
 
         //add a swipe gesture to this fragment
         homeRefreshLayout = view.findViewById(R.id.refreshLayoutContainer);
-
-        homeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                /**
-                 * this OnRefreshListener will update all games on the homescreen and insert accordingly.
-                 */
-                if (!trendingGames.isEmpty()){
-                    int[] usedID = new int[trendingGames.size()];
-                    int counter = 0;
-                    for (int i=0; i<trendingGames.size();i++){
-                        System.out.println(trendingGames.get(i).getId());
-                        counter++;
-                        usedID[i] = trendingGames.get(i).getId();
-                        if (counter==10){
-                            System.out.println("JSON REQUEST FIRED");
-                            counter=0;
-
-                            AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
-                                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                    .addStringBody("")
-                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
-
-                                @Override
-                                public void onResponse(JSONArray response) {
-
-                                }
-
-                                @Override
-                                public void onError(ANError anError) {
-
-                                }
-                            });
-
-                        }
-
-                    }
-                    homeRefreshLayout.setRefreshing(false);
-                }else{
-                    //this will hide the refreshbar
-                    homeRefreshLayout.setRefreshing(false);
-                }
-
-
-            }
-        });
+        homeRefreshLayout.setDistanceToTriggerSync(800);
 
 
         //check to see if there is any objects inside our local database
@@ -432,6 +387,54 @@ public class HomeScreen extends Fragment {
             comments = db.grabAllComments();
         }
         db.close();
+
+
+        homeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /**
+                 * this OnRefreshListener will update all games on the homescreen and insert accordingly.
+                 */
+                if (!trendingGames.isEmpty()){
+                    int[] usedID = new int[trendingGames.size()];
+                    int counter = 0;
+                    for (int i=0; i<trendingGames.size();i++){
+                        System.out.println(trendingGames.get(i).getId());
+                        counter++;
+                        usedID[i] = trendingGames.get(i).getId();
+                        if (counter==10){
+                            System.out.println("JSON REQUEST FIRED");
+                            counter=0;
+
+//                            AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
+//                                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+//                                    .addStringBody("")
+//                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+//
+//                                @Override
+//                                public void onResponse(JSONArray response) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onError(ANError anError) {
+//
+//                                }
+//                            });
+
+                        }
+
+                    }
+                    homeRefreshLayout.setRefreshing(false);
+                }else{
+                    //this will hide the refreshbar
+                    homeRefreshLayout.setRefreshing(false);
+                }
+
+
+            }
+        });
+
 
 
         /**
