@@ -15,6 +15,11 @@
             android:summary="Shoot us an email"
             />
 
+        <Preference
+            android:key="shareApplication"
+            android:title="Share this application"
+            />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

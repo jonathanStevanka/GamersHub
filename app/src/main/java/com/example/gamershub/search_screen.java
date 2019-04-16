@@ -182,7 +182,6 @@ public class search_screen extends Fragment {
                                         game.setId(jsonGameObject.getInt("id"));
 
                                     }
-
                                     game.setName(jsonGameObject.getString("name"));
                                     if (jsonGameObject.has("platforms")){
                                         game.setPlatformsTest(jsonGameObject.getString("platforms"));
@@ -192,13 +191,17 @@ public class search_screen extends Fragment {
                                         //double gameRating = jsonGameObject.getDouble("rating");
                                         game.setRating(jsonGameObject.getDouble("rating"));
                                     }
-
                                     if (jsonGameObject.has("release_dates")){
                                         jsonReleaseObject = jsonGameObject.getJSONArray("release_dates");
                                         String releaseDate = jsonReleaseObject.getJSONObject(0).getString("human");
                                         game.setReleaseDate(releaseDate);
                                     }
-
+                                    if (jsonGameObject.has("updated_at")){
+                                        game.setUpdated_at(jsonGameObject.getString("updated_at"));
+                                    }
+                                    if (jsonGameObject.has("created_at")){
+                                        game.setCreated_at(jsonGameObject.getString("created_at"));
+                                    }
                                     if (jsonGameObject.has("cover")){
                                         jsonCoverObject = jsonGameObject.getJSONObject("cover");
                                         game.setGameCover(jsonCoverObject.getInt("id"));
@@ -231,8 +234,6 @@ public class search_screen extends Fragment {
                                     }
                                     game.setIspinned("no");
                                     game.setRecyclerviewTopic("searchGamesScreen");
-
-
                                     System.out.println("----------------------------------------------------");
                                     System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME ID - "+game.getId());
                                     System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME NAME - "+game.getName());
@@ -246,7 +247,6 @@ public class search_screen extends Fragment {
                                     System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME SUMMARY - "+game.getSummary());
                                     System.out.println("SEARCH_SCREEN@SEARCHBTN_ONCLICK: GAME WEBURL - "+game.getWebsiteUrl());
                                     System.out.println("----------------------------------------------------");
-
                                     searchedGames.add(game);
                                     customPinnedAdapterClass.notifyDataSetChanged();
                                 }
@@ -330,27 +330,29 @@ public class search_screen extends Fragment {
 
     public void getTotalGameCount(){
         DatabaseHelper db = new DatabaseHelper(getContext());
-        final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
-
-
-
-
         String totalGameCount = db.grabGameCount();
         if (totalGameCount!=null){
 
             //testing if the date is different or not
             try {
+                //create a string that represents the current time
+                final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
+
+                //System.out.println(db.grabGameCountDate());
                 Date gameCountTimestamp = getDateTimeInstance().parse(db.grabGameCountDate());
+                final String pastDateTimeStamp = getDateTimeInstance().format(gameCountTimestamp);
+
                 Date currentDateTimeStampDate = getDateTimeInstance().parse(currentDateTimeStamp);
-                //System.out.println("Game timestamp: "+gameCountTimestamp.toString());
-                //System.out.println("Current timestamp: "+currentDateTimeStamp.toString());
+
+                System.out.println("Game timestamp: "+pastDateTimeStamp);
+                System.out.println("Current timestamp: "+currentDateTimeStamp);
                 if (gameCountTimestamp.getDate() != currentDateTimeStampDate.getDate()){
-                    System.out.println("search_screen-LINE347: GAME TIMESTAMP IS OLDER THAN CURRENT TIMESTAMP....UPDATING...");
+                    System.out.println("search_screen-LINE347: GAME TIMESTAMP IS OLDER THAN 24HRS....UPDATING TIMESTAMP...");
                     String count = db.grabGameCount();
                     //place update count method here
                     updateTotalGameCountDate();
                 }else{
-                    System.out.println("search_screen-LINE345: GAME TIMESTAMP IS THE SAME AS THE CURRENT TIMESTAMP....ABORT UPDATE...");
+                    System.out.println("search_screen-LINE345: GAME TIMESTAMP IS WITHIN 24HRS AS THE CURRENT TIMESTAMP....ABORT UPDATE...");
                 }
                 totalGameCount = db.grabGameCount();
                 searchBarHolder.setHint("Search "+totalGameCount+" Games");

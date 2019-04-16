@@ -396,9 +396,14 @@ public class APICOMMAND {
                                             if (jsonGameObject.has("platforms")) {
                                                 game.setPlatformsTest(jsonGameObject.getString("platforms"));
                                             }
+                                            if (jsonGameObject.has("created_at")){
+                                                game.setCreated_at(jsonGameObject.getString("created_at"));
+                                            }
+                                            if (jsonGameObject.has("updated_at")){
+                                                game.setUpdated_at(jsonGameObject.getString("updated_at"));
+                                            }
                                             //popularity goes here
                                             if (jsonGameObject.has("rating")) {
-                                                //double gameRating = jsonGameObject.getDouble("rating");
                                                 game.setRating(jsonGameObject.getDouble("rating"));
                                             }
                                             if (jsonGameObject.has("release_dates")) {
@@ -483,7 +488,6 @@ public class APICOMMAND {
                                         db.addGame(game);
                                         Collections.shuffle(arrayList);
                                         customHomeAdapterClass.notifyDataSetChanged();
-                                        progressDialog.dismiss();
                                         db.close();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -520,7 +524,7 @@ public class APICOMMAND {
 
                                     AndroidNetworking.post("https://api-v3.igdb.com/games").addHeaders("user-key",BuildConfig.IGDBKey)
                                             .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                            .addStringBody("fields id,name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline; where id = "+game.getId()+";")
+                                            .addStringBody("fields id,name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline,updated_at,created_at; where id = "+game.getId()+";")
                                             .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
 
                                         @Override
@@ -540,6 +544,12 @@ public class APICOMMAND {
 
                                                     //popularity goes here
 
+                                                    if (jsonInnerGame.has("created_at")){
+                                                        game.setCreated_at(String.valueOf(jsonInnerGame.getInt("created_at")));
+                                                    }
+                                                    if (jsonInnerGame.has("updated_at")){
+                                                        game.setUpdated_at(String.valueOf(jsonInnerGame.getInt("updated_at")));
+                                                    }
                                                     if (jsonInnerGame.has("rating")) {
                                                         //double gameRating = jsonGameObject.getDouble("rating");
                                                         game.setRating(jsonInnerGame.getDouble("rating"));
@@ -587,7 +597,6 @@ public class APICOMMAND {
                                                         popularOnPC.add(game);
                                                         db.addGame(game);
                                                         customHomeAdapterClass.notifyDataSetChanged();
-                                                        progressDialog.dismiss();
                                                         db.close();
                                                         continue;
                                                     }
@@ -598,7 +607,6 @@ public class APICOMMAND {
                                                         popularOnPS4.add(game);
                                                         db.addGame(game);
                                                         customHomeAdapterClass.notifyDataSetChanged();
-                                                        progressDialog.dismiss();
                                                         db.close();
                                                         continue;
                                                     }
@@ -609,7 +617,6 @@ public class APICOMMAND {
                                                         popularOnXBOX.add(game);
                                                         db.addGame(game);
                                                         customHomeAdapterClass.notifyDataSetChanged();
-                                                        progressDialog.dismiss();
                                                         db.close();
                                                         continue;
                                                     }
@@ -618,23 +625,8 @@ public class APICOMMAND {
                                                     arrayList.add(game);
                                                     db.addGame(game);
                                                     customHomeAdapterClass.notifyDataSetChanged();
-                                                    progressDialog.dismiss();
                                                     db.close();
 
-//                                                    System.out.println("----------------------------------------------------");
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME ID - " + game.getId());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME NAME - " + game.getName());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME COVERURL - " + game.getGameCoverURL());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME PLATFORMS - " + game.getPlatformsTest());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME AGGERVATED_RATING - " + game.getAggervatedRating());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME RATING - " + game.getRating());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME TOTALRATING - " + game.getRating());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME SCREENSHOTS - " + game.getGameScreenshotExtendedURL());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME DESCRIPTION - " + game.getDescription());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME SUMMARY - " + game.getSummary());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME WEBURL - " + game.getWebsiteUrl());
-//                                                    System.out.println("APICOMMAND@GETDATA460-480: GAME TOPIC - " + game.getRecyclerviewTopic());
-//                                                    System.out.println("----------------------------------------------------");
 
                                                 }catch (JSONException e){
                                                     e.printStackTrace();
@@ -660,6 +652,7 @@ public class APICOMMAND {
                             }
 
                         }
+                        progressDialog.dismiss();
                     } catch (JSONException e) {
                         //print the stack trace of the error
                         e.printStackTrace();
@@ -675,6 +668,7 @@ public class APICOMMAND {
                 System.out.println(anError.getResponse());
             }
         });
+
 
     }
 }
