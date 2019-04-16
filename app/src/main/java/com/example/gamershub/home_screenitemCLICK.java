@@ -36,8 +36,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import static java.text.DateFormat.getDateTimeInstance;
 
 
 /**
@@ -75,14 +82,20 @@ public class home_screenitemCLICK extends Fragment {
     private TextView gamePlatformsLabel;
     private TextView gameReleasedateLabel;
 
+    //create a boolean variable to see if the the game is pinned or not
     boolean isPinned;
 
+    //create a connection to the commentRecyclerView
     RecyclerView commentRecyclerview;
 
+    //create a connection for an arraylist of comments
     ArrayList<commentObject> comments = null;
+    //create a connection for an arraylist of comments
     ArrayList<commentObject> testComments = null;
 
+    //create a fragment manager for use on this screen
     FragmentManager fm;
+    //create a global customcommentadapterclass
     CustomCommentAdapterClass customCommentAdapterClass=null;
     public home_screenitemCLICK() {
         // Required empty public constructor
@@ -113,9 +126,8 @@ public class home_screenitemCLICK extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        //get the supportfragmentmanager from the activity
         fm = getActivity().getSupportFragmentManager();
-
         //create a new bundle and get the arguments passed from the calling method
         Bundle game = getArguments();
         //grab the serializable out of the bundle that has our key
@@ -129,11 +141,13 @@ public class home_screenitemCLICK extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screenitem_click, container, false);
 
+        //connect the comment Recyclerview
         commentRecyclerview = view.findViewById(R.id.commentRecyclerView);
 
         //create a connection to our DatabaseHelper class
         final DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
 
+        //initialize comment arraylists
         comments = new ArrayList<>();
         testComments = new ArrayList<>();
 
@@ -147,13 +161,18 @@ public class home_screenitemCLICK extends Fragment {
 
         //create connections to the images/viewpager
         ImageView imageCover = view.findViewById(R.id.gameCoverPhoto);
+        //create the button for our addtopinnedgames
         final Button addToPinnedGamesBtn = view.findViewById(R.id.addToPinnedGamesBTN);
         //link the viewpager
         ViewPager screenshotViewPager = view.findViewById(R.id.videoGameScreenshots);
+        //create the progressbar for the overall rating
         CircleProgressBar ratingOverall = view.findViewById(R.id.rating);
+        //create the progressbar for the aggervated rating between the two
         CircleProgressBar aggervatedRating = view.findViewById(R.id.ratingAggervated);
+        //create the progressbar for the total rating between the two
         CircleProgressBar totalRating = view.findViewById(R.id.totalRating);
 
+        //create and connect the dotsindicator
         final DotsIndicator dotsIndicator = (DotsIndicator) view.findViewById(R.id.screenshotIndicator);
 
         //set the items to the ID of the object so we can have access
@@ -169,8 +188,7 @@ public class home_screenitemCLICK extends Fragment {
         gamePlatformsLabel = view.findViewById(R.id.gameLabelPlatforms);
         gameReleasedateLabel = view.findViewById(R.id.gameLabelReleaseDate);
 
-
-
+        //load the image into the imageview cover
         Picasso.get().load(gameHome.getGameCoverURL()).into(imageCover);
         videoGameTitle.setText(String.valueOf(gameHome.getName()));
         videoGameDescription.setText(String.valueOf(gameHome.getDescription()));
@@ -215,10 +233,6 @@ public class home_screenitemCLICK extends Fragment {
          * if it does not it will add the current comment to thee database
          * at the end it will update the comments recyclerview
          */
-
-
-
-
         if (gameHome.getId()!=0){
             testComments = databaseHelper.grabAllCommentsForGame(gameHome.getId());
             if (!testComments.isEmpty()){
@@ -310,12 +324,6 @@ public class home_screenitemCLICK extends Fragment {
             }
         }
 
-
-
-
-
-
-
         //and volla
         System.out.println("------------------------------------");
         System.out.println("INFORMATION FOR GAME");
@@ -336,30 +344,35 @@ public class home_screenitemCLICK extends Fragment {
         System.out.println("COVERURL: "+gameHome.getGameCoverURL());
         System.out.println("SCREENSHOTURL'S: "+gameHome.getGameScreenshotExtendedURL());
         System.out.println("RECYCLERVIEWDESTINATION: "+gameHome.getRecyclerviewTopic());
-        System.out.println("CREATED_AT: "+gameHome.getCreated_at());
-        System.out.println("UPDATED_AT: "+gameHome.getUpdated_at());
+
+        Date createdAtDate;
+        Date updatedAtDate;
+        if (gameHome.getCreated_at()!=null){
+            createdAtDate = new Date(TimeUnit.SECONDS.toMillis(Long.valueOf(gameHome.getCreated_at())));
+            System.out.println("CREATED_AT: "+ getDateTimeInstance().format(createdAtDate));
+        }
+        if (gameHome.getUpdated_at()!=null){
+            updatedAtDate = new Date(TimeUnit.SECONDS.toMillis(Long.valueOf(gameHome.getUpdated_at())));
+            System.out.println("UPDATED_AT: "+ getDateTimeInstance().format(updatedAtDate));
+        }
+
+
         System.out.println("GAME PINNED BY USER: "+gameHome.getIspinned());
         System.out.println("TIME OF DATA ADDED TO SYSTEM: "+gameHome.getTimestamp());
         System.out.println("TOPIC: "+gameHome.getRecyclerviewTopic());
         System.out.println("------------------------------------");
-
-
-
-
-
-
 
         /**
          * the code below is for testing the 'add to pinned games button'
          * -possibly going to change to an imagebutton down the road, or both who knows.
          */
 
-            if (gameHome.getIspinned().contains("yes")){
-                addToPinnedGamesBtn.setText(getResources().getString(R.string.removePinBtnText));
-            }
-            if (gameHome.getIspinned().contains("no")){
-                addToPinnedGamesBtn.setText(getResources().getString(R.string.addPinBtnText));
-            }
+        if (gameHome.getIspinned().contains("yes")){
+            addToPinnedGamesBtn.setText(getResources().getString(R.string.removePinBtnText));
+        }
+        if (gameHome.getIspinned().contains("no")){
+            addToPinnedGamesBtn.setText(getResources().getString(R.string.addPinBtnText));
+        }
 
         System.out.println("@!isPinned: is the game a pinned game?: "+gameHome.getIspinned());
 
@@ -389,13 +402,19 @@ public class home_screenitemCLICK extends Fragment {
 
             });
 
+        //create a string array to hold our screentshot URL's
         String[] screenshotURLS = gameHome.getGameScreenshotExtendedURL().replace("[","").replace("]","").split(", ");
-
+        //create a new customadapter for the screenshots
         customAdapter adapter = new customAdapter(screenshotURLS,getContext());
+        //set the adapter
         screenshotViewPager.setAdapter(adapter);
+        //set the viewpager that the dotsindicator is connected too
         dotsIndicator.setViewPager(screenshotViewPager);
+        //set the formatter on the progress bars so we get the correct number back
         ratingOverall.setProgressFormatter(new RatingCircleFormatter());
+        //set the formatter on the progress bars so we get the correct number back
         aggervatedRating.setProgressFormatter(new RatingCircleFormatter());
+        //set the formatter on the progress bars so we get the correct number back
         totalRating.setProgressFormatter(new RatingCircleFormatter());
         Double rating = gameHome.getRating();
         Double aggerRating = gameHome.getAggervatedRating();

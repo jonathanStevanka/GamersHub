@@ -196,6 +196,12 @@ public class search_screen extends Fragment {
                                         String releaseDate = jsonReleaseObject.getJSONObject(0).getString("human");
                                         game.setReleaseDate(releaseDate);
                                     }
+                                    if (jsonGameObject.has("updated_at")){
+                                        game.setUpdated_at(jsonGameObject.getString("updated_at"));
+                                    }
+                                    if (jsonGameObject.has("created_at")){
+                                        game.setCreated_at(jsonGameObject.getString("created_at"));
+                                    }
                                     if (jsonGameObject.has("cover")){
                                         jsonCoverObject = jsonGameObject.getJSONObject("cover");
                                         game.setGameCover(jsonCoverObject.getInt("id"));
@@ -332,6 +338,7 @@ public class search_screen extends Fragment {
                 //create a string that represents the current time
                 final String currentDateTimeStamp = getDateTimeInstance().format(new Date());
 
+                //System.out.println(db.grabGameCountDate());
                 Date gameCountTimestamp = getDateTimeInstance().parse(db.grabGameCountDate());
                 final String pastDateTimeStamp = getDateTimeInstance().format(gameCountTimestamp);
 

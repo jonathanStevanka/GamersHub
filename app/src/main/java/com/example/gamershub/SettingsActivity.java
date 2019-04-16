@@ -1,7 +1,12 @@
 package com.example.gamershub;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.Ringtone;
@@ -12,6 +17,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
@@ -19,8 +25,9 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.app.Fragment;
+import android.widget.ShareActionProvider;
 
+import com.example.gamershub.Database.DatabaseHelper;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.aboutlibraries.ui.LibsFragment;
 import com.mikepenz.aboutlibraries.ui.LibsSupportFragment;
@@ -44,6 +51,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
+
+
+
+
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -195,6 +206,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
+
+
 //            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
 //                    .withAboutVersionShown(true)
 //                    .withAboutDescription("This is a small sample which can be set in the " +
@@ -272,12 +285,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
 
-//            LibsFragment frag = new LibsBuilder().withAboutIconShown(true)
-//                    .withAboutVersionShown(true)
-//                    .withAboutDescription("This is a small sample which can be set in the " +
-//                            "about my app description file.<br />" +
-//                            "<b>You can style this with html markup :D</b>").withFields(R.string.class.getFields()).fragment();
-//            ((PreferenceActivity) getActivity()).startPreferenceFragment(frag,false);
+            Preference clearPinnedGamesPref = findPreference("clearPinned");
+
+
+            clearPinnedGamesPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    final DatabaseHelper db = new DatabaseHelper(getContext());
+
+
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Clear Currently Pinned Games")
+                            .setMessage("Are you sure you want to clear all currently PinnedGames?")
+                            .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    db.removeAllFromPinnedGames();
+                                }
+                            })
+                            .setNegativeButton("no",null)
+                            .show();
+
+                    db.close();
+                    return true;
+                }
+            });
 
         }
 
@@ -348,6 +381,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             final String[] address = {"gamersHubSupport@gmail.com"};
             Preference reportBug = findPreference("reportBug");
             Preference buissnessInquire = findPreference("businessInquire");
+            Preference share = findPreference("shareApplication");
 
 
 
@@ -386,7 +420,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     else
                     {
                         return false;
-                    }                }
+                    }
+                }
+            });
+
+            share.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TITLE,"Gamers Hub");
+                    intent.putExtra(Intent.EXTRA_TEXT,"Awesome Application");
+                    startActivity(Intent.createChooser(intent, "Share application"));
+
+                    return true;
+                }
             });
 
 

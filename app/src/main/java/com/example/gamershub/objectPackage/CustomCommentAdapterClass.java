@@ -44,9 +44,8 @@ public class CustomCommentAdapterClass extends RecyclerView.Adapter<CustomCommen
         commentObject comment = comments.get(i);
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy, HH:mm:ss");
         Date createdDate = null;
-        createdDate = new Date(TimeUnit.MILLISECONDS.convert(Long.valueOf(comment.getCreatedAt()),TimeUnit.SECONDS));
-        //System.out.println("UNIX: "+createdDate.toLocaleString());
-        viewHolder.createdAT.setText(createdDate.toLocaleString());
+        createdDate = new Date(TimeUnit.MILLISECONDS.convert(Long.valueOf(comment.getCreatedAt()),TimeUnit.SECONDS));        //System.out.println("UNIX: "+createdDate.toLocaleString());
+        viewHolder.createdAT.setText(dateFormat.format(createdDate));
         viewHolder.userName.setText(String.valueOf("Posted by: "+comment.getUserID()));
         viewHolder.reviewContent.setText(comment.getReviewContent());
         viewHolder.feedLikes.setText(String.valueOf(comment.getReviewLikes()));

@@ -403,7 +403,6 @@ public class HomeScreen extends Fragment {
          * SHOULD HELP ON KEEPING THE API PULLS DOWN
          */
 
-
         if (trendingGames.isEmpty()){
             //apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
             apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);

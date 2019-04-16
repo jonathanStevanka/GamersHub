@@ -190,6 +190,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return allGames;
     }
 
+
+    //public method to grab a single game from the local datbase
     public gameHome grabSingleGame(int id){
         gameHome game = new gameHome();
         String query = "SELECT * FROM " + GAME_TABLE + " WHERE "+GAMEID_COLUMN+" = "+id+";";
@@ -227,6 +229,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return game;
     }
 
+    //public method to grab allgames from a specific 'topic' inside the databse
     public ArrayList<gameHome> grabAllGamesFromTopic(String destination){
         ArrayList<gameHome> allGames = new ArrayList<>();
         gameHome game = null;
@@ -269,14 +272,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //update
 
+    //update
+    /**
+     * TBD
+     */
 
     //delete
-
-
-
-
+    /**
+     * TDB
+     */
 
 
     /**
@@ -296,6 +301,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return titles;
     }
 
+    //add a specific game to the 'pinned' games screen
     public void addToPinnedGames(int databaseGameid){
         SQLiteDatabase db = this.getWritableDatabase();
         System.out.println("addToPinnedGammes@Databasehelper: LocalDB ID - "+databaseGameid);
@@ -304,20 +310,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         val.put(PINNED_COLUMN, "yes");
         db.update(GAME_TABLE,val,GAMEID_COLUMN + "=?", new String[]{String.valueOf(databaseGameid)});
     }
-
-    public void removeFromPinnedGames(int databaseGameid){
+    //remove a specific game to the 'pinned' games screen
+    public void removeFromPinnedGames(int Gameid){
         SQLiteDatabase db = this.getWritableDatabase();
-        System.out.println("removeFromPinnedGames@Databasehelper: LocalDB ID - "+databaseGameid);
+        System.out.println("removeFromPinnedGames@Databasehelper: LOCAL - GAMEID: - "+Gameid);
         ContentValues val = new ContentValues();
-
         val.put(PINNED_COLUMN, "no");
-        db.update(GAME_TABLE,val,GAMEID_COLUMN + "=?", new String[]{String.valueOf(databaseGameid)});
+        db.update(GAME_TABLE,val,GAMEID_COLUMN + "=?", new String[]{String.valueOf(Gameid)});
     }
 
+    /**
+     * This method is for use ONLY within the settings-dataSync-Clear all pinned games
+     */
+    public void removeAllFromPinnedGames(){
+        String query = "SELECT * FROM " + GAME_TABLE + " WHERE "+PINNED_COLUMN+" = 'yes';";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor pointer = db.rawQuery(query, null);
+        if(pointer.moveToFirst()){
+            do{
+                System.out.println(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
+                this.removeFromPinnedGames(pointer.getInt(pointer.getColumnIndex(GAMEID_COLUMN)));
+            }while(pointer.moveToNext());
+        }
+        pointer.close();
+        db.close();
+
+    }
 
     /**
      *
-     * crud methods for inside our database for game count table
+     * CRUD methods for inside our database for game count table
      */
 
     //create

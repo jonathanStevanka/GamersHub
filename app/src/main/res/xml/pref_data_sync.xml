@@ -21,6 +21,14 @@
         <Preference android:title="@string/pref_title_system_sync_settings">
             <intent android:action="android.settings.SYNC_SETTINGS" />
         </Preference>
+
+
+        <Preference
+            android:key="clearPinned"
+            android:title="Clear All Currently Pinned Games"
+            android:summary="Clears all pinned games inside the application"
+            />
+
     </PreferenceCategory>
 
 
