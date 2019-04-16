@@ -182,9 +182,40 @@ public class gameHome implements Parcelable {
         this.gameScreenshots = gameScreenshots;
     }
 
+    public gameHome(int id, int localDBID, String name, String description, String summary, String websiteUrl, String imageViewUrl, Double rating, Double aggervatedRating, Double totalRating, Double popularity, Double price, String updated_at, String created_at, int gameCover, String platformsTest, String releaseDate, String gameCoverURL, String[] gameScreenshots, String gameScreenshotExtendedURL, String timestamp, String ispinned, String recyclerviewTopic, double height, double width) {
+        this.id = id;
+        this.localDBID = localDBID;
+        this.name = name;
+        this.description = description;
+        this.summary = summary;
+        this.websiteUrl = websiteUrl;
+        this.imageViewUrl = imageViewUrl;
+        this.rating = rating;
+        this.aggervatedRating = aggervatedRating;
+        this.totalRating = totalRating;
+        this.popularity = popularity;
+        this.price = price;
+        this.updated_at = updated_at;
+        this.created_at = created_at;
+        this.gameCover = gameCover;
+        this.platformsTest = platformsTest;
+        this.releaseDate = releaseDate;
+        this.gameCoverURL = gameCoverURL;
+        this.gameScreenshots = gameScreenshots;
+        this.gameScreenshotExtendedURL = gameScreenshotExtendedURL;
+        this.timestamp = timestamp;
+        this.ispinned = ispinned;
+        this.recyclerviewTopic = recyclerviewTopic;
+        this.height = height;
+        this.width = width;
+    }
+
     /**
      * CREATE GETTER AND SETTER METHODS BELOW
      */
+
+
+
 
 
     public int getId() {
@@ -439,6 +470,8 @@ public class gameHome implements Parcelable {
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
+
+
 
     protected gameHome(Parcel comingIN) {
         this.id = comingIN.readInt();

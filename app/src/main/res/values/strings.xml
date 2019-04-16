@@ -17,9 +17,10 @@
 
     <!-- working-->
     <string name="search_trendingGames">fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline,updated_at,created_at; where rating_count &gt; 225; sort rating desc; limit 25;</string>
+    <string name="update_allGames">fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline,updated_at,created_at;</string>
     <string name="search_screenShotTable">fields alpha_channel,animated,game,height,image_id,url,width; where game =</string>
     <string name="search_upcomingGames">fields *; where date &gt; 1553467746; sort date asc; limit 25;</string>
-    <string name="search_pinnedGamesScreen"> fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline;</string>
+    <string name="search_pinnedGamesScreen"> fields name,popularity,cover.*,platforms,rating,aggregated_rating,total_rating,summary,url,screenshots.*,release_dates.human,storyline,updated_at,created_at;</string>
 
 
     <!-- not used-->

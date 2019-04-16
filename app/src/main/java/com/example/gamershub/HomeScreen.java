@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -32,9 +33,12 @@ import com.example.gamershub.objectPackage.commentObject;
 import com.example.gamershub.objectPackage.gameHome;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 
@@ -100,6 +104,7 @@ public class HomeScreen extends Fragment {
 
     //Create an instance of our 'CustomHomeAdapterClass'
     private CustomHomeAdapterClass customAdapterClass;
+
 
     //----------------------------------------------------
     public HomeScreen() {
@@ -185,7 +190,7 @@ public class HomeScreen extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
 
@@ -264,53 +269,7 @@ public class HomeScreen extends Fragment {
 
         //add a swipe gesture to this fragment
         homeRefreshLayout = view.findViewById(R.id.refreshLayoutContainer);
-
-        homeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                /**
-                 * this OnRefreshListener will update all games on the homescreen and insert accordingly.
-                 */
-                if (!trendingGames.isEmpty()){
-                    int[] usedID = new int[trendingGames.size()];
-                    int counter = 0;
-                    for (int i=0; i<trendingGames.size();i++){
-                        System.out.println(trendingGames.get(i).getId());
-                        counter++;
-                        usedID[i] = trendingGames.get(i).getId();
-                        if (counter==10){
-                            System.out.println("JSON REQUEST FIRED");
-                            counter=0;
-
-                            AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
-                                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
-                                    .addStringBody("")
-                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
-
-                                @Override
-                                public void onResponse(JSONArray response) {
-
-                                }
-
-                                @Override
-                                public void onError(ANError anError) {
-
-                                }
-                            });
-
-                        }
-
-                    }
-                    homeRefreshLayout.setRefreshing(false);
-                }else{
-                    //this will hide the refreshbar
-                    homeRefreshLayout.setRefreshing(false);
-                }
-
-
-            }
-        });
+        homeRefreshLayout.setDistanceToTriggerSync(200);
 
 
         //check to see if there is any objects inside our local database
@@ -444,7 +403,6 @@ public class HomeScreen extends Fragment {
          * SHOULD HELP ON KEEPING THE API PULLS DOWN
          */
 
-
         if (trendingGames.isEmpty()){
             //apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
             apicommand.getData(getContext(),trendingGames,customAdapterClass,getString(R.string.search_trendingGames),"games",null,"trendingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
@@ -453,6 +411,291 @@ public class HomeScreen extends Fragment {
             //apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",popularGamesPs4,popularGamesXBOX,popularGamesPC);
             apicommand.getData(getContext(),upcomingGames,customAdapterClass,getString(R.string.search_upcomingGames),"release_dates",null,"upcomingGames",upcomingPS4,upcomingXBOX,upcomingPC);
         }
+
+
+        homeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /**
+                 * this OnRefreshListener will update all games on the homescreen and insert accordingly.
+                 */
+                if (!trendingGames.isEmpty()){
+                    String[] usedID = new String[trendingGames.size()];
+                    String[] currentID = new String[10];
+                    int counter = 0;
+                    for (int i=0; i<trendingGames.size();i++){
+                        System.out.println(trendingGames.get(i).getId());
+                        currentID[counter] = String.valueOf(trendingGames.get(i).getId());
+                        counter++;
+                        usedID[i] = String.valueOf(trendingGames.get(i).getId());
+                        if (counter==10){
+                            System.out.println("JSON REQUEST FIRED");
+                            counter=0;
+
+                            System.out.println(Arrays.toString(usedID));
+                            System.out.println(Arrays.toString(currentID));
+
+                            String cleanedCurrentID = Arrays.toString(currentID);
+                            cleanedCurrentID = cleanedCurrentID.substring(1,cleanedCurrentID.length()-1).replace(" ","").trim();
+
+                            System.out.println(cleanedCurrentID);
+
+                            currentID = new String[10];
+
+
+
+                            System.out.println(getString(R.string.update_allGames) +" where id = ("+cleanedCurrentID+");");
+
+//                            AndroidNetworking.post("https://api-v3.igdb.com/games/").addHeaders("user-key",BuildConfig.IGDBKey)
+//                                    .addHeaders("Accept","application/json").addHeaders("Content-Type","application/x-www-form-urlencoded")
+//                                    .addStringBody(getString(R.string.update_allGames)+" where id = ("+cleanedCurrentID+");")
+//                                    .setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+//
+//                                @Override
+//                                public void onResponse(JSONArray response) {
+//                                    JSONObject jsonObject = null;
+//                                    if (response!=null){
+//                                        for (int i=0; i<response.length();i++){
+//                                            try{
+//                                                jsonObject = response.getJSONObject(i);
+//                                            }catch (JSONException e){
+//                                                e.printStackTrace();
+//                                                e.getCause();
+//                                                e.getMessage();
+//                                                e.getStackTrace();
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onError(ANError anError) {
+//                                    anError.getResponse();
+//                                    anError.getErrorBody();
+//                                    anError.getErrorCode();
+//                                    anError.getErrorDetail();
+//                                }
+//                            });
+
+                        }
+
+                    }
+
+
+
+                    homeRefreshLayout.setRefreshing(false);
+                }else{
+                    //this will hide the refreshbar
+                    homeRefreshLayout.setRefreshing(false);
+                }
+
+            }
+        });
+
+
+
+        trending.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+
+
+
+        recentlySearched.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+        popularOnPs4.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+        popularOnXBOX.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+
+        popularOnPC.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /**
+                 * Create a switch statement here to cycle through the current recyclerview and get the state of what is going on
+                 * -The target
+                 * -----------
+                 * Hide the SwipeOnRefreshListiener so that it wont be pulled down while scrolling this recyclerview
+                 */
+
+
+                switch (newState) {
+                    case (RecyclerView.SCROLL_STATE_DRAGGING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("DRAGGING");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_IDLE):
+                        homeRefreshLayout.setEnabled(true);
+                        System.out.println("IDLE");
+                        break;
+
+                    case (RecyclerView.SCROLL_STATE_SETTLING):
+                        homeRefreshLayout.setEnabled(false);
+                        System.out.println("SETTLING");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+
+
+
+
+
+
+
+
 
 
         //set the layoutManager on all recyclerViews and set them to horizontal
